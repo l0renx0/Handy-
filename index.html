@@ -87,7 +87,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round
 
 /* SALA */
 .summary { display: flex; gap: 8px; margin-bottom: 18px; }
-.stat { flex: 1; background: var(--surface); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat { flex: 1; min-width: 0; background: var(--surface); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; position: relative; }
+.stat::after { content: "›"; position: absolute; top: 6px; right: 10px; color: var(--muted); font-size: 20px; }
+.stat.hot { box-shadow: inset 0 0 0 1.5px var(--new); }
 .stat b { font-family: var(--display); font-size: 28px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
 .stat span { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
 .stat.hot b { color: var(--new); }
@@ -170,6 +172,17 @@ svg { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round
 .card header strong { font-family: var(--display); font-size: 28px; font-weight: 700; }
 .card header span { color: var(--muted); font-size: 14px; }
 .card .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.cfilter { padding: 4px max(12px, env(safe-area-inset-right, 0px)) 12px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); flex: none; }
+.cfilter button { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.cfilter em { font-style: normal; font-size: 12px; font-weight: 700; background: rgba(127,127,127,.3); border-radius: 8px; padding: 0 6px; }
+.ctotal { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; color: var(--muted); font-size: 14px; }
+.ctotal b { font-family: var(--display); font-size: 30px; color: var(--fg); }
+.crow { width: 100%; display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center; background: var(--surface); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; text-align: left; }
+.crow strong { font-family: var(--display); font-size: 26px; font-weight: 700; }
+.crow span { color: var(--muted); font-size: 14px; }
+.crow b { font-family: var(--display); font-size: 26px; font-variant-numeric: tabular-nums; }
+.crow b small { font-family: var(--body); font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.card.pending { box-shadow: inset 0 0 0 1.5px var(--new); }
 .card .warn { color: var(--new); font-size: 14px; }
 .btn.danger { background: transparent; box-shadow: inset 0 0 0 1.5px var(--busy); color: #ff9e9e; }
 .btn.danger.armed { background: var(--busy); color: #fff; }
@@ -233,13 +246,13 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
   </div>
   <div class="scroll">
     <div class="summary">
-      <div class="stat"><b id="s-open">0</b><span data-i18n="openTables">Tavoli aperti</span></div>
-      <div class="stat"><b id="s-cov">0</b><span data-i18n="covers">Coperti</span></div>
-      <div class="stat" id="s-new-box"><b id="s-new">0</b><span data-i18n="toSave">Da salvare</span></div>
+      <button class="stat" data-mode="all"><b id="s-open">0</b><span data-i18n="openTables">Tavoli aperti</span></button>
+      <button class="stat" data-mode="covers"><b id="s-cov">0</b><span data-i18n="covers">Coperti</span></button>
+      <button class="stat" data-mode="pending" id="s-new-box"><b id="s-new">0</b><span data-i18n="toSave">Da salvare</span></button>
     </div>
     <div class="area"><h2><span data-i18n="in">Dentro</span> <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2><span data-i18n="out">Fuori</span> <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i><span data-i18n="free">Libero</span></span><span><i style="background:var(--busy)"></i><span data-i18n="busy">Occupato</span></span><span><i style="background:var(--new);border-radius:50%"></i><span data-i18n="toSave">Da salvare</span></span><span id="sync">Salvato su questo telefono</span><span><span data-i18n="version">Versione</span> 2.5</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i><span data-i18n="free">Libero</span></span><span><i style="background:var(--busy)"></i><span data-i18n="busy">Occupato</span></span><span><i style="background:var(--new);border-radius:50%"></i><span data-i18n="toSave">Da salvare</span></span><span id="sync">Salvato su questo telefono</span><span><span data-i18n="version">Versione</span> 2.6</span></div>
   </div>
 </section>
 
@@ -270,14 +283,15 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <section class="view" id="v-comande" hidden>
   <div class="bar">
     <button class="btn icon" id="c-back" data-i18n-aria="backSala" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <h1 data-i18n="comande">Comande</h1>
+    <h1 id="c-title">Comande</h1>
   </div>
+  <div class="cfilter seg" id="c-filter"></div>
   <div class="scroll" id="c-body"></div>
 </section>
 
 <div id="layer"></div>
 
-<script src="menu.js?v=1792428080" charset="utf-8"></script>
+<script src="menu.js?v=1792430671" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -353,7 +367,9 @@ const I18N = {
     variant: "Variante", notePh: "Es. senza cipolla, cottura media…", del: "Elimina", confirm: "Conferma", done: "Fatto",
     deleted: x => `${x} eliminato`, less: "Meno", more: "Più",
     noOrders: "Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.",
-    coversN: n => `${n} coperti`, savedAt: t => `salvata ${t}`, unsavedWarn: "Ci sono righe non ancora salvate.",
+    coversN: n => n === 1 ? "1 coperto" : `${n} coperti`, savedAt: t => `salvata ${t}`, unsavedWarn: "Ci sono righe non ancora salvate.",
+    all: "Tutte", coversInSala: "Coperti in sala", noPending: "Niente da salvare.<br>Tutte le comande sono già salvate.",
+    pendingHint: "Mostra queste righe al cameriere, poi tocca Salvata.", markSaved: "Salvata",
     open: "Apri", freeTable: "Libera tavolo", confirmFree: "Conferma: libera", freed: n => `Tavolo ${n} liberato`,
     langAria: "Lingua: italiano. Tocca per lo spagnolo",
     ant: "Antipasti", p1: "1ª portata", p2: "2ª portata", bev: "Bevande",
@@ -373,7 +389,9 @@ const I18N = {
     variant: "Variante", notePh: "Ej. sin cebolla, al punto…", del: "Eliminar", confirm: "Confirmar", done: "Hecho",
     deleted: x => `${x} eliminado`, less: "Menos", more: "Más",
     noOrders: "No hay comandas abiertas.<br>Toca una mesa en la sala para empezar una.",
-    coversN: n => `${n} comensales`, savedAt: t => `guardada ${t}`, unsavedWarn: "Hay líneas sin guardar.",
+    coversN: n => n === 1 ? "1 comensal" : `${n} comensales`, savedAt: t => `guardada ${t}`, unsavedWarn: "Hay líneas sin guardar.",
+    all: "Todas", coversInSala: "Comensales en sala", noPending: "Nada por guardar.<br>Todas las comandas ya están guardadas.",
+    pendingHint: "Enseña estas líneas al camarero y luego toca Guardada.", markSaved: "Guardada",
     open: "Abrir", freeTable: "Liberar mesa", confirmFree: "Confirmar: liberar", freed: n => `Mesa ${n} liberada`,
     langAria: "Idioma: español. Toca para el italiano",
     ant: "Entrantes", p1: "1er plato", p2: "2º plato", bev: "Bebidas",
@@ -565,7 +583,8 @@ document.addEventListener("click", e => {
 });
 $("#b-add").onclick = askNewTable;
 $("#b-lang").onclick = () => setLang(lang === "it" ? "es" : "it");
-$("#b-comande").onclick = () => { renderComande(); show("v-comande"); };
+$("#b-comande").onclick = () => openComande("all");
+document.querySelector(".summary").onclick = e => { const b = e.target.closest("[data-mode]"); if (b) openComande(b.dataset.mode); };
 
 // ---------- sheet + ruota ----------
 function sheet(html) {
@@ -685,17 +704,20 @@ function mergeLines(o) {
   }
   o.lines = out;
 }
-function saveOrder() {
-  const o = order(ui.table);
-  if (!o.lines.length) return toast(t("addOne"));
+function commitSave(n) {
+  const o = order(n);
   o.lines.forEach(l => l.saved = true); mergeLines(o); o.savedAt = Date.now();
-  persist(); renderSala(); show("v-sala", true); toast(t("saved", ui.table), true);
+  persist(); renderSala();
+}
+function saveOrder() {
+  if (!order(ui.table).lines.length) return toast(t("addOne"));
+  commitSave(ui.table); show("v-sala", true); toast(t("saved", ui.table), true);
 }
 
 // ---------- LISTA ----------
 const SECTIONS = [...COURSES, "bev"];
-function linesHtml(n, editable) {
-  const ls = lines(n);
+function linesHtml(n, editable, onlyNew) {
+  const ls = onlyNew ? lines(n).filter(l => !l.saved) : lines(n);
   if (!ls.length) return `<p class="empty">${ICON.plate}${t("emptyOrder")}</p>`;
   let total = 0;
   const html = SECTIONS.map(k => {
@@ -789,20 +811,42 @@ function editLine(id) {
 }
 
 // ---------- COMANDE ----------
+// Tre modi di guardare le comande: tutte, solo quelle da salvare (da mostrare al cameriere), i coperti.
+let cmode = "all";
+const CMODES = ["all", "pending", "covers"];
+function openComande(mode) { cmode = mode; renderComande(); $("#c-body").scrollTop = 0; show("v-comande"); }
 function renderComande() {
-  const ns = Object.keys(state.orders).map(Number).filter(isBusy).sort((a, b) => a - b);
-  if (!ns.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.plate}${t("noOrders")}</p>`; return; }
-  $("#c-body").innerHTML = ns.map(n => {
-    const o = order(n), tb = allTables().find(x => x.n === n);
-    const time = o.savedAt ? new Date(o.savedAt).toLocaleTimeString(lang === "es" ? "es-ES" : "it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
-    return `<article class="card"><header><strong>${t("T")} ${n}</strong><span>${tb ? t(tb.area === "dentro" ? "in" : "out") : ""} · ${t("coversN", o.covers)}${time ? " · " + t("savedAt", time) : ""}</span></header>
-      ${unsaved(n) ? `<span class="warn">${t("unsavedWarn")}</span>` : ""}
-      ${linesHtml(n, false)}
-      <div class="row"><button class="btn" data-open="${n}">${t("open")}</button><button class="btn danger" data-free="${n}">${t("freeTable")}</button></div></article>`;
+  const open = Object.keys(state.orders).map(Number).filter(isBusy).sort((a, b) => a - b);
+  const pend = open.filter(unsaved);
+  const count = { all: open.length, pending: pend.length, covers: open.reduce((s, n) => s + order(n).covers, 0) };
+  $("#c-title").textContent = t({ all: "comande", pending: "toSave", covers: "covers" }[cmode]);
+  $("#c-filter").innerHTML = CMODES.map(m => `<button aria-pressed="${cmode === m}" data-m="${m}">${t({ all: "all", pending: "toSave", covers: "covers" }[m])}<em>${count[m]}</em></button>`).join("");
+  const area = n => { const tb = allTables().find(x => x.n === n); return tb ? t(tb.area === "dentro" ? "in" : "out") : ""; };
+  const time = o => o.savedAt ? new Date(o.savedAt).toLocaleTimeString(lang === "es" ? "es-ES" : "it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
+  if (!open.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.plate}${t("noOrders")}</p>`; return; }
+  if (cmode === "covers") {
+    $("#c-body").innerHTML = `<div class="ctotal"><span>${t("coversInSala")}</span><b>${count.covers}</b></div>` + open.map(n => {
+      const o = order(n), pcs = o.lines.reduce((s, l) => s + l.qty, 0);
+      return `<button class="crow" data-open="${n}"><strong>${t("T")} ${n}</strong><span>${area(n)} · ${pcs} ${t("pcs")}</span><b>${o.covers}<small>${t("cov")}</small></b></button>`;
+    }).join("");
+    return;
+  }
+  const list = cmode === "pending" ? pend : open;
+  if (!list.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.check}${t("noPending")}</p>`; return; }
+  $("#c-body").innerHTML = (cmode === "pending" ? `<p class="hint">${ICON.hold}${t("pendingHint")}</p>` : "") + list.map(n => {
+    const o = order(n), tm = time(o), p = cmode === "pending";
+    return `<article class="card ${p ? "pending" : ""}"><header><strong>${t("T")} ${n}</strong><span>${area(n)} · ${t("coversN", o.covers)}${tm ? " · " + t("savedAt", tm) : ""}</span></header>
+      ${!p && unsaved(n) ? `<span class="warn">${t("unsavedWarn")}</span>` : ""}
+      ${linesHtml(n, false, p)}
+      <div class="row"><button class="btn" data-open="${n}">${t("open")}</button>${p
+        ? `<button class="btn save" data-save="${n}">${t("markSaved")}</button>`
+        : `<button class="btn danger" data-free="${n}">${t("freeTable")}</button>`}</div></article>`;
   }).join("");
 }
+$("#c-filter").onclick = e => { const b = e.target.closest("[data-m]"); if (b) { cmode = b.dataset.m; renderComande(); $("#c-body").scrollTop = 0; } };
 $("#c-body").onclick = e => {
   const op = e.target.closest("[data-open]"); if (op) return openOrder(+op.dataset.open);
+  const sv = e.target.closest("[data-save]"); if (sv) { const n = +sv.dataset.save; commitSave(n); renderComande(); return toast(t("saved", n), true); }
   const fr = e.target.closest("[data-free]"); if (!fr) return;
   if (!fr.classList.contains("armed")) { fr.classList.add("armed"); fr.textContent = t("confirmFree"); return; }
   const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(t("freed", n), true);
