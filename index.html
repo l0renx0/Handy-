@@ -63,6 +63,10 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--fg); out
   background: var(--surface); flex: none; position: relative; z-index: 1; }
 .bar h1 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0; flex: 1; min-width: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: .02em; }
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand .mark { width: 38px; height: 38px; flex: none; fill: none; stroke: none; }
+.brand .mark * { stroke: none; }
+.brand em { font-style: normal; color: var(--new); }
 .bar h1 small { font-family: var(--body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 7px; letter-spacing: 0; }
 .btn { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .05em; text-transform: uppercase;
   padding: 0 14px; height: 42px; border-radius: 10px; background: var(--surface-2); display: inline-flex; align-items: center; gap: 7px; flex: none;
@@ -206,14 +210,19 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 .toast i { width: 22px; height: 22px; border-radius: 50%; background: var(--save); color: #fff; display: grid; place-items: center; flex: none; }
 .toast i svg { width: 14px; height: 14px; stroke-width: 3.2; }
 @keyframes toast { from { transform: translate(-50%, 12px); opacity: 0; } }
-.haptic { position: fixed; left: -100px; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.pane { flex: 1; position: relative; overflow: hidden; }
+.pane > .scroll { position: absolute; inset: 0; background: var(--bg); z-index: 2; }
+.pane > #o-under { z-index: 1; }
+.pane .dragging { box-shadow: -10px 0 30px var(--shadow); }
+.pane .enter { animation: enter .3s var(--ease); box-shadow: -10px 0 30px var(--shadow); }
+.pane .under { animation: under .26s var(--ease); }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 
 <!-- SALA -->
 <section class="view" id="v-sala">
   <div class="bar">
-    <h1>Sala</h1>
+    <h1 class="brand"><svg class="mark" viewBox="60 20 420 420" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#383b40"/><stop offset="1" stop-color="#1b1d20"/></linearGradient><linearGradient id="mtk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5544f"/><stop offset="1" stop-color="#b52f2e"/></linearGradient><linearGradient id="mpl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c060"/><stop offset="1" stop-color="#d9962c"/></linearGradient></defs><g transform="rotate(-7 256 260)"><path d="M140 118 Q140 92 166 92 H346 Q372 92 372 118 V408 L360.4 390 L348.8 408 L337.2 390 L325.6 408 L314.0 390 L302.4 408 L290.8 390 L279.2 408 L267.6 390 L256.0 408 L244.4 390 L232.8 408 L221.2 390 L209.6 408 L198.0 390 L186.4 408 L174.8 390 L163.2 408 L151.6 390 L140.0 408 Z" fill="url(#mtk)"/><rect x="186" y="150" width="40" height="160" rx="6" fill="#fff"/><rect x="286" y="150" width="40" height="160" rx="6" fill="#fff"/><rect x="186" y="212" width="140" height="36" rx="4" fill="#fff"/><rect x="186" y="336" width="140" height="11" rx="5.5" fill="#fff" opacity=".55"/><rect x="186" y="358" width="96" height="11" rx="5.5" fill="#fff" opacity=".4"/></g><circle cx="380" cy="118" r="78" fill="var(--surface)"/><circle cx="380" cy="118" r="64" fill="url(#mpl)"/><rect x="369" y="80" width="22" height="76" rx="7" fill="var(--surface)"/><rect x="342" y="107" width="76" height="22" rx="7" fill="var(--surface)"/></svg><span>Handy<em>+</em></span></h1>
     <button class="btn" id="b-comande">Comande <span class="count" id="n-comande">0</span></button>
     <button class="btn icon" id="b-add" aria-label="Aggiungi tavolo"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
   </div>
@@ -225,7 +234,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
     </div>
     <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.0</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.1</span></div>
   </div>
 </section>
 
@@ -239,7 +248,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
   </div>
   <div class="courses" id="courses"></div>
   <div class="groups" id="groups"></div>
-  <div class="scroll" id="o-body"></div>
+  <div class="pane"><div class="scroll" id="o-under" hidden></div><div class="scroll" id="o-body"></div></div>
 </section>
 
 <!-- LISTA -->
@@ -262,9 +271,8 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 </section>
 
 <div id="layer"></div>
-<label class="haptic" aria-hidden="true"><input type="checkbox" switch tabindex="-1" id="haptic"></label>
 
-<script src="menu.js?v=1792409755" charset="utf-8"></script>
+<script src="menu.js?v=1792411145" charset="utf-8"></script>
 <script>
 const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -334,16 +342,20 @@ function toast(msg, ok) {
 function bump(el) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
 
 // ---------- vibrazione ----------
-// iPhone (iOS 18+): toccare un interruttore di sistema produce un piccolo "tic". Android: navigator.vibrate.
-const hapticSwitch = $("#haptic");
+// iPhone (iOS 18+): attivare un interruttore "switch" di sistema produce un piccolo tic. Android: navigator.vibrate.
 function haptic() {
-  try { if (navigator.vibrate) navigator.vibrate(10); else hapticSwitch.click(); } catch (e) {}
+  try {
+    if (navigator.vibrate) { navigator.vibrate(10); return; }
+    const label = document.createElement("label"); label.setAttribute("aria-hidden", "true"); label.style.display = "none";
+    const input = document.createElement("input"); input.type = "checkbox"; input.setAttribute("switch", "");
+    label.append(input); document.head.append(label); label.click(); label.remove();
+  } catch (e) {}
 }
 document.addEventListener("click", e => { if (e.target.closest("button")) haptic(); }, true);
 
 // ---------- navigazione (con swipe da sinistra) ----------
 let current = "v-sala";
-const BACK = {
+const VIEW_BACK = {
   "v-order": { to: "v-sala", prep: () => renderSala(), done: () => leaveTable() },
   "v-list": { to: "v-order", prep: () => renderOrder() },
   "v-comande": { to: "v-sala", prep: () => renderSala() },
@@ -362,15 +374,31 @@ function show(id, back = false) {
   else { to.classList.add("enter"); to.addEventListener("animationend", finish, { once: true }); }
   setTimeout(finish, 450);
 }
+function slideIn(el, cls) {
+  if (reduced) return;
+  clean(el); void el.offsetWidth; el.classList.add(cls);
+  setTimeout(() => el.classList.remove(cls), 450);
+}
+// Un passo indietro: dentro il menu prima dai piatti alle categorie, poi da una schermata alla precedente.
+function backStep() {
+  if (current === "v-order" && ui.cat !== null) return {
+    from: $("#o-body"), to: $("#o-under"),
+    prep: () => { $("#o-under").innerHTML = catsHtml(); },
+    done: () => { ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; },
+  };
+  const b = VIEW_BACK[current]; if (!b) return null;
+  return { from: $("#" + current), to: $("#" + b.to), prep: b.prep, done: () => { b.done?.(); current = b.to; } };
+}
 function goBack() {
-  const b = BACK[current]; if (!b) return;
+  if (current === "v-order" && ui.cat !== null) { ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; slideIn($("#o-body"), "under"); return; }
+  const b = VIEW_BACK[current]; if (!b) return;
   b.prep?.(); b.done?.(); show(b.to, true);
 }
 
 let sw = null;
 const EDGE = 32;
 document.addEventListener("touchstart", e => {
-  if (!BACK[current] || $("#layer").children.length || e.touches.length > 1) return;
+  if ($("#layer").children.length || e.touches.length > 1 || !backStep()) return;
   const t = e.touches[0]; if (t.clientX > EDGE) return;
   sw = { x: t.clientX, y: t.clientY, lastX: t.clientX, lastT: performance.now(), v: 0, active: false };
 }, { passive: true });
@@ -380,13 +408,15 @@ document.addEventListener("touchmove", e => {
   if (!sw.active) {
     if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; }
     if (dx < 8) return;
-    const b = BACK[current]; b.prep?.();
-    sw.active = true; sw.from = $("#" + current); sw.to = $("#" + b.to);
-    sw.to.hidden = false; sw.from.classList.add("dragging");
+    const st = backStep(); if (!st) { sw = null; return; }
+    st.prep?.();
+    Object.assign(sw, { active: true, step: st, from: st.from, to: st.to });
+    st.to.hidden = false; st.from.classList.add("dragging");
   }
   e.preventDefault();
   const now = performance.now(); sw.v = (t.clientX - sw.lastX) / Math.max(1, now - sw.lastT); sw.lastX = t.clientX; sw.lastT = now;
-  const W = innerWidth, x = Math.max(0, dx), p = x / W;
+  const W = sw.from.offsetWidth || innerWidth, x = Math.max(0, dx), p = Math.min(1, x / W);
+  sw.x0 = x;
   sw.from.style.transform = `translateX(${x}px)`;
   sw.to.style.transform = `translateX(${-28 * (1 - p)}%)`;
   sw.to.style.filter = `brightness(${0.7 + 0.3 * p})`;
@@ -395,7 +425,7 @@ document.addEventListener("touchmove", e => {
 function endSwipe() {
   if (!sw) return;
   const s = sw; sw = null; if (!s.active) return;
-  const W = innerWidth, x = parseFloat(s.from.style.transform.slice(11)) || 0;
+  const W = s.from.offsetWidth || innerWidth, x = s.x0 || 0;
   const commit = x > W * 0.4 || (s.v > 0.45 && x > 30);
   const tr = "transform .25s cubic-bezier(.2,.8,.2,1), filter .25s";
   s.from.style.transition = tr; s.to.style.transition = tr;
@@ -405,7 +435,8 @@ function endSwipe() {
     s.to.style.filter = commit ? "brightness(1)" : "brightness(.7)";
   });
   setTimeout(() => {
-    if (commit) { const b = BACK[current]; b.done?.(); s.from.hidden = true; current = b.to; }
+    const isView = s.from.classList.contains("view");
+    if (commit) { s.step.done(); if (isView) s.from.hidden = true; else s.to.hidden = true; }
     else s.to.hidden = true;
     clean(s.from); clean(s.to);
   }, 270);
@@ -503,6 +534,14 @@ function openOrder(n) {
   $("#o-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
   renderOrder(); show("v-order");
 }
+function catsHtml() {
+  const ls = lines(ui.table), g = MENU.find(x => x.group === ui.group);
+  const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
+  return `<div class="cats">${g.categories.map((c, i) => {
+    const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
+    return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
+  }).join("")}</div>`;
+}
 function renderOrder() {
   const drinks = DRINK_GROUPS.includes(ui.group);
   const ls = lines(ui.table);
@@ -514,10 +553,7 @@ function renderOrder() {
   const g = MENU.find(x => x.group === ui.group);
   const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   if (ui.cat === null) {
-    $("#o-body").innerHTML = `<div class="cats">${g.categories.map((c, i) => {
-      const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
-      return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
-    }).join("")}</div>`;
+    $("#o-body").innerHTML = catsHtml();
   } else {
     const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
     $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}Categorie</button><strong><i></i>${esc(c.name)}</strong></div>
@@ -532,8 +568,8 @@ function renderOrder() {
 $("#courses").onclick = e => { const b = e.target.closest("[data-c]"); if (b) { ui.course = b.dataset.c; renderOrder(); } };
 $("#groups").onclick = e => { const b = e.target.closest("[data-g]"); if (b) { ui.group = b.dataset.g; ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; } };
 $("#o-body").onclick = e => {
-  if (e.target.closest("#b-cats")) { ui.cat = null; return renderOrder(); }
-  const c = e.target.closest("[data-cat]"); if (c) { ui.cat = +c.dataset.cat; renderOrder(); $("#o-body").scrollTop = 0; return; }
+  if (e.target.closest("#b-cats")) return goBack();
+  const c = e.target.closest("[data-cat]"); if (c) { ui.cat = +c.dataset.cat; renderOrder(); $("#o-body").scrollTop = 0; slideIn($("#o-body"), "enter"); return; }
   const it = e.target.closest("[data-i]"); if (!it) return;
   const cat = MENU.find(x => x.group === ui.group).categories[ui.cat];
   const [name, price, info] = cat.items[+it.dataset.i];
