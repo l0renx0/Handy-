@@ -234,7 +234,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
     </div>
     <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.2</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.3</span></div>
   </div>
 </section>
 
@@ -272,7 +272,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 
 <div id="layer"></div>
 
-<script src="menu.js?v=1792411519" charset="utf-8"></script>
+<script src="menu.js?v=1792412370" charset="utf-8"></script>
 <script>
 const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -576,7 +576,7 @@ $("#o-body").onclick = e => {
   const course = DRINK_GROUPS.includes(ui.group) ? "bev" : ui.course;
   const ls = order(ui.table).lines;
   const same = ls.find(l => !l.saved && !l.note && l.name === name && l.course === course);
-  if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", course, qty: 1, note: "", saved: false });
+  if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", cat: cat.name, course, qty: 1, note: "", saved: false });
   persist(); renderOrder();
   $(`#o-body [data-i="${it.dataset.i}"]`).classList.add("flash");
   bump($("#o-n"));
@@ -628,10 +628,32 @@ const cancelLp = e => { if (!lp) return; if (e.type === "pointermove" && Math.hy
 ["pointerup", "pointercancel", "pointermove", "pointerleave"].forEach(ev => $("#l-body").addEventListener(ev, cancelLp));
 $("#l-body").addEventListener("contextmenu", e => e.preventDefault());
 
+// Varianti rapide in base al piatto: gusti per il gelato, cotture per la carne, ecc.
+const QUICK = {
+  gelato: ["Cioccolato", "Cocco", "Pistacchio", "Fragola", "Limone", "Vaniglia"],
+  carne: ["Blu", "Al sangue", "Media cottura", "Cotta", "Ben cotta"],
+  cocktail: ["Senza alcool", "Con ghiaccio", "Senza ghiaccio"],
+  pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
+  base: ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Senza cipolla", "Da dividere"],
+};
+const MEAT = ["Filetto alla Rossini", "La tagliata · Entrecot 500g"];
+const COCKTAIL_CATS = ["Signature", "Aperitivos", "Clásicos", "Sangría", "Long drinks"];
+function catOf(name) {
+  for (const g of MENU) for (const c of g.categories) if (c.items.some(it => it[0] === name)) return c.name;
+  return "";
+}
+function quickFor(l) {
+  const cat = l.cat || catOf(l.name);
+  if (/^Gelato/.test(l.name)) return QUICK.gelato;
+  if (MEAT.includes(l.name)) return QUICK.carne;
+  if (cat === "Pasta") return QUICK.pasta;
+  if (COCKTAIL_CATS.includes(cat)) return QUICK.cocktail;
+  return QUICK.base;
+}
 function editLine(id) {
   const o = order(ui.table), l = o.lines.find(x => x.id === id); if (!l) return;
   let qty = l.qty, course = l.course;
-  const quick = ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Al sangue", "Media cottura", "Ben cotta", "Senza cipolla", "Da dividere"];
+  const quick = quickFor(l);
   sheet(`<h2>${esc(l.name)}</h2>
     <div class="stepper"><button class="btn" id="e-m" aria-label="Meno">−</button><output id="e-q">${qty}</output><button class="btn" id="e-p" aria-label="Più">+</button></div>
     ${course !== "bev" ? `<div class="seg" id="e-c">${COURSES.map(([k, lb]) => `<button aria-pressed="${k === course}" data-c="${k}">${lb}</button>`).join("")}</div>` : ""}
