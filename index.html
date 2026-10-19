@@ -66,6 +66,10 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--fg); out
 .brand { display: flex; align-items: center; gap: 8px; }
 .brand .mark { width: 38px; height: 38px; flex: none; fill: none; stroke: none; }
 .brand .mark * { stroke: none; }
+#b-comande svg { width: 20px; height: 20px; }
+@media (max-width: 430px) { #b-comande .lbl { display: none; } #b-comande { padding: 0 10px; } }
+.btn.lang { font-size: 16px; letter-spacing: .06em; }
+.brand span { overflow: hidden; text-overflow: ellipsis; }
 .brand em { font-style: normal; color: var(--new); }
 .bar h1 small { font-family: var(--body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 7px; letter-spacing: 0; }
 .btn { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .05em; text-transform: uppercase;
@@ -223,28 +227,29 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <section class="view" id="v-sala">
   <div class="bar">
     <h1 class="brand"><svg class="mark" viewBox="60 20 420 420" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#383b40"/><stop offset="1" stop-color="#1b1d20"/></linearGradient><linearGradient id="mtk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5544f"/><stop offset="1" stop-color="#b52f2e"/></linearGradient><linearGradient id="mpl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c060"/><stop offset="1" stop-color="#d9962c"/></linearGradient></defs><g transform="rotate(-7 256 260)"><path d="M140 118 Q140 92 166 92 H346 Q372 92 372 118 V408 L360.4 390 L348.8 408 L337.2 390 L325.6 408 L314.0 390 L302.4 408 L290.8 390 L279.2 408 L267.6 390 L256.0 408 L244.4 390 L232.8 408 L221.2 390 L209.6 408 L198.0 390 L186.4 408 L174.8 390 L163.2 408 L151.6 390 L140.0 408 Z" fill="url(#mtk)"/><rect x="186" y="150" width="40" height="160" rx="6" fill="#fff"/><rect x="286" y="150" width="40" height="160" rx="6" fill="#fff"/><rect x="186" y="212" width="140" height="36" rx="4" fill="#fff"/><rect x="186" y="336" width="140" height="11" rx="5.5" fill="#fff" opacity=".55"/><rect x="186" y="358" width="96" height="11" rx="5.5" fill="#fff" opacity=".4"/></g><circle cx="380" cy="118" r="78" fill="var(--surface)"/><circle cx="380" cy="118" r="64" fill="url(#mpl)"/><rect x="369" y="80" width="22" height="76" rx="7" fill="var(--surface)"/><rect x="342" y="107" width="76" height="22" rx="7" fill="var(--surface)"/></svg><span>Handy<em>+</em></span></h1>
-    <button class="btn" id="b-comande">Comande <span class="count" id="n-comande">0</span></button>
-    <button class="btn icon" id="b-add" aria-label="Aggiungi tavolo"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="btn icon lang" id="b-lang" data-i18n-aria="langAria">IT</button>
+    <button class="btn" id="b-comande" data-i18n-aria="comande"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span class="lbl" data-i18n="comande">Comande</span> <span class="count" id="n-comande">0</span></button>
+    <button class="btn icon" id="b-add" data-i18n-aria="addTable" aria-label="Aggiungi tavolo"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
   </div>
   <div class="scroll">
     <div class="summary">
-      <div class="stat"><b id="s-open">0</b><span>Tavoli aperti</span></div>
-      <div class="stat"><b id="s-cov">0</b><span>Coperti</span></div>
-      <div class="stat" id="s-new-box"><b id="s-new">0</b><span>Da salvare</span></div>
+      <div class="stat"><b id="s-open">0</b><span data-i18n="openTables">Tavoli aperti</span></div>
+      <div class="stat"><b id="s-cov">0</b><span data-i18n="covers">Coperti</span></div>
+      <div class="stat" id="s-new-box"><b id="s-new">0</b><span data-i18n="toSave">Da salvare</span></div>
     </div>
-    <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
-    <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.4</span></div>
+    <div class="area"><h2><span data-i18n="in">Dentro</span> <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
+    <div class="area"><h2><span data-i18n="out">Fuori</span> <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
+    <div class="legend"><span><i style="background:var(--free)"></i><span data-i18n="free">Libero</span></span><span><i style="background:var(--busy)"></i><span data-i18n="busy">Occupato</span></span><span><i style="background:var(--new);border-radius:50%"></i><span data-i18n="toSave">Da salvare</span></span><span id="sync">Salvato su questo telefono</span><span><span data-i18n="version">Versione</span> 2.5</span></div>
   </div>
 </section>
 
 <!-- ORDINE -->
 <section class="view" id="v-order" hidden>
   <div class="bar">
-    <button class="btn icon" id="o-back" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="btn icon" id="o-back" data-i18n-aria="backSala" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <h1 id="o-title">T</h1>
-    <button class="btn" id="o-list">Lista <span class="count" id="o-n">0</span></button>
-    <button class="btn save" id="o-save">Salva</button>
+    <button class="btn" id="o-list"><span data-i18n="list">Lista</span> <span class="count" id="o-n">0</span></button>
+    <button class="btn save" id="o-save" data-i18n="save">Salva</button>
   </div>
   <div class="courses" id="courses"></div>
   <div class="groups" id="groups"></div>
@@ -254,9 +259,9 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <!-- LISTA -->
 <section class="view" id="v-list" hidden>
   <div class="bar">
-    <button class="btn icon" id="l-back" aria-label="Torna al menu"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="btn icon" id="l-back" data-i18n-aria="backMenu" aria-label="Torna al menu"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <h1 id="l-title">Lista</h1>
-    <button class="btn save" id="l-save">Salva</button>
+    <button class="btn save" id="l-save" data-i18n="save">Salva</button>
   </div>
   <div class="scroll" id="l-body"></div>
 </section>
@@ -264,17 +269,17 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <!-- COMANDE SALVATE -->
 <section class="view" id="v-comande" hidden>
   <div class="bar">
-    <button class="btn icon" id="c-back" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <h1>Comande</h1>
+    <button class="btn icon" id="c-back" data-i18n-aria="backSala" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h1 data-i18n="comande">Comande</h1>
   </div>
   <div class="scroll" id="c-body"></div>
 </section>
 
 <div id="layer"></div>
 
-<script src="menu.js?v=1792412910" charset="utf-8"></script>
+<script src="menu.js?v=1792428080" charset="utf-8"></script>
 <script>
-const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
+const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
 const CAT_COLORS = {
   "Snacks": "#8a6d2f", "Sapore di mare": "#2e6f8e", "Caviar": "#3c3f58", "Festival di mare": "#23707a",
@@ -320,7 +325,7 @@ function persist() {
       if (s.updatedAt > (state.updatedAt || 0)) { state = s; try { localStorage.setItem(KEY, data.json); } catch (e) {} rerender(); }
     }
     remote = ref;
-    $("#sync").textContent = "Salvato nel tuo account";
+    synced = true; $("#sync").textContent = t("syncCloud");
     if (!data || state.updatedAt > JSON.parse(data.json || "{}").updatedAt) persist();
   } catch (e) {}
 })();
@@ -331,6 +336,86 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const eur = n => n === undefined ? "" : n === null ? "s/m" : n.toLocaleString("it-IT", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + " €";
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
 const uid = () => Math.random().toString(36).slice(2, 9);
+// ---------- lingua (italiano / spagnolo) ----------
+const I18N = {
+  it: {
+    comande: "Comande", addTable: "Aggiungi tavolo", openTables: "Tavoli aperti", covers: "Coperti", toSave: "Da salvare",
+    in: "Dentro", out: "Fuori", free: "Libero", busy: "Occupato", version: "Versione",
+    syncLocal: "Salvato su questo telefono", syncCloud: "Salvato nel tuo account",
+    list: "Lista", save: "Salva", backSala: "Torna alla sala", backMenu: "Torna al menu", categories: "Categorie",
+    T: "T", cov: "cop.", occupied: (a, b) => `${a} / ${b} occupati`, tableAria: (n, b) => `Tavolo ${n}${b ? ", occupato" : ""}`,
+    table: n => `Tavolo ${n}`, howMany: "Quanti coperti?", cancel: "Annulla", openTable: "Apri tavolo",
+    removeTable: "Rimuovi tavolo dalla sala", tableRemoved: n => `Tavolo ${n} rimosso`, noTables: "Nessun tavolo da aggiungere",
+    add: "Aggiungi", goesIn: a => `Va in: ${a}`, tableAdded: n => `Tavolo ${n} aggiunto`,
+    drinksInfo: "vanno in una sezione a parte", addOne: "Aggiungi almeno un piatto", saved: n => `Comanda tavolo ${n} salvata`,
+    emptyOrder: "Ancora niente in questa comanda.<br>Torna al menu e tocca un piatto per aggiungerlo.",
+    pcs: "pz.", NEW: "NUOVO", total: "Totale", hold: "Tieni premuto una riga per varianti e quantità.",
+    variant: "Variante", notePh: "Es. senza cipolla, cottura media…", del: "Elimina", confirm: "Conferma", done: "Fatto",
+    deleted: x => `${x} eliminato`, less: "Meno", more: "Più",
+    noOrders: "Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.",
+    coversN: n => `${n} coperti`, savedAt: t => `salvata ${t}`, unsavedWarn: "Ci sono righe non ancora salvate.",
+    open: "Apri", freeTable: "Libera tavolo", confirmFree: "Conferma: libera", freed: n => `Tavolo ${n} liberato`,
+    langAria: "Lingua: italiano. Tocca per lo spagnolo",
+    ant: "Antipasti", p1: "1ª portata", p2: "2ª portata", bev: "Bevande",
+  },
+  es: {
+    comande: "Comandas", addTable: "Añadir mesa", openTables: "Mesas abiertas", covers: "Comensales", toSave: "Por guardar",
+    in: "Dentro", out: "Fuera", free: "Libre", busy: "Ocupada", version: "Versión",
+    syncLocal: "Guardado en este teléfono", syncCloud: "Guardado en tu cuenta",
+    list: "Lista", save: "Guardar", backSala: "Volver a la sala", backMenu: "Volver a la carta", categories: "Categorías",
+    T: "M", cov: "pax", occupied: (a, b) => `${a} / ${b} ocupadas`, tableAria: (n, b) => `Mesa ${n}${b ? ", ocupada" : ""}`,
+    table: n => `Mesa ${n}`, howMany: "¿Cuántos comensales?", cancel: "Cancelar", openTable: "Abrir mesa",
+    removeTable: "Quitar mesa de la sala", tableRemoved: n => `Mesa ${n} quitada`, noTables: "No hay mesas para añadir",
+    add: "Añadir", goesIn: a => `Va en: ${a}`, tableAdded: n => `Mesa ${n} añadida`,
+    drinksInfo: "van en una sección aparte", addOne: "Añade al menos un plato", saved: n => `Comanda mesa ${n} guardada`,
+    emptyOrder: "Todavía nada en esta comanda.<br>Vuelve a la carta y toca un plato para añadirlo.",
+    pcs: "uds.", NEW: "NUEVO", total: "Total", hold: "Mantén pulsada una línea para variantes y cantidad.",
+    variant: "Variante", notePh: "Ej. sin cebolla, al punto…", del: "Eliminar", confirm: "Confirmar", done: "Hecho",
+    deleted: x => `${x} eliminado`, less: "Menos", more: "Más",
+    noOrders: "No hay comandas abiertas.<br>Toca una mesa en la sala para empezar una.",
+    coversN: n => `${n} comensales`, savedAt: t => `guardada ${t}`, unsavedWarn: "Hay líneas sin guardar.",
+    open: "Abrir", freeTable: "Liberar mesa", confirmFree: "Confirmar: liberar", freed: n => `Mesa ${n} liberada`,
+    langAria: "Idioma: español. Toca para el italiano",
+    ant: "Entrantes", p1: "1er plato", p2: "2º plato", bev: "Bebidas",
+  },
+};
+// Nomi mostrati: le chiavi restano quelle del menu, cambia solo ciò che si vede.
+const GROUP_NAMES = { es: { "CUCINA": "COCINA", "VINI": "VINOS", "CAFFÈ": "CAFÉ" } };
+const CAT_NAMES = {
+  it: { "Aperitivos": "Aperitivi", "Clásicos": "Classici", "Licores": "Liquori", "Cognac / Ron": "Cognac / Rum", "Sin alcohol": "Analcolici", "Copa": "Calice" },
+  es: { "Antipasti": "Entrantes", "Insalate": "Ensaladas", "Secondi": "Segundos", "Pizze": "Pizzas", "Dolci": "Postres",
+    "Acqua e bibite": "Agua y refrescos", "Caffè": "Café", "Tè e infusi": "Té e infusiones",
+    "Bianchi IT": "Blancos IT", "Bianchi ES": "Blancos ES", "Bianchi mondo": "Blancos mundo",
+    "Rossi IT": "Tintos IT", "Rossi ES": "Tintos ES", "Rossi mondo": "Tintos mundo", "Rosati": "Rosados", "Bottiglie": "Botellas" },
+};
+const ITEM_NAMES = {
+  it: { "Agua sin gas": "Acqua naturale", "Agua con gas": "Acqua frizzante", "Fanta naranja": "Fanta arancia", "Fanta limón": "Fanta limone",
+    "Tónica": "Tonica", "Zumo de naranja": "Succo d'arancia", "Zumo de piña": "Succo d'ananas", "Zumo de tomate": "Succo di pomodoro",
+    "Gelato 1 bola": "Gelato 1 pallina", "Gelato 2 bolas": "Gelato 2 palline",
+    "Té negro": "Tè nero", "Té verde": "Tè verde", "Manzanilla": "Camomilla", "Menta poleo": "Tisana alla menta", "Descafeinado": "Decaffeinato" },
+  es: { "Espresso doppio": "Espresso doble", "Caffè latte": "Café con leche", "Caffè freddo": "Café con hielo", "Gelato 1 bola": "Helado 1 bola", "Gelato 2 bolas": "Helado 2 bolas" },
+};
+let lang = "it";
+try { if (localStorage.getItem("handy-lang") === "es") lang = "es"; } catch (e) {}
+function t(key, ...a) { const v = I18N[lang][key] ?? I18N.it[key]; return typeof v === "function" ? v(...a) : v; }
+const groupName = g => GROUP_NAMES[lang]?.[g] || g;
+const catName = c => CAT_NAMES[lang]?.[c] || c;
+const itemName = n => ITEM_NAMES[lang]?.[n] || n;
+const courseName = k => t(k);
+let synced = false;
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+  $("#b-lang").textContent = lang.toUpperCase();
+  $("#sync").textContent = t(synced ? "syncCloud" : "syncLocal");
+  renderSala();
+  if (current === "v-order" && order(ui.table)) { setTitles(); renderOrder(); }
+  if (current === "v-list" && order(ui.table)) { setTitles(); renderList(); }
+  if (current === "v-comande") renderComande();
+}
+function setLang(l) { lang = l; try { localStorage.setItem("handy-lang", l); } catch (e) {} applyLang(); }
+
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let toastT;
 function toast(msg, ok) {
@@ -459,12 +544,12 @@ function renderSala() {
   const tabs = allTables();
   for (const area of ["dentro", "fuori"]) {
     const list = tabs.filter(t => t.area === area);
-    $("#t-" + area).innerHTML = list.map(t => {
-      const o = order(t.n), busy = isBusy(t.n);
-      return `<button class="tbl ${busy ? "busy" : ""} ${t.extra ? "extra" : ""}" data-t="${t.n}" aria-label="Tavolo ${t.n}${busy ? ", occupato" : ""}">
-        ${t.n}${busy ? `<span class="cov">${o.covers} cop.</span>` : ""}${busy && unsaved(t.n) ? '<span class="dot"></span>' : ""}</button>`;
+    $("#t-" + area).innerHTML = list.map(tb => {
+      const o = order(tb.n), busy = isBusy(tb.n);
+      return `<button class="tbl ${busy ? "busy" : ""} ${tb.extra ? "extra" : ""}" data-t="${tb.n}" aria-label="${t("tableAria", tb.n, busy)}">
+        ${tb.n}${busy ? `<span class="cov">${o.covers} ${t("cov")}</span>` : ""}${busy && unsaved(tb.n) ? '<span class="dot"></span>' : ""}</button>`;
     }).join("");
-    $("#c-" + area).textContent = `${list.filter(t => isBusy(t.n)).length} / ${list.length} occupati`;
+    $("#c-" + area).textContent = t("occupied", list.filter(x => isBusy(x.n)).length, list.length);
   }
   const open = Object.keys(state.orders).filter(n => isBusy(n));
   $("#n-comande").textContent = open.length;
@@ -479,6 +564,7 @@ document.addEventListener("click", e => {
   if (isBusy(n)) openOrder(n); else askCovers(n);
 });
 $("#b-add").onclick = askNewTable;
+$("#b-lang").onclick = () => setLang(lang === "it" ? "es" : "it");
 $("#b-comande").onclick = () => { renderComande(); show("v-comande"); };
 
 // ---------- sheet + ruota ----------
@@ -502,36 +588,40 @@ function wheel(el, values, initial) {
 }
 
 function askCovers(n) {
-  const t = allTables().find(x => x.n === n);
-  sheet(`<h2>Tavolo ${n}</h2><p class="sub">Quanti coperti?</p>
+  const tb = allTables().find(x => x.n === n);
+  sheet(`<h2>${t("table", n)}</h2><p class="sub">${t("howMany")}</p>
     <div class="wheel-wrap"><div class="wheel" id="w-cov"></div></div>
-    <div class="actions"><button class="btn" id="s-no">Annulla</button><button class="btn save" id="s-ok">Apri tavolo</button></div>
-    ${t?.extra ? '<button class="link" id="s-del">Rimuovi tavolo dalla sala</button>' : ""}`);
+    <div class="actions"><button class="btn" id="s-no">${t("cancel")}</button><button class="btn save" id="s-ok">${t("openTable")}</button></div>
+    ${tb?.extra ? `<button class="link" id="s-del">${t("removeTable")}</button>` : ""}`);
   const get = wheel($("#w-cov"), range(1, 30), 2);
   $("#s-no").onclick = closeSheet;
   $("#s-ok").onclick = () => { state.orders[n] = { covers: get(), lines: [], savedAt: null }; closeSheet(); openOrder(n); };
-  if (t?.extra) $("#s-del").onclick = () => { state.extraTables = state.extraTables.filter(x => x.n !== n); delete state.orders[n]; persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} rimosso`, true); };
+  if (tb?.extra) $("#s-del").onclick = () => { state.extraTables = state.extraTables.filter(x => x.n !== n); delete state.orders[n]; persist(); closeSheet(); renderSala(); toast(t("tableRemoved", n), true); };
 }
 function askNewTable() {
   const used = new Set(allTables().map(t => t.n));
   const cand = EXTRA_CANDIDATES.flatMap(([a, b, area]) => range(a, b).filter(n => !used.has(n)).map(n => ({ n, area })));
-  if (!cand.length) return toast("Nessun tavolo da aggiungere");
-  sheet(`<h2>Aggiungi tavolo</h2><p class="sub" id="s-area"></p>
+  if (!cand.length) return toast(t("noTables"));
+  sheet(`<h2>${t("addTable")}</h2><p class="sub" id="s-area"></p>
     <div class="wheel-wrap"><div class="wheel" id="w-tab"></div></div>
-    <div class="actions"><button class="btn" id="s-no">Annulla</button><button class="btn save" id="s-ok">Aggiungi</button></div>`);
+    <div class="actions"><button class="btn" id="s-no">${t("cancel")}</button><button class="btn save" id="s-ok">${t("add")}</button></div>`);
   const nums = cand.map(c => c.n);
   const get = wheel($("#w-tab"), nums, nums.find(n => n >= 60) ?? nums[0]);
   const area = () => cand.find(c => c.n === get()).area;
-  const upd = () => $("#s-area").textContent = area() === "dentro" ? "Va in: Dentro" : "Va in: Fuori";
+  const upd = () => $("#s-area").textContent = t("goesIn", t(area() === "dentro" ? "in" : "out"));
   $("#w-tab").addEventListener("scroll", upd, { passive: true }); requestAnimationFrame(upd);
   $("#s-no").onclick = closeSheet;
-  $("#s-ok").onclick = () => { const n = get(); state.extraTables.push({ n, area: area() }); persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} aggiunto`, true); };
+  $("#s-ok").onclick = () => { const n = get(); state.extraTables.push({ n, area: area() }); persist(); closeSheet(); renderSala(); toast(t("tableAdded", n), true); };
 }
 
 // ---------- ORDINE ----------
+function setTitles() {
+  const n = ui.table, h = `${t("T")} ${n}<small>${order(n).covers} ${t("cov")}</small>`;
+  $("#o-title").innerHTML = h; $("#l-title").innerHTML = h;
+}
 function openOrder(n) {
   ui.table = n; ui.cat = null;
-  $("#o-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
+  setTitles();
   renderOrder(); show("v-order");
 }
 function catsHtml() {
@@ -539,7 +629,7 @@ function catsHtml() {
   const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   return `<div class="cats">${g.categories.map((c, i) => {
     const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
-    return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
+    return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(catName(c.name))}${n ? `<span class="n">${n}</span>` : ""}</button>`;
   }).join("")}</div>`;
 }
 function renderOrder() {
@@ -547,19 +637,19 @@ function renderOrder() {
   const ls = lines(ui.table);
   const inCourse = k => ls.filter(l => l.course === k).reduce((s, l) => s + l.qty, 0);
   $("#courses").innerHTML = drinks
-    ? `<div class="drinkinfo"><b>Bevande</b>vanno in una sezione a parte</div>`
-    : COURSES.map(([k, l]) => { const c = inCourse(k); return `<button aria-pressed="${ui.course === k}" data-c="${k}">${l}${c ? `<em>${c}</em>` : ""}</button>`; }).join("");
-  $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${g.group}</button>`).join("");
+    ? `<div class="drinkinfo"><b>${t("bev")}</b>${t("drinksInfo")}</div>`
+    : COURSES.map(k => { const c = inCourse(k); return `<button aria-pressed="${ui.course === k}" data-c="${k}">${courseName(k)}${c ? `<em>${c}</em>` : ""}</button>`; }).join("");
+  $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${groupName(g.group)}</button>`).join("");
   const g = MENU.find(x => x.group === ui.group);
   const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   if (ui.cat === null) {
     $("#o-body").innerHTML = catsHtml();
   } else {
     const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
-    $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}Categorie</button><strong><i></i>${esc(c.name)}</strong></div>
+    $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}${t("categories")}</button><strong><i></i>${esc(catName(c.name))}</strong></div>
       <div class="items">${c.items.map((it, i) => {
         const q = qtyOf(it[0]);
-        return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-i="${i}"><span class="nm">${esc(it[0])}</span>
+        return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-i="${i}"><span class="nm">${esc(itemName(it[0]))}</span>
           <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
       }).join("")}</div>`;
   }
@@ -580,40 +670,49 @@ $("#o-body").onclick = e => {
   persist(); renderOrder();
   $(`#o-body [data-i="${it.dataset.i}"]`).classList.add("flash");
   bump($("#o-n"));
-  toast(`+1 ${name}${course === "bev" ? "" : " · " + COURSES.find(c => c[0] === course)[1]}`);
+  toast(`+1 ${itemName(name)}${course === "bev" ? "" : " · " + courseName(course)}`);
 };
 $("#o-back").onclick = $("#l-back").onclick = $("#c-back").onclick = goBack;
 $("#o-list").onclick = () => { renderList(); show("v-list"); };
 $("#o-save").onclick = $("#l-save").onclick = saveOrder;
 function leaveTable() { const o = order(ui.table); if (o && !o.lines.length) delete state.orders[ui.table]; persist(); renderSala(); }
+// Al salvataggio le righe uguali (stesso piatto, portata e variante) diventano una sola: 1 acqua + 1 acqua = 2 acque.
+function mergeLines(o) {
+  const out = [];
+  for (const l of o.lines) {
+    const m = out.find(x => x.name === l.name && x.course === l.course && (x.note || "") === (l.note || ""));
+    if (m) m.qty += l.qty; else out.push(l);
+  }
+  o.lines = out;
+}
 function saveOrder() {
   const o = order(ui.table);
-  if (!o.lines.length) return toast("Aggiungi almeno un piatto");
-  o.lines.forEach(l => l.saved = true); o.savedAt = Date.now();
-  persist(); renderSala(); show("v-sala", true); toast(`Comanda tavolo ${ui.table} salvata`, true);
+  if (!o.lines.length) return toast(t("addOne"));
+  o.lines.forEach(l => l.saved = true); mergeLines(o); o.savedAt = Date.now();
+  persist(); renderSala(); show("v-sala", true); toast(t("saved", ui.table), true);
 }
 
 // ---------- LISTA ----------
-const SECTIONS = [...COURSES, ["bev", "Bevande"]];
+const SECTIONS = [...COURSES, "bev"];
 function linesHtml(n, editable) {
   const ls = lines(n);
-  if (!ls.length) return `<p class="empty">${ICON.plate}Ancora niente in questa comanda.<br>Torna al menu e tocca un piatto per aggiungerlo.</p>`;
+  if (!ls.length) return `<p class="empty">${ICON.plate}${t("emptyOrder")}</p>`;
   let total = 0;
-  const html = SECTIONS.map(([k, label]) => {
+  const html = SECTIONS.map(k => {
     const g = ls.filter(l => l.course === k); if (!g.length) return "";
-    return `<div class="lgroup"><h3>${label}<small>${g.reduce((s, l) => s + l.qty, 0)} pz.</small></h3>${g.map(l => {
+    return `<div class="lgroup"><h3>${courseName(k)}<small>${g.reduce((s, l) => s + l.qty, 0)} ${t("pcs")}</small></h3>${g.map(l => {
       if (l.price) total += l.price * l.qty;
       return `<div class="line" ${editable ? `data-l="${l.id}"` : ""}><span class="qty">${l.qty}</span>
-        <span class="txt"><b>${esc(l.name)}${!l.saved ? '<span class="chip">NUOVO</span>' : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
+        <span class="txt"><b>${esc(itemName(l.name))}${!l.saved ? `<span class="chip">${t("NEW")}</span>` : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
         <span class="amt">${l.price == null ? eur(l.price) : eur(l.price * l.qty)}</span></div>`;
     }).join("")}</div>`;
   }).join("");
-  return html + `<div class="total"><span>Totale</span><span>${eur(total)}</span></div>`;
+  return html + (total ? `<div class="total"><span>${t("total")}</span><span>${eur(total)}</span></div>` : "");
 }
 function renderList() {
   const n = ui.table;
-  $("#l-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
-  $("#l-body").innerHTML = (lines(n).length ? `<p class="hint">${ICON.hold}Tieni premuto una riga per varianti e quantità.</p>` : "") + linesHtml(n, true);
+  setTitles();
+  $("#l-body").innerHTML = (lines(n).length ? `<p class="hint">${ICON.hold}${t("hold")}</p>` : "") + linesHtml(n, true);
 }
 
 // pressione lunga sulle righe
@@ -629,12 +728,23 @@ const cancelLp = e => { if (!lp) return; if (e.type === "pointermove" && Math.hy
 $("#l-body").addEventListener("contextmenu", e => e.preventDefault());
 
 // Varianti rapide in base al piatto: gusti per il gelato, cotture per la carne, ecc.
-const QUICK = {
-  gelato: ["Cioccolato", "Cocco", "Pistacchio", "Fragola", "Limone", "Vaniglia"],
-  carne: ["Blu", "Al sangue", "Media cottura", "Cotta", "Ben cotta"],
-  cocktail: ["Senza alcool", "Con ghiaccio", "Senza ghiaccio"],
-  pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
-  base: ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Senza cipolla", "Da dividere"],
+const QUICKS = {
+  it: {
+    gelato: ["Cioccolato", "Cocco", "Pistacchio", "Fragola", "Limone", "Vaniglia"],
+    carne: ["Blu", "Al sangue", "Media cottura", "Cotta", "Ben cotta"],
+    cocktail: ["Senza alcool", "Con ghiaccio", "Senza ghiaccio"],
+    pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
+    base: ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Senza cipolla", "Da dividere"],
+    bday: "Compleanno",
+  },
+  es: {
+    gelato: ["Chocolate", "Coco", "Pistacho", "Fresa", "Limón", "Vainilla"],
+    carne: ["Azul", "Poco hecho", "Al punto", "Hecho", "Muy hecho"],
+    cocktail: ["Sin alcohol", "Con hielo", "Sin hielo"],
+    pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
+    base: ["Sin gluten", "Sin lactosa", "Alergia frutos secos", "Sin cebolla", "Para compartir"],
+    bday: "Cumpleaños",
+  },
 };
 const MEAT = ["Filetto alla Rossini", "La tagliata · Entrecot 500g"];
 const COCKTAIL_CATS = ["Signature", "Aperitivos", "Clásicos", "Sangría", "Long drinks"];
@@ -643,9 +753,9 @@ function catOf(name) {
   return "";
 }
 function quickFor(l) {
-  const cat = l.cat || catOf(l.name);
-  if (/^Gelato/.test(l.name)) return [...QUICK.gelato, "Compleanno"];
-  if (cat === "Dolci") return ["Compleanno", ...QUICK.base];
+  const cat = l.cat || catOf(l.name), QUICK = QUICKS[lang];
+  if (/^Gelato/.test(l.name)) return [...QUICK.gelato, QUICK.bday];
+  if (cat === "Dolci") return [QUICK.bday, ...QUICK.base];
   if (MEAT.includes(l.name)) return QUICK.carne;
   if (cat === "Pasta") return QUICK.pasta;
   if (COCKTAIL_CATS.includes(cat)) return QUICK.cocktail;
@@ -655,13 +765,13 @@ function editLine(id) {
   const o = order(ui.table), l = o.lines.find(x => x.id === id); if (!l) return;
   let qty = l.qty, course = l.course;
   const quick = quickFor(l);
-  sheet(`<h2>${esc(l.name)}</h2>
-    <div class="stepper"><button class="btn" id="e-m" aria-label="Meno">−</button><output id="e-q">${qty}</output><button class="btn" id="e-p" aria-label="Più">+</button></div>
-    ${course !== "bev" ? `<div class="seg" id="e-c">${COURSES.map(([k, lb]) => `<button aria-pressed="${k === course}" data-c="${k}">${lb}</button>`).join("")}</div>` : ""}
-    <label for="e-note" class="hint" style="margin:0">Variante</label>
-    <textarea id="e-note" placeholder="Es. senza cipolla, cottura media…">${esc(l.note)}</textarea>
+  sheet(`<h2>${esc(itemName(l.name))}</h2>
+    <div class="stepper"><button class="btn" id="e-m" aria-label="${t("less")}">−</button><output id="e-q">${qty}</output><button class="btn" id="e-p" aria-label="${t("more")}">+</button></div>
+    ${course !== "bev" ? `<div class="seg" id="e-c">${COURSES.map(k => `<button aria-pressed="${k === course}" data-c="${k}">${courseName(k)}</button>`).join("")}</div>` : ""}
+    <label for="e-note" class="hint" style="margin:0">${t("variant")}</label>
+    <textarea id="e-note" placeholder="${t("notePh")}">${esc(l.note)}</textarea>
     <div class="quick">${quick.map(q => `<button data-q="${q}">${q}</button>`).join("")}</div>
-    <div class="actions"><button class="btn danger" id="e-del">Elimina</button><button class="btn save" id="e-ok">Fatto</button></div>`);
+    <div class="actions"><button class="btn danger" id="e-del">${t("del")}</button><button class="btn save" id="e-ok">${t("done")}</button></div>`);
   $("#e-m").onclick = () => { qty = Math.max(1, qty - 1); $("#e-q").textContent = qty; };
   $("#e-p").onclick = () => { qty++; $("#e-q").textContent = qty; };
   if ($("#e-c")) $("#e-c").onclick = e => { const b = e.target.closest("[data-c]"); if (!b) return; course = b.dataset.c;
@@ -669,8 +779,8 @@ function editLine(id) {
   document.querySelector(".quick").onclick = e => { const b = e.target.closest("[data-q]"); if (!b) return;
     const ta = $("#e-note"); ta.value = ta.value.trim() ? ta.value.trim() + ", " + b.dataset.q.toLowerCase() : b.dataset.q; };
   let armed = false;
-  $("#e-del").onclick = e => { if (!armed) { armed = true; e.currentTarget.classList.add("armed"); e.currentTarget.textContent = "Conferma"; return; }
-    o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); toast(`${l.name} eliminato`); };
+  $("#e-del").onclick = e => { if (!armed) { armed = true; e.currentTarget.classList.add("armed"); e.currentTarget.textContent = t("confirm"); return; }
+    o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); toast(t("deleted", itemName(l.name))); };
   $("#e-ok").onclick = () => {
     const note = $("#e-note").value.trim();
     if (qty !== l.qty || course !== l.course || note !== l.note) { l.qty = qty; l.course = course; l.note = note; l.saved = false; }
@@ -681,21 +791,21 @@ function editLine(id) {
 // ---------- COMANDE ----------
 function renderComande() {
   const ns = Object.keys(state.orders).map(Number).filter(isBusy).sort((a, b) => a - b);
-  if (!ns.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.plate}Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.</p>`; return; }
+  if (!ns.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.plate}${t("noOrders")}</p>`; return; }
   $("#c-body").innerHTML = ns.map(n => {
-    const o = order(n), t = allTables().find(x => x.n === n);
-    const time = o.savedAt ? new Date(o.savedAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
-    return `<article class="card"><header><strong>T ${n}</strong><span>${t ? (t.area === "dentro" ? "Dentro" : "Fuori") : ""} · ${o.covers} coperti${time ? " · salvata " + time : ""}</span></header>
-      ${unsaved(n) ? '<span class="warn">Ci sono righe non ancora salvate.</span>' : ""}
+    const o = order(n), tb = allTables().find(x => x.n === n);
+    const time = o.savedAt ? new Date(o.savedAt).toLocaleTimeString(lang === "es" ? "es-ES" : "it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
+    return `<article class="card"><header><strong>${t("T")} ${n}</strong><span>${tb ? t(tb.area === "dentro" ? "in" : "out") : ""} · ${t("coversN", o.covers)}${time ? " · " + t("savedAt", time) : ""}</span></header>
+      ${unsaved(n) ? `<span class="warn">${t("unsavedWarn")}</span>` : ""}
       ${linesHtml(n, false)}
-      <div class="row"><button class="btn" data-open="${n}">Apri</button><button class="btn danger" data-free="${n}">Libera tavolo</button></div></article>`;
+      <div class="row"><button class="btn" data-open="${n}">${t("open")}</button><button class="btn danger" data-free="${n}">${t("freeTable")}</button></div></article>`;
   }).join("");
 }
 $("#c-body").onclick = e => {
   const op = e.target.closest("[data-open]"); if (op) return openOrder(+op.dataset.open);
   const fr = e.target.closest("[data-free]"); if (!fr) return;
-  if (!fr.classList.contains("armed")) { fr.classList.add("armed"); fr.textContent = "Conferma: libera"; return; }
-  const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(`Tavolo ${n} liberato`, true);
+  if (!fr.classList.contains("armed")) { fr.classList.add("armed"); fr.textContent = t("confirmFree"); return; }
+  const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(t("freed", n), true);
 };
 
 function rerender() {
@@ -705,7 +815,7 @@ function rerender() {
   else if (current === "v-comande") renderComande();
   else show("v-sala", true);
 }
-renderSala();
+applyLang();
 </script>
 
 </body>
