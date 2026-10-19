@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Handy+">
+<meta name="theme-color" content="#26282c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Handy+</title>
+<meta name="apple-mobile-web-app-title" content="Handy+">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen POS app. Fixed top bar, scrolling body, bottom sheets for pickers. Dark matte, like the restaurant handheld. */
+:root {
+  --bg: #26282c;        /* grigio scuro opaco */
+  --surface: #2f3236;
+  --surface-2: #3a3d42;
+  --line: #474b51;
+  --fg: #eceef0;
+  --muted: #9ba1a9;
+  --free: #4a4e55;      /* tavolo libero */
+  --busy: #cf3f3f;      /* tavolo occupato */
+  --save: #2f9e5e;
+  --new: #e0a53a;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+html { height: 100%; box-sizing: border-box; }
+body { height: 100%; position: relative; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent; overflow: hidden;
+}
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; touch-action: manipulation; }
+button:focus-visible, textarea:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+.view { position: absolute; inset: 0; display: flex; flex-direction: column;
+}
+.bar { display: flex; align-items: center; gap: 8px; min-height: 56px;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px));
+  background: var(--surface); border-bottom: 1px solid var(--line); flex: none; }
+.bar h1 { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 0; flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: .02em; }
+.bar h1 small { font-family: var(--body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 6px; letter-spacing: 0; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .04em; text-transform: uppercase;
+  padding: 0 14px; height: 42px; border-radius: 8px; background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.btn.save { background: var(--save); }
+.btn.icon { width: 42px; padding: 0; justify-content: center; font-size: 26px; }
+.btn .count { background: var(--bg); border-radius: 10px; padding: 0 7px; font-size: 15px; min-width: 22px; text-align: center; }
+.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px 90px; }
+
+/* SALA */
+.area { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.area h2 { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.tables { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px; }
+.tbl { aspect-ratio: 1; max-width: 100%; border-radius: 8px; background: var(--free); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: var(--display); font-weight: 700; font-size: 24px; position: relative; font-variant-numeric: tabular-nums; }
+.tbl.busy { background: var(--busy); }
+.tbl .cov { font-family: var(--body); font-size: 11px; font-weight: 600; opacity: .85; line-height: 1; }
+.tbl .dot { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--new); }
+.tbl.extra { outline: 1px dashed var(--line); outline-offset: -1px; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+.sync { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+/* ORDINE */
+.courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); flex: none; }
+.courses button { height: 44px; border-radius: 8px; background: var(--surface-2); font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .03em; text-transform: uppercase; }
+.courses button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.groups { display: flex; gap: 6px; overflow-x: auto; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); border-bottom: 1px solid var(--line); flex: none; }
+.groups button { height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; letter-spacing: .06em; flex: none; }
+.groups button[aria-pressed="true"] { background: var(--surface-2); border-color: var(--muted); }
+.cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cat { aspect-ratio: 1; max-width: 100%; border-radius: 8px; padding: 8px; display: flex; align-items: flex-end; text-align: left;
+  font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.05; color: #fff; text-transform: uppercase; letter-spacing: .02em; position: relative; }
+.cat .n { position: absolute; top: 7px; right: 8px; font-family: var(--body); font-size: 12px; font-weight: 600; background: rgba(0,0,0,.28); border-radius: 9px; padding: 1px 7px; }
+.crumb { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.crumb .btn { height: 36px; font-size: 16px; }
+.crumb strong { font-family: var(--display); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+.items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.item { min-height: 76px; border-radius: 8px; padding: 9px 10px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  background: var(--surface-2); border-left: 6px solid var(--c, var(--line)); position: relative; transition: transform .08s; }
+.item:active { transform: scale(.97); }
+.item .nm { font-weight: 600; font-size: 15px; line-height: 1.2; padding-right: 26px; }
+.item .pr { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.item .q { position: absolute; top: 7px; right: 7px; min-width: 24px; height: 24px; border-radius: 12px; background: var(--fg); color: var(--bg);
+  font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+.item.flash { animation: flash .35s; }
+@keyframes flash { from { background: var(--c); } }
+
+/* LISTA */
+.lgroup { margin-bottom: 18px; }
+.lgroup h3 { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.line { display: grid; grid-template-columns: 38px 1fr auto; gap: 10px; align-items: start; padding: 10px 4px; border-bottom: 1px solid var(--surface-2); border-radius: 6px; }
+.line.pressing { background: var(--surface-2); }
+.line .qty { font-family: var(--display); font-weight: 700; font-size: 24px; text-align: center; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.line .txt { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.line .txt b { font-weight: 600; font-size: 16px; }
+.line .note { color: var(--new); font-style: italic; font-size: 14px; overflow-wrap: anywhere; }
+.line .amt { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; padding-top: 2px; }
+.chip { display: inline-block; font-family: var(--body); font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--bg); background: var(--new); border-radius: 4px; padding: 1px 5px; vertical-align: 2px; margin-left: 6px; }
+.empty { color: var(--muted); text-align: center; padding: 40px 10px; line-height: 1.5; }
+.total { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px 4px; font-family: var(--display); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hint { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+
+/* COMANDE SALVATE */
+.card { background: var(--surface); border-radius: 10px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+.card header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.card header strong { font-family: var(--display); font-size: 26px; font-weight: 700; }
+.card header span { color: var(--muted); font-size: 14px; }
+.card .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.card .warn { color: var(--new); font-size: 14px; }
+.btn.danger { background: transparent; border: 1px solid var(--busy); color: #ff9c9c; }
+.btn.danger.armed { background: var(--busy); color: #fff; }
+
+/* SHEET */
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 20; }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; background: var(--surface); border-radius: 16px 16px 0 0;
+  padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: flex; flex-direction: column; gap: 14px; max-height: 90%; overflow-y: auto; animation: up .2s ease-out; }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } }
+.sheet h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 24px; text-align: center; letter-spacing: .02em; }
+.sheet .sub { margin: -10px 0 0; text-align: center; color: var(--muted); font-size: 14px; }
+.sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sheet .actions .btn { height: 50px; justify-content: center; }
+.link { color: #ff9c9c; font-size: 14px; text-align: center; padding: 6px; }
+.wheel { position: relative; height: 220px; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); scrollbar-width: none; }
+.wheel::-webkit-scrollbar { display: none; }
+.wheel-wrap { position: relative; }
+.wheel-wrap::before { content: ""; position: absolute; left: 20%; right: 20%; top: 88px; height: 44px; border-radius: 8px; background: var(--surface-2); pointer-events: none; }
+.wheel .pad { height: 88px; }
+.wheel .wi { height: 44px; display: flex; align-items: center; justify-content: center; scroll-snap-align: center; position: relative;
+  font-family: var(--display); font-weight: 600; font-size: 24px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.wheel .wi.sel { color: var(--fg); font-size: 30px; font-weight: 700; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.seg button { height: 40px; border-radius: 8px; background: var(--surface-2); font-weight: 600; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.stepper { display: flex; align-items: center; justify-content: center; gap: 22px; }
+.stepper .btn { width: 54px; height: 54px; font-size: 30px; justify-content: center; padding: 0; }
+.stepper output { font-family: var(--display); font-size: 40px; font-weight: 700; min-width: 50px; text-align: center; font-variant-numeric: tabular-nums; }
+textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertical; border-radius: 8px; border: 1px solid var(--line); background: var(--bg);
+  color: var(--fg); font: 17px/1.4 var(--body); padding: 10px; -webkit-user-select: text; user-select: text; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.quick button { height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid var(--line); font-size: 14px; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  background: var(--fg); color: var(--bg); font-weight: 600; font-size: 15px; padding: 10px 16px; border-radius: 22px; max-width: calc(100% - 32px);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<!-- SALA -->
+<section class="view" id="v-sala">
+  <div class="bar">
+    <h1>Sala</h1>
+    <button class="btn" id="b-comande">Comande <span class="count" id="n-comande">0</span></button>
+    <button class="btn icon" id="b-add" aria-label="Aggiungi tavolo">+</button>
+  </div>
+  <div class="scroll">
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span class="sync" id="sync">Salvato solo su questo telefono</span></div>
+    <div class="area"><h2>Dentro</h2><div class="tables" id="t-dentro"></div></div>
+    <div class="area"><h2>Fuori</h2><div class="tables" id="t-fuori"></div></div>
+  </div>
+</section>
+
+<!-- ORDINE -->
+<section class="view" id="v-order" hidden>
+  <div class="bar">
+    <button class="btn icon" id="o-back" aria-label="Torna alla sala">‹</button>
+    <h1 id="o-title">T</h1>
+    <button class="btn" id="o-list">Lista <span class="count" id="o-n">0</span></button>
+    <button class="btn save" id="o-save">Salva</button>
+  </div>
+  <div class="courses" id="courses"></div>
+  <div class="groups" id="groups"></div>
+  <div class="scroll" id="o-body"></div>
+</section>
+
+<!-- LISTA -->
+<section class="view" id="v-list" hidden>
+  <div class="bar">
+    <button class="btn icon" id="l-back" aria-label="Torna al menu">‹</button>
+    <h1 id="l-title">Lista</h1>
+    <button class="btn save" id="l-save">Salva</button>
+  </div>
+  <div class="scroll" id="l-body"></div>
+</section>
+
+<!-- COMANDE SALVATE -->
+<section class="view" id="v-comande" hidden>
+  <div class="bar">
+    <button class="btn icon" id="c-back" aria-label="Torna alla sala">‹</button>
+    <h1>Comande</h1>
+  </div>
+  <div class="scroll" id="c-body"></div>
+</section>
+
+<div id="layer"></div>
+
+<script src="menu.js" charset="utf-8"></script>
+<script>
+const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
+const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
+const CAT_COLORS = {
+  "Snacks": "#8a6d2f", "Sapore di mare": "#2e6f8e", "Caviar": "#3c3f58", "Festival di mare": "#23707a",
+  "Antipasti": "#9a5b2c", "Pasta": "#b0832a", "Insalate": "#4e8a3c", "Secondi": "#2f5f9a", "Josper": "#a2452c",
+  "Pizze": "#b3412f", "Dolci": "#a5527a",
+  "Acqua e bibite": "#3a8fb7", "Signature": "#2f78a8", "Mocktails": "#5f8a3a", "Aperitivos": "#c0602c", "Clásicos": "#7a4fa0", "Sangría": "#a33b55", "Caffè": "#6b4a32", "Tè e infusi": "#5f7a4a",
+  "Long drinks": "#456a8c", "Licores": "#8b5a2b", "Whisky": "#9a6a1f", "Cognac / Ron": "#7a3e24", "Gin": "#3f7f78", "Vodka / Tequila": "#5a5f9e",
+  "Copa": "#8c3a4f", "Champagne": "#a88a3a", "Bianchi IT": "#9b9548", "Bianchi ES": "#86844a", "Bianchi mondo": "#6f7a45",
+  "Rossi IT": "#7d2433", "Rossi ES": "#6a2a3e", "Rossi mondo": "#5c2a4a", "Rosati": "#b05a6e", "Sin alcohol": "#4d7a6a",
+  "Bottiglie": "#4a4f5c", "Champagne VIP": "#9a7d2c", "Shows & packs": "#6d4a8c",
+};
+const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
+const KEY = "taccuino-comande-v1";
+
+// ---------- stato ----------
+let state = { extraTables: [], orders: {}, updatedAt: 0 };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.orders) state = s; } catch (e) {}
+let ui = { table: null, course: "ant", group: "CUCINA", cat: null };
+let remote = null, saveTimer = null;
+
+function persist() {
+  state.updatedAt = Date.now();
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  if (remote) { clearTimeout(saveTimer); saveTimer = setTimeout(() => remote.set({ json: JSON.stringify(state) }).catch(() => {}), 500); }
+}
+(async () => {
+  try {
+    const [db, user] = await Promise.all([window.claude?.use?.("db"), window.claude?.use?.("user")]);
+    if (!db || !user) return;
+    const id = await user.id();
+    if (!id) return;
+    const ref = db.collection("data/users/" + id).doc("state");
+    const snap = await ref.get();
+    const data = snap.exists ? snap.data() : null;
+    if (data && data.json) {
+      const s = JSON.parse(data.json);
+      if (s.updatedAt > (state.updatedAt || 0)) { state = s; try { localStorage.setItem(KEY, data.json); } catch (e) {} rerender(); }
+    }
+    remote = ref;
+    $("#sync").textContent = "Salvato nel tuo account";
+    if (!data || state.updatedAt > JSON.parse(data.json || "{}").updatedAt) persist();
+  } catch (e) {}
+})();
+
+// ---------- utilità ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const eur = n => n === undefined ? "" : n === null ? "s/m" : n.toLocaleString("it-IT", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + " €";
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+const uid = () => Math.random().toString(36).slice(2, 9);
+function show(id) { document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== id); }
+let toastT;
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+  t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 1600);
+}
+function allTables() {
+  const base = [...range(1, 29).map(n => ({ n, area: "dentro" })), ...range(30, 50).map(n => ({ n, area: "fuori" }))];
+  return [...base, ...state.extraTables.map(t => ({ ...t, extra: true }))].sort((a, b) => a.n - b.n);
+}
+const order = n => state.orders[n];
+const lines = n => order(n)?.lines || [];
+const unsaved = n => lines(n).some(l => !l.saved);
+
+// ---------- SALA ----------
+function renderSala() {
+  for (const area of ["dentro", "fuori"]) {
+    $("#t-" + area).innerHTML = allTables().filter(t => t.area === area).map(t => {
+      const o = order(t.n), busy = o && o.lines.length;
+      return `<button class="tbl ${busy ? "busy" : ""} ${t.extra ? "extra" : ""}" data-t="${t.n}" aria-label="Tavolo ${t.n}${busy ? ", occupato" : ""}">
+        ${t.n}${busy ? `<span class="cov">${o.covers} cop.</span>` : ""}${busy && unsaved(t.n) ? '<span class="dot"></span>' : ""}</button>`;
+    }).join("");
+  }
+  $("#n-comande").textContent = Object.values(state.orders).filter(o => o.lines.length).length;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest(".tbl"); if (!b) return;
+  const n = +b.dataset.t;
+  if (order(n) && order(n).lines.length) openOrder(n); else askCovers(n);
+});
+$("#b-add").onclick = askNewTable;
+$("#b-comande").onclick = () => { renderComande(); show("v-comande"); };
+
+// ---------- sheet + ruota ----------
+function sheet(html) {
+  $("#layer").innerHTML = `<div class="scrim"></div><div class="sheet" role="dialog" aria-modal="true">${html}</div>`;
+  $("#layer .scrim").onclick = closeSheet;
+  return $("#layer .sheet");
+}
+function closeSheet() { $("#layer").innerHTML = ""; }
+function wheel(el, values, initial) {
+  const H = 44;
+  el.innerHTML = `<div class="pad"></div>${values.map(v => `<div class="wi">${v}</div>`).join("")}<div class="pad"></div>`;
+  const items = [...el.querySelectorAll(".wi")];
+  const idx = () => Math.max(0, Math.min(values.length - 1, Math.round(el.scrollTop / H)));
+  const mark = () => { const i = idx(); items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
+  el.addEventListener("scroll", mark, { passive: true });
+  items.forEach((it, j) => it.onclick = () => el.scrollTo({ top: j * H, behavior: "smooth" }));
+  requestAnimationFrame(() => { el.scrollTop = Math.max(0, values.indexOf(initial)) * H; mark(); });
+  return () => values[idx()];
+}
+
+function askCovers(n) {
+  const t = allTables().find(x => x.n === n);
+  const s = sheet(`<h2>Tavolo ${n}</h2><p class="sub">Quanti coperti?</p>
+    <div class="wheel-wrap"><div class="wheel" id="w-cov"></div></div>
+    <div class="actions"><button class="btn" id="s-no">Annulla</button><button class="btn save" id="s-ok">Apri tavolo</button></div>
+    ${t?.extra ? '<button class="link" id="s-del">Rimuovi tavolo dalla sala</button>' : ""}`);
+  const get = wheel($("#w-cov"), range(1, 30), 2);
+  $("#s-no").onclick = closeSheet;
+  $("#s-ok").onclick = () => { state.orders[n] = { covers: get(), lines: [], savedAt: null }; closeSheet(); openOrder(n); };
+  if (t?.extra) $("#s-del").onclick = () => { state.extraTables = state.extraTables.filter(x => x.n !== n); delete state.orders[n]; persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} rimosso`); };
+}
+function askNewTable() {
+  const used = new Set(allTables().map(t => t.n));
+  const cand = EXTRA_CANDIDATES.flatMap(([a, b, area]) => range(a, b).filter(n => !used.has(n)).map(n => ({ n, area })));
+  if (!cand.length) return toast("Nessun tavolo da aggiungere");
+  sheet(`<h2>Aggiungi tavolo</h2><p class="sub" id="s-area"></p>
+    <div class="wheel-wrap"><div class="wheel" id="w-tab"></div></div>
+    <div class="actions"><button class="btn" id="s-no">Annulla</button><button class="btn save" id="s-ok">Aggiungi</button></div>`);
+  const nums = cand.map(c => c.n);
+  const get = wheel($("#w-tab"), nums, nums.find(n => n >= 60) ?? nums[0]);
+  const area = () => cand.find(c => c.n === get()).area;
+  const upd = () => $("#s-area").textContent = area() === "dentro" ? "Va in: Dentro" : "Va in: Fuori";
+  $("#w-tab").addEventListener("scroll", upd, { passive: true }); requestAnimationFrame(upd);
+  $("#s-no").onclick = closeSheet;
+  $("#s-ok").onclick = () => { const n = get(); state.extraTables.push({ n, area: area() }); persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} aggiunto`); };
+}
+
+// ---------- ORDINE ----------
+function openOrder(n) {
+  ui.table = n; ui.cat = null;
+  $("#o-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
+  renderOrder(); show("v-order");
+}
+function countBadge() { const c = lines(ui.table).reduce((s, l) => s + l.qty, 0); $("#o-n").textContent = c; }
+function renderOrder() {
+  const drinks = DRINK_GROUPS.includes(ui.group);
+  $("#courses").innerHTML = COURSES.map(([k, l]) => `<button aria-pressed="${ui.course === k}" data-c="${k}" ${drinks ? 'style="opacity:.45"' : ""}>${l}</button>`).join("");
+  $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${g.group}</button>`).join("");
+  const g = MENU.find(x => x.group === ui.group);
+  const qtyOf = name => lines(ui.table).filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
+  if (ui.cat === null) {
+    $("#o-body").innerHTML = (drinks ? '<p class="hint">Le bevande vanno in una sezione a parte, senza portata.</p>' : "") +
+      `<div class="cats">${g.categories.map((c, i) => {
+        const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
+        return `<button class="cat" style="background:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
+      }).join("")}</div>`;
+  } else {
+    const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
+    $("#o-body").innerHTML = `<div class="crumb"><button class="btn" id="b-cats">‹ Categorie</button><strong>${esc(c.name)}</strong></div>
+      <div class="items">${c.items.map((it, i) => {
+        const q = qtyOf(it[0]);
+        return `<button class="item" style="--c:${col}" data-i="${i}"><span class="nm">${esc(it[0])}</span>
+          <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
+      }).join("")}</div>`;
+  }
+  countBadge();
+}
+$("#courses").onclick = e => { const b = e.target.closest("[data-c]"); if (b) { ui.course = b.dataset.c; renderOrder(); } };
+$("#groups").onclick = e => { const b = e.target.closest("[data-g]"); if (b) { ui.group = b.dataset.g; ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; } };
+$("#o-body").onclick = e => {
+  if (e.target.closest("#b-cats")) { ui.cat = null; return renderOrder(); }
+  const c = e.target.closest("[data-cat]"); if (c) { ui.cat = +c.dataset.cat; renderOrder(); $("#o-body").scrollTop = 0; return; }
+  const it = e.target.closest("[data-i]"); if (!it) return;
+  const cat = MENU.find(x => x.group === ui.group).categories[ui.cat];
+  const [name, price, info] = cat.items[+it.dataset.i];
+  const course = DRINK_GROUPS.includes(ui.group) ? "bev" : ui.course;
+  const ls = order(ui.table).lines;
+  const same = ls.find(l => !l.saved && !l.note && l.name === name && l.course === course);
+  if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", course, qty: 1, note: "", saved: false });
+  persist(); renderOrder();
+  const el = $(`#o-body [data-i="${it.dataset.i}"]`); el.classList.add("flash");
+  toast(`+1 ${name}${course === "bev" ? "" : " · " + COURSES.find(c => c[0] === course)[1]}`);
+};
+$("#o-back").onclick = () => { leaveTable(); show("v-sala"); };
+$("#o-list").onclick = () => { renderList(); show("v-list"); };
+$("#o-save").onclick = $("#l-save").onclick = saveOrder;
+function leaveTable() { const o = order(ui.table); if (o && !o.lines.length) delete state.orders[ui.table]; persist(); renderSala(); }
+function saveOrder() {
+  const o = order(ui.table);
+  if (!o.lines.length) return toast("Aggiungi almeno un piatto");
+  o.lines.forEach(l => l.saved = true); o.savedAt = Date.now();
+  persist(); renderSala(); show("v-sala"); toast(`Comanda tavolo ${ui.table} salvata`);
+}
+
+// ---------- LISTA ----------
+const SECTIONS = [...COURSES, ["bev", "Bevande"]];
+function linesHtml(n, editable) {
+  const ls = lines(n);
+  if (!ls.length) return `<p class="empty">Ancora niente in questa comanda.<br>Torna al menu e tocca un piatto per aggiungerlo.</p>`;
+  let total = 0;
+  const html = SECTIONS.map(([k, label]) => {
+    const g = ls.filter(l => l.course === k); if (!g.length) return "";
+    return `<div class="lgroup"><h3>${label}</h3>${g.map(l => {
+      if (l.price) total += l.price * l.qty;
+      return `<div class="line" ${editable ? `data-l="${l.id}"` : ""}><span class="qty">${l.qty}</span>
+        <span class="txt"><b>${esc(l.name)}${!l.saved ? '<span class="chip">NUOVO</span>' : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
+        <span class="amt">${l.price == null ? eur(l.price) : eur(l.price * l.qty)}</span></div>`;
+    }).join("")}</div>`;
+  }).join("");
+  return html + `<div class="total"><span>Totale</span><span>${eur(total)}</span></div>`;
+}
+function renderList() {
+  const n = ui.table;
+  $("#l-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
+  $("#l-body").innerHTML = (lines(n).length ? '<p class="hint">Tieni premuto una riga per scrivere una variante o cambiare la quantità.</p>' : "") + linesHtml(n, true);
+}
+$("#l-back").onclick = () => { renderOrder(); show("v-order"); };
+
+// pressione lunga sulle righe
+let lp = null;
+$("#l-body").addEventListener("pointerdown", e => {
+  const row = e.target.closest("[data-l]"); if (!row) return;
+  row.classList.add("pressing");
+  lp = { row, x: e.clientX, y: e.clientY, t: setTimeout(() => { row.classList.remove("pressing"); lp = null; editLine(row.dataset.l); }, 450) };
+});
+const cancelLp = e => { if (!lp) return; if (e.type === "pointermove" && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) < 10) return;
+  clearTimeout(lp.t); lp.row.classList.remove("pressing"); lp = null; };
+["pointerup", "pointercancel", "pointermove", "pointerleave"].forEach(ev => $("#l-body").addEventListener(ev, cancelLp));
+$("#l-body").addEventListener("contextmenu", e => e.preventDefault());
+
+function editLine(id) {
+  const o = order(ui.table), l = o.lines.find(x => x.id === id); if (!l) return;
+  let qty = l.qty, course = l.course;
+  const quick = ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Al sangue", "Media cottura", "Ben cotta", "Senza cipolla", "Da dividere"];
+  sheet(`<h2>${esc(l.name)}</h2>
+    <div class="stepper"><button class="btn" id="e-m" aria-label="Meno">−</button><output id="e-q">${qty}</output><button class="btn" id="e-p" aria-label="Più">+</button></div>
+    ${course !== "bev" ? `<div class="seg" id="e-c">${COURSES.map(([k, lb]) => `<button aria-pressed="${k === course}" data-c="${k}">${lb}</button>`).join("")}</div>` : ""}
+    <label for="e-note" class="hint" style="margin:0">Variante</label>
+    <textarea id="e-note" placeholder="Es. senza cipolla, cottura media…">${esc(l.note)}</textarea>
+    <div class="quick">${quick.map(q => `<button data-q="${q}">${q}</button>`).join("")}</div>
+    <div class="actions"><button class="btn danger" id="e-del">Elimina</button><button class="btn save" id="e-ok">Fatto</button></div>`);
+  $("#e-m").onclick = () => { qty = Math.max(1, qty - 1); $("#e-q").textContent = qty; };
+  $("#e-p").onclick = () => { qty++; $("#e-q").textContent = qty; };
+  if ($("#e-c")) $("#e-c").onclick = e => { const b = e.target.closest("[data-c]"); if (!b) return; course = b.dataset.c;
+    $("#e-c").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); };
+  document.querySelector(".quick").onclick = e => { const b = e.target.closest("[data-q]"); if (!b) return;
+    const ta = $("#e-note"); ta.value = ta.value.trim() ? ta.value.trim() + ", " + b.dataset.q.toLowerCase() : b.dataset.q; };
+  let armed = false;
+  $("#e-del").onclick = e => { if (!armed) { armed = true; e.currentTarget.classList.add("armed"); e.currentTarget.textContent = "Conferma"; return; }
+    o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); };
+  $("#e-ok").onclick = () => {
+    const note = $("#e-note").value.trim();
+    if (qty !== l.qty || course !== l.course || note !== l.note) { l.qty = qty; l.course = course; l.note = note; l.saved = false; }
+    persist(); closeSheet(); renderList();
+  };
+}
+
+// ---------- COMANDE ----------
+function renderComande() {
+  const ns = Object.keys(state.orders).map(Number).filter(n => lines(n).length).sort((a, b) => a - b);
+  if (!ns.length) { $("#c-body").innerHTML = '<p class="empty">Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.</p>'; return; }
+  $("#c-body").innerHTML = ns.map(n => {
+    const o = order(n), t = allTables().find(x => x.n === n);
+    const time = o.savedAt ? new Date(o.savedAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
+    return `<article class="card"><header><strong>T ${n}</strong><span>${t ? (t.area === "dentro" ? "Dentro" : "Fuori") : ""} · ${o.covers} coperti${time ? " · salvata " + time : ""}</span></header>
+      ${unsaved(n) ? '<span class="warn">Ci sono righe non ancora salvate.</span>' : ""}
+      ${linesHtml(n, false)}
+      <div class="row"><button class="btn" data-open="${n}">Apri</button><button class="btn danger" data-free="${n}">Libera tavolo</button></div></article>`;
+  }).join("");
+}
+$("#c-body").onclick = e => {
+  const op = e.target.closest("[data-open]"); if (op) return openOrder(+op.dataset.open);
+  const fr = e.target.closest("[data-free]"); if (!fr) return;
+  if (!fr.classList.contains("armed")) { fr.classList.add("armed"); fr.textContent = "Conferma: libera"; return; }
+  const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(`Tavolo ${n} liberato`);
+};
+$("#c-back").onclick = () => show("v-sala");
+
+function rerender() {
+  renderSala();
+  if (!$("#v-order").hidden && ui.table && order(ui.table)) renderOrder();
+  else if (!$("#v-list").hidden && ui.table && order(ui.table)) renderList();
+  else if (!$("#v-comande").hidden) renderComande();
+  else show("v-sala");
+}
+renderSala();
+</script>
+
+</body>
+</html>
