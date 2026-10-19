@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Handy+">
 <meta name="theme-color" content="#26282c">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icon-v2-180.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -234,7 +234,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
     </div>
     <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.1</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.2</span></div>
   </div>
 </section>
 
@@ -272,7 +272,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 
 <div id="layer"></div>
 
-<script src="menu.js?v=1792411145" charset="utf-8"></script>
+<script src="menu.js?v=1792411519" charset="utf-8"></script>
 <script>
 const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -494,9 +494,9 @@ function wheel(el, values, initial) {
   const items = [...el.querySelectorAll(".wi")];
   const idx = () => Math.max(0, Math.min(values.length - 1, Math.round(el.scrollTop / H)));
   let last = -1;
-  const mark = () => { const i = idx(); if (i === last) return; last = i; items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
+  const mark = () => { const i = idx(); if (i === last) return; if (last !== -1) haptic(); last = i; items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
   el.addEventListener("scroll", mark, { passive: true });
-  items.forEach((it, j) => it.onclick = () => { haptic(); el.scrollTo({ top: j * H, behavior: "smooth" }); });
+  items.forEach((it, j) => it.onclick = () => el.scrollTo({ top: j * H, behavior: "smooth" }));
   requestAnimationFrame(() => { el.scrollTop = Math.max(0, values.indexOf(initial)) * H; mark(); });
   return () => values[idx()];
 }
