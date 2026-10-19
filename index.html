@@ -18,149 +18,195 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: one-screen POS app. Fixed top bar, scrolling body, bottom sheets for pickers. Dark matte, like the restaurant handheld. */
+/* Layout: one-screen POS app. Views slide like iOS navigation (swipe from left edge = back). Dark matte, like the restaurant handheld. */
 :root {
-  --bg: #26282c;        /* grigio scuro opaco */
-  --surface: #2f3236;
-  --surface-2: #3a3d42;
-  --line: #474b51;
-  --fg: #eceef0;
-  --muted: #9ba1a9;
-  --free: #4a4e55;      /* tavolo libero */
-  --busy: #cf3f3f;      /* tavolo occupato */
-  --save: #2f9e5e;
-  --new: #e0a53a;
+  --bg: #24262a;        /* grigio scuro opaco */
+  --surface: #2d3034;
+  --surface-2: #383b40;
+  --surface-3: #43474d;
+  --line: #4a4e55;
+  --fg: #eef0f2;
+  --muted: #9aa0a8;
+  --free: #44484f;      /* tavolo libero */
+  --busy: #d0403f;      /* tavolo occupato */
+  --save: #2e9d5d;
+  --new: #e3a83c;
+  --shadow: rgba(0,0,0,.45);
   --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
   --body: "Barlow", system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(.2,.8,.2,1);
   color-scheme: dark;
 }
-html { height: 100%; box-sizing: border-box; }
-body { height: 100%; position: relative; }
-body {
+html { height: 100%; box-sizing: border-box; background: var(--bg); }
+body { height: 100%; position: relative; overflow: hidden;
   background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px;
-  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent; overflow: hidden;
-}
-button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; touch-action: manipulation; }
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; touch-action: manipulation;
+  transition: transform .12s var(--ease), filter .12s, background-color .15s; }
+button:active { transform: scale(.95); filter: brightness(1.18); }
 button:focus-visible, textarea:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
-.view { position: absolute; inset: 0; display: flex; flex-direction: column;
-}
-.bar { display: flex; align-items: center; gap: 8px; min-height: 56px;
+/* VIEWS + navigazione */
+.view { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg); z-index: 1; }
+.view.enter { z-index: 2; animation: enter .32s var(--ease); box-shadow: -10px 0 30px var(--shadow); }
+.view.leave { z-index: 2; animation: leave .26s var(--ease) forwards; box-shadow: -10px 0 30px var(--shadow); }
+.view.under { z-index: 1; animation: under .26s var(--ease); }
+.view.dragging { z-index: 2; box-shadow: -10px 0 30px var(--shadow); }
+@keyframes enter { from { transform: translateX(100%); } }
+@keyframes leave { to { transform: translateX(100%); } }
+@keyframes under { from { transform: translateX(-28%); filter: brightness(.7); } }
+
+.bar { display: flex; align-items: center; gap: 8px; min-height: 58px;
   padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px));
-  background: var(--surface); border-bottom: 1px solid var(--line); flex: none; }
-.bar h1 { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 0; flex: 1; min-width: 0;
+  background: var(--surface); flex: none; position: relative; z-index: 1; }
+.bar h1 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0; flex: 1; min-width: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: .02em; }
-.bar h1 small { font-family: var(--body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 6px; letter-spacing: 0; }
-.btn { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .04em; text-transform: uppercase;
-  padding: 0 14px; height: 42px; border-radius: 8px; background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.bar h1 small { font-family: var(--body); font-weight: 500; font-size: 14px; color: var(--muted); margin-left: 7px; letter-spacing: 0; }
+.btn { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: .05em; text-transform: uppercase;
+  padding: 0 14px; height: 42px; border-radius: 10px; background: var(--surface-2); display: inline-flex; align-items: center; gap: 7px; flex: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06); }
 .btn.save { background: var(--save); }
-.btn.icon { width: 42px; padding: 0; justify-content: center; font-size: 26px; }
-.btn .count { background: var(--bg); border-radius: 10px; padding: 0 7px; font-size: 15px; min-width: 22px; text-align: center; }
-.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px 90px; }
+.btn.icon { width: 42px; padding: 0; justify-content: center; }
+.btn.icon svg { width: 22px; height: 22px; }
+.btn .count { background: rgba(0,0,0,.3); border-radius: 10px; padding: 0 7px; font-size: 15px; min-width: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+.btn .count.bump { animation: bump .3s var(--ease); }
+@keyframes bump { 40% { transform: scale(1.35); background: var(--fg); color: var(--bg); } }
+.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px 96px; }
+svg { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
 /* SALA */
-.area { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
-.area h2 { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
-.tables { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px; }
-.tbl { aspect-ratio: 1; max-width: 100%; border-radius: 8px; background: var(--free); display: flex; flex-direction: column; align-items: center; justify-content: center;
-  font-family: var(--display); font-weight: 700; font-size: 24px; position: relative; font-variant-numeric: tabular-nums; }
-.tbl.busy { background: var(--busy); }
-.tbl .cov { font-family: var(--body); font-size: 11px; font-weight: 600; opacity: .85; line-height: 1; }
-.tbl .dot { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--new); }
-.tbl.extra { outline: 1px dashed var(--line); outline-offset: -1px; }
-.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
-.sync { font-size: 12px; color: var(--muted); margin-left: auto; }
+.summary { display: flex; gap: 8px; margin-bottom: 18px; }
+.stat { flex: 1; background: var(--surface); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-family: var(--display); font-size: 28px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.stat.hot b { color: var(--new); }
+.area { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.area h2 { display: flex; justify-content: space-between; font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.area h2 small { font-family: var(--body); letter-spacing: 0; text-transform: none; font-size: 13px; font-weight: 500; }
+.tables { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 8px; }
+.tbl { aspect-ratio: 1; max-width: 100%; border-radius: 12px; background: var(--free); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  font-family: var(--display); font-weight: 700; font-size: 25px; line-height: 1; position: relative; font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 2px 0 rgba(0,0,0,.25); }
+.tbl.busy { background: var(--busy); box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 rgba(0,0,0,.3); }
+.tbl .cov { font-family: var(--body); font-size: 11px; font-weight: 600; opacity: .9; }
+.tbl .dot { position: absolute; top: 5px; right: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--new); box-shadow: 0 0 0 2px var(--busy); }
+.tbl.extra:not(.busy) { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--muted); margin-top: 4px; }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
 
 /* ORDINE */
-.courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); flex: none; }
-.courses button { height: 44px; border-radius: 8px; background: var(--surface-2); font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .03em; text-transform: uppercase; }
+.courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 4px max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); flex: none; }
+.courses button { height: 46px; border-radius: 10px; background: var(--surface-2); font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: .03em; text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center; gap: 6px; }
 .courses button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
-.groups { display: flex; gap: 6px; overflow-x: auto; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); border-bottom: 1px solid var(--line); flex: none; }
-.groups button { height: 34px; padding: 0 14px; border-radius: 17px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; letter-spacing: .06em; flex: none; }
-.groups button[aria-pressed="true"] { background: var(--surface-2); border-color: var(--muted); }
+.courses button em { font-style: normal; font-family: var(--body); font-size: 12px; font-weight: 700; background: rgba(127,127,127,.3); border-radius: 8px; padding: 0 6px; }
+.courses .drinkinfo { grid-column: 1 / -1; height: 46px; border-radius: 10px; border: 1px dashed var(--line); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--muted); }
+.courses .drinkinfo b { color: var(--fg); font-family: var(--display); font-size: 17px; letter-spacing: .05em; text-transform: uppercase; margin-right: 8px; }
+.groups { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 max(12px, env(safe-area-inset-right, 0px)) 12px max(12px, env(safe-area-inset-left, 0px)); background: var(--surface); flex: none; box-shadow: 0 6px 12px -8px var(--shadow); position: relative; z-index: 1; }
+.groups::-webkit-scrollbar { display: none; }
+.groups button { height: 36px; padding: 0 15px; border-radius: 18px; background: var(--surface-2); font-weight: 700; font-size: 13px; letter-spacing: .09em; flex: none; color: var(--muted); }
+.groups button[aria-pressed="true"] { background: var(--surface-3); color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--muted); }
 .cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.cat { aspect-ratio: 1; max-width: 100%; border-radius: 8px; padding: 8px; display: flex; align-items: flex-end; text-align: left;
-  font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.05; color: #fff; text-transform: uppercase; letter-spacing: .02em; position: relative; }
-.cat .n { position: absolute; top: 7px; right: 8px; font-family: var(--body); font-size: 12px; font-weight: 600; background: rgba(0,0,0,.28); border-radius: 9px; padding: 1px 7px; }
-.crumb { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.crumb .btn { height: 36px; font-size: 16px; }
-.crumb strong { font-family: var(--display); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; }
+.cat { aspect-ratio: 1; max-width: 100%; border-radius: 12px; padding: 9px; display: flex; align-items: flex-end; text-align: left;
+  background-color: var(--c); background-image: linear-gradient(155deg, rgba(255,255,255,.16), rgba(255,255,255,0) 45%, rgba(0,0,0,.22));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 3px 0 rgba(0,0,0,.28);
+  font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.02; color: #fff; text-transform: uppercase; letter-spacing: .02em; position: relative;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35); overflow-wrap: anywhere; }
+.cat .n { position: absolute; top: 8px; right: 8px; font-family: var(--body); font-size: 12px; font-weight: 700; background: var(--fg); color: var(--bg); border-radius: 10px; padding: 1px 7px; text-shadow: none; }
+.cat .k { position: absolute; top: 9px; left: 10px; font-family: var(--body); font-size: 11px; font-weight: 600; opacity: .75; text-transform: none; letter-spacing: 0; }
+.crumb { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.crumb .btn { height: 36px; font-size: 15px; padding: 0 12px 0 8px; gap: 2px; }
+.crumb .btn svg { width: 18px; height: 18px; }
+.crumb strong { font-family: var(--display); font-size: 22px; text-transform: uppercase; letter-spacing: .03em; display: flex; align-items: center; gap: 8px; }
+.crumb strong i { width: 12px; height: 12px; border-radius: 3px; background: var(--c); }
 .items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.item { min-height: 76px; border-radius: 8px; padding: 9px 10px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
-  background: var(--surface-2); border-left: 6px solid var(--c, var(--line)); position: relative; transition: transform .08s; }
-.item:active { transform: scale(.97); }
+.item { min-height: 80px; border-radius: 12px; padding: 10px 11px 10px 14px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  background: var(--surface-2); position: relative; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
+.item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c); }
+.item.has { background: var(--surface-3); }
 .item .nm { font-weight: 600; font-size: 15px; line-height: 1.2; padding-right: 26px; }
 .item .pr { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.item .q { position: absolute; top: 7px; right: 7px; min-width: 24px; height: 24px; border-radius: 12px; background: var(--fg); color: var(--bg);
-  font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
-.item.flash { animation: flash .35s; }
-@keyframes flash { from { background: var(--c); } }
+.item .q { position: absolute; top: 8px; right: 8px; min-width: 24px; height: 24px; border-radius: 12px; background: var(--fg); color: var(--bg);
+  font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-variant-numeric: tabular-nums; }
+.item.flash::after { content: ""; position: absolute; inset: 0; background: var(--c); animation: flash .45s ease-out forwards; pointer-events: none; }
+.item.flash .q { animation: bump .3s var(--ease); }
+@keyframes flash { from { opacity: .55; } to { opacity: 0; } }
 
 /* LISTA */
-.lgroup { margin-bottom: 18px; }
-.lgroup h3 { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px;
+.lgroup { margin-bottom: 20px; }
+.lgroup h3 { display: flex; justify-content: space-between; font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 4px;
   padding-bottom: 6px; border-bottom: 1px solid var(--line); }
-.line { display: grid; grid-template-columns: 38px 1fr auto; gap: 10px; align-items: start; padding: 10px 4px; border-bottom: 1px solid var(--surface-2); border-radius: 6px; }
-.line.pressing { background: var(--surface-2); }
-.line .qty { font-family: var(--display); font-weight: 700; font-size: 24px; text-align: center; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.lgroup h3 small { font-family: var(--body); letter-spacing: 0; font-size: 13px; text-transform: none; }
+.line { display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: start; padding: 11px 6px; border-bottom: 1px solid var(--surface-2); border-radius: 8px;
+  transition: background-color .2s, transform .2s var(--ease); }
+.line.pressing { background: var(--surface-2); transform: scale(.98); }
+.line .qty { font-family: var(--display); font-weight: 700; font-size: 25px; text-align: center; line-height: 1.05; font-variant-numeric: tabular-nums; }
 .line .txt { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .line .txt b { font-weight: 600; font-size: 16px; }
 .line .note { color: var(--new); font-style: italic; font-size: 14px; overflow-wrap: anywhere; }
-.line .amt { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; padding-top: 2px; }
+.line .amt { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; padding-top: 3px; }
 .chip { display: inline-block; font-family: var(--body); font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: .08em; color: var(--bg); background: var(--new); border-radius: 4px; padding: 1px 5px; vertical-align: 2px; margin-left: 6px; }
-.empty { color: var(--muted); text-align: center; padding: 40px 10px; line-height: 1.5; }
-.total { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px 4px; font-family: var(--display); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.hint { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+.empty { color: var(--muted); text-align: center; padding: 48px 10px; line-height: 1.55; }
+.empty svg { width: 40px; height: 40px; display: block; margin: 0 auto 12px; opacity: .6; }
+.total { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 6px 4px; font-family: var(--display); font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hint { font-size: 13px; color: var(--muted); margin: 0 0 14px; display: flex; gap: 6px; align-items: center; }
+.hint svg { width: 16px; height: 16px; flex: none; }
 
 /* COMANDE SALVATE */
-.card { background: var(--surface); border-radius: 10px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+.card { background: var(--surface); border-radius: 14px; padding: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
 .card header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.card header strong { font-family: var(--display); font-size: 26px; font-weight: 700; }
+.card header strong { font-family: var(--display); font-size: 28px; font-weight: 700; }
 .card header span { color: var(--muted); font-size: 14px; }
 .card .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
 .card .warn { color: var(--new); font-size: 14px; }
-.btn.danger { background: transparent; border: 1px solid var(--busy); color: #ff9c9c; }
+.btn.danger { background: transparent; box-shadow: inset 0 0 0 1.5px var(--busy); color: #ff9e9e; }
 .btn.danger.armed { background: var(--busy); color: #fff; }
 
 /* SHEET */
-.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 20; }
-.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; background: var(--surface); border-radius: 16px 16px 0 0;
-  padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  display: flex; flex-direction: column; gap: 14px; max-height: 90%; overflow-y: auto; animation: up .2s ease-out; }
-@keyframes up { from { transform: translateY(40px); opacity: 0; } }
-.sheet h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 24px; text-align: center; letter-spacing: .02em; }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 20; animation: fade .2s; }
+@keyframes fade { from { opacity: 0; } }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; background: var(--surface); border-radius: 20px 20px 0 0;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: flex; flex-direction: column; gap: 14px; max-height: 90%; overflow-y: auto; animation: up .3s var(--ease); box-shadow: 0 -10px 40px var(--shadow); }
+.sheet::before { content: ""; width: 38px; height: 5px; border-radius: 3px; background: var(--line); align-self: center; flex: none; }
+@keyframes up { from { transform: translateY(100%); } }
+.sheet h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 26px; text-align: center; letter-spacing: .02em; }
 .sheet .sub { margin: -10px 0 0; text-align: center; color: var(--muted); font-size: 14px; }
 .sheet .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.sheet .actions .btn { height: 50px; justify-content: center; }
-.link { color: #ff9c9c; font-size: 14px; text-align: center; padding: 6px; }
+.sheet .actions .btn { height: 52px; justify-content: center; }
+.link { color: #ff9e9e; font-size: 14px; text-align: center; padding: 6px; }
 .wheel { position: relative; height: 220px; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;
   mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); scrollbar-width: none; }
 .wheel::-webkit-scrollbar { display: none; }
 .wheel-wrap { position: relative; }
-.wheel-wrap::before { content: ""; position: absolute; left: 20%; right: 20%; top: 88px; height: 44px; border-radius: 8px; background: var(--surface-2); pointer-events: none; }
+.wheel-wrap::before { content: ""; position: absolute; left: 22%; right: 22%; top: 88px; height: 44px; border-radius: 10px; background: var(--surface-2); pointer-events: none; }
 .wheel .pad { height: 88px; }
 .wheel .wi { height: 44px; display: flex; align-items: center; justify-content: center; scroll-snap-align: center; position: relative;
-  font-family: var(--display); font-weight: 600; font-size: 24px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.wheel .wi.sel { color: var(--fg); font-size: 30px; font-weight: 700; }
+  font-family: var(--display); font-weight: 600; font-size: 24px; color: var(--muted); font-variant-numeric: tabular-nums; transition: color .1s, font-size .1s; }
+.wheel .wi.sel { color: var(--fg); font-size: 31px; font-weight: 700; }
 .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.seg button { height: 40px; border-radius: 8px; background: var(--surface-2); font-weight: 600; font-size: 14px; }
+.seg button { height: 42px; border-radius: 10px; background: var(--surface-2); font-weight: 600; font-size: 14px; }
 .seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
-.stepper { display: flex; align-items: center; justify-content: center; gap: 22px; }
-.stepper .btn { width: 54px; height: 54px; font-size: 30px; justify-content: center; padding: 0; }
-.stepper output { font-family: var(--display); font-size: 40px; font-weight: 700; min-width: 50px; text-align: center; font-variant-numeric: tabular-nums; }
-textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertical; border-radius: 8px; border: 1px solid var(--line); background: var(--bg);
+.stepper { display: flex; align-items: center; justify-content: center; gap: 24px; }
+.stepper .btn { width: 56px; height: 56px; font-size: 30px; justify-content: center; padding: 0; border-radius: 50%; }
+.stepper output { font-family: var(--display); font-size: 42px; font-weight: 700; min-width: 50px; text-align: center; font-variant-numeric: tabular-nums; }
+textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertical; border-radius: 10px; border: 1px solid var(--line); background: var(--bg);
   color: var(--fg); font: 17px/1.4 var(--body); padding: 10px; -webkit-user-select: text; user-select: text; }
 .quick { display: flex; flex-wrap: wrap; gap: 6px; }
-.quick button { height: 32px; padding: 0 12px; border-radius: 16px; border: 1px solid var(--line); font-size: 14px; }
+.quick button { height: 34px; padding: 0 12px; border-radius: 17px; background: var(--surface-2); font-size: 14px; }
 
-.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 30;
-  background: var(--fg); color: var(--bg); font-weight: 600; font-size: 15px; padding: 10px 16px; border-radius: 22px; max-width: calc(100% - 32px);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 30; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 8px; background: var(--fg); color: var(--bg); font-weight: 600; font-size: 15px; padding: 10px 16px 10px 12px; border-radius: 24px;
+  max-width: calc(100% - 32px); white-space: nowrap; box-shadow: 0 8px 24px var(--shadow); animation: toast .25s var(--ease); }
+.toast span { overflow: hidden; text-overflow: ellipsis; }
+.toast i { width: 22px; height: 22px; border-radius: 50%; background: var(--save); color: #fff; display: grid; place-items: center; flex: none; }
+.toast i svg { width: 14px; height: 14px; stroke-width: 3.2; }
+@keyframes toast { from { transform: translate(-50%, 12px); opacity: 0; } }
+.haptic { position: fixed; left: -100px; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 
@@ -169,19 +215,24 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
   <div class="bar">
     <h1>Sala</h1>
     <button class="btn" id="b-comande">Comande <span class="count" id="n-comande">0</span></button>
-    <button class="btn icon" id="b-add" aria-label="Aggiungi tavolo">+</button>
+    <button class="btn icon" id="b-add" aria-label="Aggiungi tavolo"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
   </div>
   <div class="scroll">
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span class="sync" id="sync">Salvato solo su questo telefono</span></div>
-    <div class="area"><h2>Dentro</h2><div class="tables" id="t-dentro"></div></div>
-    <div class="area"><h2>Fuori</h2><div class="tables" id="t-fuori"></div></div>
+    <div class="summary">
+      <div class="stat"><b id="s-open">0</b><span>Tavoli aperti</span></div>
+      <div class="stat"><b id="s-cov">0</b><span>Coperti</span></div>
+      <div class="stat" id="s-new-box"><b id="s-new">0</b><span>Da salvare</span></div>
+    </div>
+    <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
+    <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span></div>
   </div>
 </section>
 
 <!-- ORDINE -->
 <section class="view" id="v-order" hidden>
   <div class="bar">
-    <button class="btn icon" id="o-back" aria-label="Torna alla sala">‹</button>
+    <button class="btn icon" id="o-back" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <h1 id="o-title">T</h1>
     <button class="btn" id="o-list">Lista <span class="count" id="o-n">0</span></button>
     <button class="btn save" id="o-save">Salva</button>
@@ -194,7 +245,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <!-- LISTA -->
 <section class="view" id="v-list" hidden>
   <div class="bar">
-    <button class="btn icon" id="l-back" aria-label="Torna al menu">‹</button>
+    <button class="btn icon" id="l-back" aria-label="Torna al menu"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <h1 id="l-title">Lista</h1>
     <button class="btn save" id="l-save">Salva</button>
   </div>
@@ -204,13 +255,14 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <!-- COMANDE SALVATE -->
 <section class="view" id="v-comande" hidden>
   <div class="bar">
-    <button class="btn icon" id="c-back" aria-label="Torna alla sala">‹</button>
+    <button class="btn icon" id="c-back" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
     <h1>Comande</h1>
   </div>
   <div class="scroll" id="c-body"></div>
 </section>
 
 <div id="layer"></div>
+<label class="haptic" aria-hidden="true"><input type="checkbox" switch tabindex="-1" id="haptic"></label>
 
 <script src="menu.js" charset="utf-8"></script>
 <script>
@@ -228,6 +280,12 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
+const ICON = {
+  check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  hold: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>',
+  plate: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
+};
 
 // ---------- stato ----------
 let state = { extraTables: [], orders: {}, updatedAt: 0 };
@@ -265,12 +323,97 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const eur = n => n === undefined ? "" : n === null ? "s/m" : n.toLocaleString("it-IT", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + " €";
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
 const uid = () => Math.random().toString(36).slice(2, 9);
-function show(id) { document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== id); }
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let toastT;
-function toast(msg) {
-  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
-  t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 1600);
+function toast(msg, ok) {
+  $(".toast")?.remove();
+  const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status");
+  t.innerHTML = (ok ? `<i>${ICON.check}</i>` : "") + `<span>${esc(msg)}</span>`;
+  document.body.append(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 1700);
 }
+function bump(el) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
+
+// ---------- vibrazione ----------
+// iPhone (iOS 18+): toccare un interruttore di sistema produce un piccolo "tic". Android: navigator.vibrate.
+const hapticSwitch = $("#haptic");
+function haptic() {
+  try { if (navigator.vibrate) navigator.vibrate(10); else hapticSwitch.click(); } catch (e) {}
+}
+document.addEventListener("click", e => { if (e.target.closest("button")) haptic(); }, true);
+
+// ---------- navigazione (con swipe da sinistra) ----------
+let current = "v-sala";
+const BACK = {
+  "v-order": { to: "v-sala", prep: () => renderSala(), done: () => leaveTable() },
+  "v-list": { to: "v-order", prep: () => renderOrder() },
+  "v-comande": { to: "v-sala", prep: () => renderSala() },
+};
+function clean(v) { v.classList.remove("enter", "leave", "under", "dragging"); v.style.transform = ""; v.style.filter = ""; v.style.transition = ""; }
+function show(id, back = false) {
+  const from = $("#" + current), to = $("#" + id);
+  if (from === to) return;
+  document.querySelectorAll(".view").forEach(v => { if (v !== from && v !== to) { v.hidden = true; clean(v); } });
+  clean(from); clean(to);
+  to.hidden = false; current = id;
+  if (reduced) { from.hidden = true; return; }
+  let finished = false;
+  const finish = () => { if (finished) return; finished = true; if (current !== from.id) { from.hidden = true; clean(from); } clean(to); };
+  if (back) { from.classList.add("leave"); to.classList.add("under"); from.addEventListener("animationend", finish, { once: true }); }
+  else { to.classList.add("enter"); to.addEventListener("animationend", finish, { once: true }); }
+  setTimeout(finish, 450);
+}
+function goBack() {
+  const b = BACK[current]; if (!b) return;
+  b.prep?.(); b.done?.(); show(b.to, true);
+}
+
+let sw = null;
+const EDGE = 32;
+document.addEventListener("touchstart", e => {
+  if (!BACK[current] || $("#layer").children.length || e.touches.length > 1) return;
+  const t = e.touches[0]; if (t.clientX > EDGE) return;
+  sw = { x: t.clientX, y: t.clientY, lastX: t.clientX, lastT: performance.now(), v: 0, active: false };
+}, { passive: true });
+document.addEventListener("touchmove", e => {
+  if (!sw) return;
+  const t = e.touches[0], dx = t.clientX - sw.x, dy = t.clientY - sw.y;
+  if (!sw.active) {
+    if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { sw = null; return; }
+    if (dx < 8) return;
+    const b = BACK[current]; b.prep?.();
+    sw.active = true; sw.from = $("#" + current); sw.to = $("#" + b.to);
+    sw.to.hidden = false; sw.from.classList.add("dragging");
+  }
+  e.preventDefault();
+  const now = performance.now(); sw.v = (t.clientX - sw.lastX) / Math.max(1, now - sw.lastT); sw.lastX = t.clientX; sw.lastT = now;
+  const W = innerWidth, x = Math.max(0, dx), p = x / W;
+  sw.from.style.transform = `translateX(${x}px)`;
+  sw.to.style.transform = `translateX(${-28 * (1 - p)}%)`;
+  sw.to.style.filter = `brightness(${0.7 + 0.3 * p})`;
+  const past = p > 0.4; if (past !== sw.past) { sw.past = past; if (past) haptic(); }
+}, { passive: false });
+function endSwipe() {
+  if (!sw) return;
+  const s = sw; sw = null; if (!s.active) return;
+  const W = innerWidth, x = parseFloat(s.from.style.transform.slice(11)) || 0;
+  const commit = x > W * 0.4 || (s.v > 0.45 && x > 30);
+  const tr = "transform .25s cubic-bezier(.2,.8,.2,1), filter .25s";
+  s.from.style.transition = tr; s.to.style.transition = tr;
+  requestAnimationFrame(() => {
+    s.from.style.transform = commit ? `translateX(${W}px)` : "translateX(0)";
+    s.to.style.transform = commit ? "translateX(0)" : "translateX(-28%)";
+    s.to.style.filter = commit ? "brightness(1)" : "brightness(.7)";
+  });
+  setTimeout(() => {
+    if (commit) { const b = BACK[current]; b.done?.(); s.from.hidden = true; current = b.to; }
+    else s.to.hidden = true;
+    clean(s.from); clean(s.to);
+  }, 270);
+}
+document.addEventListener("touchend", endSwipe);
+document.addEventListener("touchcancel", endSwipe);
+
+// ---------- tavoli ----------
 function allTables() {
   const base = [...range(1, 29).map(n => ({ n, area: "dentro" })), ...range(30, 50).map(n => ({ n, area: "fuori" }))];
   return [...base, ...state.extraTables.map(t => ({ ...t, extra: true }))].sort((a, b) => a.n - b.n);
@@ -278,22 +421,31 @@ function allTables() {
 const order = n => state.orders[n];
 const lines = n => order(n)?.lines || [];
 const unsaved = n => lines(n).some(l => !l.saved);
+const isBusy = n => lines(n).length > 0;
 
 // ---------- SALA ----------
 function renderSala() {
+  const tabs = allTables();
   for (const area of ["dentro", "fuori"]) {
-    $("#t-" + area).innerHTML = allTables().filter(t => t.area === area).map(t => {
-      const o = order(t.n), busy = o && o.lines.length;
+    const list = tabs.filter(t => t.area === area);
+    $("#t-" + area).innerHTML = list.map(t => {
+      const o = order(t.n), busy = isBusy(t.n);
       return `<button class="tbl ${busy ? "busy" : ""} ${t.extra ? "extra" : ""}" data-t="${t.n}" aria-label="Tavolo ${t.n}${busy ? ", occupato" : ""}">
         ${t.n}${busy ? `<span class="cov">${o.covers} cop.</span>` : ""}${busy && unsaved(t.n) ? '<span class="dot"></span>' : ""}</button>`;
     }).join("");
+    $("#c-" + area).textContent = `${list.filter(t => isBusy(t.n)).length} / ${list.length} occupati`;
   }
-  $("#n-comande").textContent = Object.values(state.orders).filter(o => o.lines.length).length;
+  const open = Object.keys(state.orders).filter(n => isBusy(n));
+  $("#n-comande").textContent = open.length;
+  $("#s-open").textContent = open.length;
+  $("#s-cov").textContent = open.reduce((s, n) => s + order(n).covers, 0);
+  const pend = open.filter(n => unsaved(n)).length;
+  $("#s-new").textContent = pend; $("#s-new-box").classList.toggle("hot", pend > 0);
 }
 document.addEventListener("click", e => {
   const b = e.target.closest(".tbl"); if (!b) return;
   const n = +b.dataset.t;
-  if (order(n) && order(n).lines.length) openOrder(n); else askCovers(n);
+  if (isBusy(n)) openOrder(n); else askCovers(n);
 });
 $("#b-add").onclick = askNewTable;
 $("#b-comande").onclick = () => { renderComande(); show("v-comande"); };
@@ -310,23 +462,24 @@ function wheel(el, values, initial) {
   el.innerHTML = `<div class="pad"></div>${values.map(v => `<div class="wi">${v}</div>`).join("")}<div class="pad"></div>`;
   const items = [...el.querySelectorAll(".wi")];
   const idx = () => Math.max(0, Math.min(values.length - 1, Math.round(el.scrollTop / H)));
-  const mark = () => { const i = idx(); items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
+  let last = -1;
+  const mark = () => { const i = idx(); if (i === last) return; last = i; items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
   el.addEventListener("scroll", mark, { passive: true });
-  items.forEach((it, j) => it.onclick = () => el.scrollTo({ top: j * H, behavior: "smooth" }));
+  items.forEach((it, j) => it.onclick = () => { haptic(); el.scrollTo({ top: j * H, behavior: "smooth" }); });
   requestAnimationFrame(() => { el.scrollTop = Math.max(0, values.indexOf(initial)) * H; mark(); });
   return () => values[idx()];
 }
 
 function askCovers(n) {
   const t = allTables().find(x => x.n === n);
-  const s = sheet(`<h2>Tavolo ${n}</h2><p class="sub">Quanti coperti?</p>
+  sheet(`<h2>Tavolo ${n}</h2><p class="sub">Quanti coperti?</p>
     <div class="wheel-wrap"><div class="wheel" id="w-cov"></div></div>
     <div class="actions"><button class="btn" id="s-no">Annulla</button><button class="btn save" id="s-ok">Apri tavolo</button></div>
     ${t?.extra ? '<button class="link" id="s-del">Rimuovi tavolo dalla sala</button>' : ""}`);
   const get = wheel($("#w-cov"), range(1, 30), 2);
   $("#s-no").onclick = closeSheet;
   $("#s-ok").onclick = () => { state.orders[n] = { covers: get(), lines: [], savedAt: null }; closeSheet(); openOrder(n); };
-  if (t?.extra) $("#s-del").onclick = () => { state.extraTables = state.extraTables.filter(x => x.n !== n); delete state.orders[n]; persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} rimosso`); };
+  if (t?.extra) $("#s-del").onclick = () => { state.extraTables = state.extraTables.filter(x => x.n !== n); delete state.orders[n]; persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} rimosso`, true); };
 }
 function askNewTable() {
   const used = new Set(allTables().map(t => t.n));
@@ -341,7 +494,7 @@ function askNewTable() {
   const upd = () => $("#s-area").textContent = area() === "dentro" ? "Va in: Dentro" : "Va in: Fuori";
   $("#w-tab").addEventListener("scroll", upd, { passive: true }); requestAnimationFrame(upd);
   $("#s-no").onclick = closeSheet;
-  $("#s-ok").onclick = () => { const n = get(); state.extraTables.push({ n, area: area() }); persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} aggiunto`); };
+  $("#s-ok").onclick = () => { const n = get(); state.extraTables.push({ n, area: area() }); persist(); closeSheet(); renderSala(); toast(`Tavolo ${n} aggiunto`, true); };
 }
 
 // ---------- ORDINE ----------
@@ -350,29 +503,31 @@ function openOrder(n) {
   $("#o-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
   renderOrder(); show("v-order");
 }
-function countBadge() { const c = lines(ui.table).reduce((s, l) => s + l.qty, 0); $("#o-n").textContent = c; }
 function renderOrder() {
   const drinks = DRINK_GROUPS.includes(ui.group);
-  $("#courses").innerHTML = COURSES.map(([k, l]) => `<button aria-pressed="${ui.course === k}" data-c="${k}" ${drinks ? 'style="opacity:.45"' : ""}>${l}</button>`).join("");
+  const ls = lines(ui.table);
+  const inCourse = k => ls.filter(l => l.course === k).reduce((s, l) => s + l.qty, 0);
+  $("#courses").innerHTML = drinks
+    ? `<div class="drinkinfo"><b>Bevande</b>vanno in una sezione a parte</div>`
+    : COURSES.map(([k, l]) => { const c = inCourse(k); return `<button aria-pressed="${ui.course === k}" data-c="${k}">${l}${c ? `<em>${c}</em>` : ""}</button>`; }).join("");
   $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${g.group}</button>`).join("");
   const g = MENU.find(x => x.group === ui.group);
-  const qtyOf = name => lines(ui.table).filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
+  const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   if (ui.cat === null) {
-    $("#o-body").innerHTML = (drinks ? '<p class="hint">Le bevande vanno in una sezione a parte, senza portata.</p>' : "") +
-      `<div class="cats">${g.categories.map((c, i) => {
-        const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
-        return `<button class="cat" style="background:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
-      }).join("")}</div>`;
+    $("#o-body").innerHTML = `<div class="cats">${g.categories.map((c, i) => {
+      const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
+      return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(c.name)}${n ? `<span class="n">${n}</span>` : ""}</button>`;
+    }).join("")}</div>`;
   } else {
     const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
-    $("#o-body").innerHTML = `<div class="crumb"><button class="btn" id="b-cats">‹ Categorie</button><strong>${esc(c.name)}</strong></div>
+    $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}Categorie</button><strong><i></i>${esc(c.name)}</strong></div>
       <div class="items">${c.items.map((it, i) => {
         const q = qtyOf(it[0]);
-        return `<button class="item" style="--c:${col}" data-i="${i}"><span class="nm">${esc(it[0])}</span>
+        return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-i="${i}"><span class="nm">${esc(it[0])}</span>
           <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
       }).join("")}</div>`;
   }
-  countBadge();
+  $("#o-n").textContent = ls.reduce((s, l) => s + l.qty, 0);
 }
 $("#courses").onclick = e => { const b = e.target.closest("[data-c]"); if (b) { ui.course = b.dataset.c; renderOrder(); } };
 $("#groups").onclick = e => { const b = e.target.closest("[data-g]"); if (b) { ui.group = b.dataset.g; ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; } };
@@ -387,10 +542,11 @@ $("#o-body").onclick = e => {
   const same = ls.find(l => !l.saved && !l.note && l.name === name && l.course === course);
   if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", course, qty: 1, note: "", saved: false });
   persist(); renderOrder();
-  const el = $(`#o-body [data-i="${it.dataset.i}"]`); el.classList.add("flash");
+  $(`#o-body [data-i="${it.dataset.i}"]`).classList.add("flash");
+  bump($("#o-n"));
   toast(`+1 ${name}${course === "bev" ? "" : " · " + COURSES.find(c => c[0] === course)[1]}`);
 };
-$("#o-back").onclick = () => { leaveTable(); show("v-sala"); };
+$("#o-back").onclick = $("#l-back").onclick = $("#c-back").onclick = goBack;
 $("#o-list").onclick = () => { renderList(); show("v-list"); };
 $("#o-save").onclick = $("#l-save").onclick = saveOrder;
 function leaveTable() { const o = order(ui.table); if (o && !o.lines.length) delete state.orders[ui.table]; persist(); renderSala(); }
@@ -398,18 +554,18 @@ function saveOrder() {
   const o = order(ui.table);
   if (!o.lines.length) return toast("Aggiungi almeno un piatto");
   o.lines.forEach(l => l.saved = true); o.savedAt = Date.now();
-  persist(); renderSala(); show("v-sala"); toast(`Comanda tavolo ${ui.table} salvata`);
+  persist(); renderSala(); show("v-sala", true); toast(`Comanda tavolo ${ui.table} salvata`, true);
 }
 
 // ---------- LISTA ----------
 const SECTIONS = [...COURSES, ["bev", "Bevande"]];
 function linesHtml(n, editable) {
   const ls = lines(n);
-  if (!ls.length) return `<p class="empty">Ancora niente in questa comanda.<br>Torna al menu e tocca un piatto per aggiungerlo.</p>`;
+  if (!ls.length) return `<p class="empty">${ICON.plate}Ancora niente in questa comanda.<br>Torna al menu e tocca un piatto per aggiungerlo.</p>`;
   let total = 0;
   const html = SECTIONS.map(([k, label]) => {
     const g = ls.filter(l => l.course === k); if (!g.length) return "";
-    return `<div class="lgroup"><h3>${label}</h3>${g.map(l => {
+    return `<div class="lgroup"><h3>${label}<small>${g.reduce((s, l) => s + l.qty, 0)} pz.</small></h3>${g.map(l => {
       if (l.price) total += l.price * l.qty;
       return `<div class="line" ${editable ? `data-l="${l.id}"` : ""}><span class="qty">${l.qty}</span>
         <span class="txt"><b>${esc(l.name)}${!l.saved ? '<span class="chip">NUOVO</span>' : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
@@ -421,16 +577,15 @@ function linesHtml(n, editable) {
 function renderList() {
   const n = ui.table;
   $("#l-title").innerHTML = `T ${n}<small>${order(n).covers} cop.</small>`;
-  $("#l-body").innerHTML = (lines(n).length ? '<p class="hint">Tieni premuto una riga per scrivere una variante o cambiare la quantità.</p>' : "") + linesHtml(n, true);
+  $("#l-body").innerHTML = (lines(n).length ? `<p class="hint">${ICON.hold}Tieni premuto una riga per varianti e quantità.</p>` : "") + linesHtml(n, true);
 }
-$("#l-back").onclick = () => { renderOrder(); show("v-order"); };
 
 // pressione lunga sulle righe
 let lp = null;
 $("#l-body").addEventListener("pointerdown", e => {
   const row = e.target.closest("[data-l]"); if (!row) return;
   row.classList.add("pressing");
-  lp = { row, x: e.clientX, y: e.clientY, t: setTimeout(() => { row.classList.remove("pressing"); lp = null; editLine(row.dataset.l); }, 450) };
+  lp = { row, x: e.clientX, y: e.clientY, t: setTimeout(() => { row.classList.remove("pressing"); lp = null; haptic(); editLine(row.dataset.l); }, 450) };
 });
 const cancelLp = e => { if (!lp) return; if (e.type === "pointermove" && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) < 10) return;
   clearTimeout(lp.t); lp.row.classList.remove("pressing"); lp = null; };
@@ -456,7 +611,7 @@ function editLine(id) {
     const ta = $("#e-note"); ta.value = ta.value.trim() ? ta.value.trim() + ", " + b.dataset.q.toLowerCase() : b.dataset.q; };
   let armed = false;
   $("#e-del").onclick = e => { if (!armed) { armed = true; e.currentTarget.classList.add("armed"); e.currentTarget.textContent = "Conferma"; return; }
-    o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); };
+    o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); toast(`${l.name} eliminato`); };
   $("#e-ok").onclick = () => {
     const note = $("#e-note").value.trim();
     if (qty !== l.qty || course !== l.course || note !== l.note) { l.qty = qty; l.course = course; l.note = note; l.saved = false; }
@@ -466,8 +621,8 @@ function editLine(id) {
 
 // ---------- COMANDE ----------
 function renderComande() {
-  const ns = Object.keys(state.orders).map(Number).filter(n => lines(n).length).sort((a, b) => a - b);
-  if (!ns.length) { $("#c-body").innerHTML = '<p class="empty">Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.</p>'; return; }
+  const ns = Object.keys(state.orders).map(Number).filter(isBusy).sort((a, b) => a - b);
+  if (!ns.length) { $("#c-body").innerHTML = `<p class="empty">${ICON.plate}Nessuna comanda aperta.<br>Tocca un tavolo in sala per iniziarne una.</p>`; return; }
   $("#c-body").innerHTML = ns.map(n => {
     const o = order(n), t = allTables().find(x => x.n === n);
     const time = o.savedAt ? new Date(o.savedAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : null;
@@ -481,16 +636,15 @@ $("#c-body").onclick = e => {
   const op = e.target.closest("[data-open]"); if (op) return openOrder(+op.dataset.open);
   const fr = e.target.closest("[data-free]"); if (!fr) return;
   if (!fr.classList.contains("armed")) { fr.classList.add("armed"); fr.textContent = "Conferma: libera"; return; }
-  const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(`Tavolo ${n} liberato`);
+  const n = +fr.dataset.free; delete state.orders[n]; persist(); renderSala(); renderComande(); toast(`Tavolo ${n} liberato`, true);
 };
-$("#c-back").onclick = () => show("v-sala");
 
 function rerender() {
   renderSala();
-  if (!$("#v-order").hidden && ui.table && order(ui.table)) renderOrder();
-  else if (!$("#v-list").hidden && ui.table && order(ui.table)) renderList();
-  else if (!$("#v-comande").hidden) renderComande();
-  else show("v-sala");
+  if (current === "v-order" && ui.table && order(ui.table)) renderOrder();
+  else if (current === "v-list" && ui.table && order(ui.table)) renderList();
+  else if (current === "v-comande") renderComande();
+  else show("v-sala", true);
 }
 renderSala();
 </script>
