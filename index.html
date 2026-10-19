@@ -227,6 +227,11 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 .toast i { width: 22px; height: 22px; border-radius: 50%; background: var(--save); color: #fff; display: grid; place-items: center; flex: none; }
 .toast i svg { width: 14px; height: 14px; stroke-width: 3.2; }
 @keyframes toast { from { transform: translate(-50%, 12px); opacity: 0; } }
+.update { position: fixed; left: 50%; transform: translateX(-50%); top: calc(env(safe-area-inset-top, 0px) + 66px); z-index: 25;
+  display: flex; align-items: center; gap: 12px; white-space: nowrap; max-width: calc(100% - 32px);
+  background: var(--new); color: #24262a; font-weight: 600; font-size: 15px; padding: 9px 9px 9px 16px; border-radius: 24px; box-shadow: 0 8px 24px var(--shadow); animation: toast .3s var(--ease); }
+.update:active { transform: translateX(-50%) scale(.96); }
+.update b { background: #24262a; color: var(--new); border-radius: 16px; padding: 5px 12px; font-family: var(--display); font-size: 16px; letter-spacing: .05em; text-transform: uppercase; }
 .pane { flex: 1; position: relative; overflow: hidden; }
 .pane > .scroll { position: absolute; inset: 0; background: var(--bg); z-index: 2; }
 .pane > #o-under { z-index: 1; }
@@ -252,7 +257,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
     </div>
     <div class="area"><h2><span data-i18n="in">Dentro</span> <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2><span data-i18n="out">Fuori</span> <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i><span data-i18n="free">Libero</span></span><span><i style="background:var(--busy)"></i><span data-i18n="busy">Occupato</span></span><span><i style="background:var(--new);border-radius:50%"></i><span data-i18n="toSave">Da salvare</span></span><span id="sync">Salvato su questo telefono</span><span><span data-i18n="version">Versione</span> 2.6</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i><span data-i18n="free">Libero</span></span><span><i style="background:var(--busy)"></i><span data-i18n="busy">Occupato</span></span><span><i style="background:var(--new);border-radius:50%"></i><span data-i18n="toSave">Da salvare</span></span><span id="sync">Salvato su questo telefono</span><span><span data-i18n="version">Versione</span> <span id="ver"></span></span></div>
   </div>
 </section>
 
@@ -290,8 +295,9 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 </section>
 
 <div id="layer"></div>
+<button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=1792430671" charset="utf-8"></script>
+<script src="menu.js?v=1792430965" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -307,6 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
+const APP_VERSION = "2.7";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -370,6 +377,7 @@ const I18N = {
     coversN: n => n === 1 ? "1 coperto" : `${n} coperti`, savedAt: t => `salvata ${t}`, unsavedWarn: "Ci sono righe non ancora salvate.",
     all: "Tutte", coversInSala: "Coperti in sala", noPending: "Niente da salvare.<br>Tutte le comande sono già salvate.",
     pendingHint: "Mostra queste righe al cameriere, poi tocca Salvata.", markSaved: "Salvata",
+    updateAvail: "Nuova versione disponibile", updateNow: "Aggiorna",
     open: "Apri", freeTable: "Libera tavolo", confirmFree: "Conferma: libera", freed: n => `Tavolo ${n} liberato`,
     langAria: "Lingua: italiano. Tocca per lo spagnolo",
     ant: "Antipasti", p1: "1ª portata", p2: "2ª portata", bev: "Bevande",
@@ -392,6 +400,7 @@ const I18N = {
     coversN: n => n === 1 ? "1 comensal" : `${n} comensales`, savedAt: t => `guardada ${t}`, unsavedWarn: "Hay líneas sin guardar.",
     all: "Todas", coversInSala: "Comensales en sala", noPending: "Nada por guardar.<br>Todas las comandas ya están guardadas.",
     pendingHint: "Enseña estas líneas al camarero y luego toca Guardada.", markSaved: "Guardada",
+    updateAvail: "Nueva versión disponible", updateNow: "Actualizar",
     open: "Abrir", freeTable: "Liberar mesa", confirmFree: "Confirmar: liberar", freed: n => `Mesa ${n} liberada`,
     langAria: "Idioma: español. Toca para el italiano",
     ant: "Entrantes", p1: "1er plato", p2: "2º plato", bev: "Bebidas",
@@ -859,7 +868,22 @@ function rerender() {
   else if (current === "v-comande") renderComande();
   else show("v-sala", true);
 }
+// ---------- aggiornamenti ----------
+// All'apertura (e quando l'app torna in primo piano) controlla su GitHub se c'è una versione più nuova.
+let newVersion = null;
+async function checkUpdate() {
+  try {
+    const r = await fetch("version.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
+    const v = (await r.json()).version;
+    if (v && v !== APP_VERSION) { newVersion = v; $("#update").hidden = false; }
+  } catch (e) {}
+}
+$("#update").onclick = () => { location.replace(location.pathname + "?v=" + encodeURIComponent(newVersion || Date.now())); };
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkUpdate(); });
+$("#ver").textContent = APP_VERSION;
 applyLang();
+checkUpdate();
 </script>
 
 </body>
