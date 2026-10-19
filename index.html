@@ -234,7 +234,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
     </div>
     <div class="area"><h2>Dentro <small id="c-dentro"></small></h2><div class="tables" id="t-dentro"></div></div>
     <div class="area"><h2>Fuori <small id="c-fuori"></small></h2><div class="tables" id="t-fuori"></div></div>
-    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.3</span></div>
+    <div class="legend"><span><i style="background:var(--free)"></i>Libero</span><span><i style="background:var(--busy)"></i>Occupato</span><span><i style="background:var(--new);border-radius:50%"></i>Da salvare</span><span id="sync">Salvato su questo telefono</span><span>Versione 2.4</span></div>
   </div>
 </section>
 
@@ -272,7 +272,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 
 <div id="layer"></div>
 
-<script src="menu.js?v=1792412370" charset="utf-8"></script>
+<script src="menu.js?v=1792412910" charset="utf-8"></script>
 <script>
 const COURSES = [["ant", "Antipasti"], ["p1", "1ª portata"], ["p2", "2ª portata"]];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -644,7 +644,8 @@ function catOf(name) {
 }
 function quickFor(l) {
   const cat = l.cat || catOf(l.name);
-  if (/^Gelato/.test(l.name)) return QUICK.gelato;
+  if (/^Gelato/.test(l.name)) return [...QUICK.gelato, "Compleanno"];
+  if (cat === "Dolci") return ["Compleanno", ...QUICK.base];
   if (MEAT.includes(l.name)) return QUICK.carne;
   if (cat === "Pasta") return QUICK.pasta;
   if (COCKTAIL_CATS.includes(cat)) return QUICK.cocktail;
