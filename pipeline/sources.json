@@ -1,0 +1,140 @@
+{
+  "_istruzioni": "Whitelist delle fonti. Solo questi feed vengono letti. Per aggiungerne una copia un blocco esistente e cambia i campi. 'domini' elenca i siti da cui sono accettati i link (protezione contro link esterni). 'sezione': novita oppure losapevi. 'attiva': false per spegnere una fonte senza cancellarla.",
+  "fonti": [
+    {
+      "id": "nasa",
+      "nome": "NASA",
+      "feed": "https://www.nasa.gov/news-release/feed/",
+      "domini": ["nasa.gov"],
+      "sezione": "novita",
+      "argomento": "spazio",
+      "attiva": true
+    },
+    {
+      "id": "esa-scienza",
+      "nome": "ESA – Agenzia Spaziale Europea",
+      "feed": "https://www.esa.int/rssfeed/Our_Activities/Space_Science",
+      "domini": ["esa.int"],
+      "sezione": "novita",
+      "argomento": "spazio",
+      "attiva": true
+    },
+    {
+      "id": "inaf",
+      "nome": "INAF – Istituto Nazionale di Astrofisica",
+      "feed": "https://www.media.inaf.it/feed/",
+      "domini": ["media.inaf.it", "inaf.it"],
+      "sezione": "novita",
+      "argomento": "spazio",
+      "attiva": true
+    },
+    {
+      "id": "cern",
+      "nome": "CERN",
+      "feed": "https://home.cern/api/news/news/feed.rss",
+      "domini": ["home.cern", "cern.ch"],
+      "sezione": "novita",
+      "argomento": "scienza",
+      "attiva": true
+    },
+    {
+      "id": "nature",
+      "nome": "Nature",
+      "feed": "https://www.nature.com/nature.rss",
+      "domini": ["nature.com"],
+      "sezione": "novita",
+      "argomento": "scienza",
+      "attiva": true
+    },
+    {
+      "id": "science",
+      "nome": "Science (AAAS)",
+      "feed": "https://www.science.org/rss/news_current.xml",
+      "domini": ["science.org"],
+      "sezione": "novita",
+      "argomento": "scienza",
+      "attiva": true
+    },
+    {
+      "id": "oms",
+      "nome": "OMS – Organizzazione Mondiale della Sanità",
+      "feed": "https://www.who.int/rss-feeds/news-english.xml",
+      "domini": ["who.int"],
+      "sezione": "novita",
+      "argomento": "salute",
+      "attiva": true
+    },
+    {
+      "id": "nih",
+      "nome": "NIH – National Institutes of Health",
+      "feed": "https://www.nih.gov/news-releases/feed.xml",
+      "domini": ["nih.gov"],
+      "sezione": "novita",
+      "argomento": "salute",
+      "attiva": true
+    },
+    {
+      "id": "istat",
+      "nome": "ISTAT – Istituto Nazionale di Statistica",
+      "feed": "https://www.istat.it/feed/",
+      "domini": ["istat.it"],
+      "sezione": "novita",
+      "argomento": "scienza",
+      "attiva": true
+    },
+    {
+      "id": "ingv",
+      "nome": "INGV – Istituto Nazionale di Geofisica e Vulcanologia",
+      "feed": "https://ingvterremoti.com/feed/",
+      "domini": ["ingvterremoti.com", "ingv.it"],
+      "sezione": "novita",
+      "argomento": "natura",
+      "attiva": true
+    },
+    {
+      "id": "mit",
+      "nome": "MIT News",
+      "feed": "https://news.mit.edu/rss/research",
+      "domini": ["news.mit.edu", "mit.edu"],
+      "sezione": "novita",
+      "argomento": "tecnologia",
+      "attiva": true
+    },
+    {
+      "id": "cambridge",
+      "nome": "Università di Cambridge",
+      "feed": "https://www.cam.ac.uk/research/news/rss",
+      "domini": ["cam.ac.uk"],
+      "sezione": "novita",
+      "argomento": "scienza",
+      "attiva": true
+    },
+    {
+      "id": "apod",
+      "nome": "NASA – Astronomy Picture of the Day",
+      "feed": "https://apod.nasa.gov/apod.rss",
+      "domini": ["apod.nasa.gov", "nasa.gov"],
+      "sezione": "losapevi",
+      "argomento": "spazio",
+      "attiva": true
+    },
+    {
+      "id": "wikipedia-vetrina",
+      "nome": "Wikipedia – Voce in vetrina",
+      "feed": "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=featured&feedformat=atom",
+      "domini": ["wikipedia.org"],
+      "sezione": "losapevi",
+      "argomento": "storia",
+      "attiva": true
+    },
+    {
+      "id": "wikipedia-accadde-oggi",
+      "nome": "Wikipedia – Accadde oggi",
+      "feed": "https://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=atom",
+      "domini": ["wikipedia.org"],
+      "sezione": "losapevi",
+      "argomento": "storia",
+      "attiva": true
+    }
+  ]
+}
