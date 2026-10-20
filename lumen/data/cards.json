@@ -1,0 +1,785 @@
+{
+  "updatedAt": "2026-10-18T06:00:00.000Z",
+  "cards": [
+    {
+      "id": "nobel-fisica-2025",
+      "section": "novita",
+      "topic": "scienza",
+      "title": "Nobel per la Fisica 2025: effetti quantistici in un circuito visibile a occhio nudo",
+      "summary": "Clarke, Devoret e Martinis hanno dimostrato che un circuito elettrico abbastanza grande da tenere in mano può seguire le regole della meccanica quantistica.",
+      "body": [
+        "Il 7 ottobre 2025 l'Accademia Reale Svedese delle Scienze ha assegnato il Premio Nobel per la Fisica a John Clarke, Michel H. Devoret e John M. Martinis, per esperimenti condotti a metà degli anni Ottanta all'Università della California a Berkeley.",
+        "Di solito gli effetti quantistici si osservano su singole particelle. Uno di questi è il «tunneling»: una particella attraversa una barriera che, secondo la fisica classica, non potrebbe superare. I tre fisici hanno costruito un circuito con due superconduttori separati da un sottilissimo strato isolante (una giunzione Josephson) e hanno mostrato che l'intero circuito, formato da un numero enorme di particelle cariche, si comportava come un unico oggetto quantistico.",
+        "Il sistema usciva per tunneling da uno stato in cui sarebbe dovuto restare «bloccato» e assorbiva o emetteva energia solo in quantità precise, cioè quantizzate, esattamente come previsto dalla teoria.",
+        "Secondo l'Accademia, questi risultati hanno aperto la strada allo sviluppo di nuove tecnologie quantistiche, tra cui computer quantistici basati su circuiti superconduttori."
+      ],
+      "quotes": [
+        {
+          "text": "for the discovery of macroscopic quantum mechanical tunnelling and energy quantisation in an electric circuit",
+          "translation": "per la scoperta del tunneling quantistico macroscopico e della quantizzazione dell'energia in un circuito elettrico",
+          "source": "Motivazione ufficiale del Premio Nobel"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Nobel Prize – Fisica 2025",
+          "url": "https://www.nobelprize.org/prizes/physics/2025/summary/"
+        },
+        {
+          "name": "Comunicato stampa ufficiale",
+          "url": "https://www.nobelprize.org/prizes/physics/2025/press-release/"
+        }
+      ],
+      "publisher": "Premio Nobel",
+      "date": "2025-10-07",
+      "addedAt": "2026-10-18T06:00:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Esperimenti degli anni Ottanta, confermati e usati da decenni, ora premiati con il Nobel.",
+      "verified": "redazione"
+    },
+    {
+      "id": "nobel-chimica-2025",
+      "section": "novita",
+      "topic": "tecnologia",
+      "title": "Nobel per la Chimica 2025 ai cristalli pieni di stanze molecolari",
+      "summary": "Kitagawa, Robson e Yaghi hanno sviluppato i reticoli metallo-organici (MOF), materiali porosi capaci di catturare gas e altre molecole al loro interno.",
+      "body": [
+        "L'8 ottobre 2025 il Premio Nobel per la Chimica è stato assegnato a Susumu Kitagawa (Università di Kyoto), Richard Robson (Università di Melbourne) e Omar M. Yaghi (Università della California, Berkeley) per lo sviluppo dei reticoli metallo-organici, noti con la sigla inglese MOF.",
+        "Un MOF è una struttura cristallina in cui ioni metallici fanno da «snodi», collegati tra loro da lunghe molecole organiche. Il risultato è un materiale attraversato da cavità regolari, in cui gas e altre sostanze possono entrare e uscire.",
+        "Robson realizzò le prime strutture di questo tipo nel 1989. Negli anni successivi Kitagawa e Yaghi le resero stabili e flessibili. Cambiando i mattoni di partenza, i chimici hanno poi creato decine di migliaia di MOF diversi.",
+        "L'Accademia cita tra gli esempi MOF che raccolgono acqua dall'aria del deserto, catturano anidride carbonica, immagazzinano gas tossici o separano sostanze inquinanti dall'acqua."
+      ],
+      "quotes": [
+        {
+          "text": "for the development of metal–organic frameworks",
+          "translation": "per lo sviluppo dei reticoli metallo-organici",
+          "source": "Motivazione ufficiale del Premio Nobel"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Nobel Prize – Chimica 2025",
+          "url": "https://www.nobelprize.org/prizes/chemistry/2025/summary/"
+        },
+        {
+          "name": "Comunicato stampa ufficiale",
+          "url": "https://www.nobelprize.org/prizes/chemistry/2025/press-release/"
+        }
+      ],
+      "publisher": "Premio Nobel",
+      "date": "2025-10-08",
+      "addedAt": "2026-10-18T05:59:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Ricerche iniziate nel 1989 e sviluppate da migliaia di laboratori, ora premiate con il Nobel.",
+      "verified": "redazione"
+    },
+    {
+      "id": "nobel-medicina-2025",
+      "section": "novita",
+      "topic": "salute",
+      "title": "Nobel per la Medicina 2025: le cellule che impediscono al sistema immunitario di attaccarci",
+      "summary": "Brunkow, Ramsdell e Sakaguchi hanno scoperto le cellule T regolatorie, «guardie» che frenano le reazioni immunitarie contro il nostro stesso corpo.",
+      "body": [
+        "Il 6 ottobre 2025 l'Assemblea Nobel del Karolinska Institutet ha assegnato il Premio Nobel per la Fisiologia o la Medicina a Mary E. Brunkow, Fred Ramsdell e Shimon Sakaguchi per le loro scoperte sulla tolleranza immunitaria periferica.",
+        "Il sistema immunitario deve distruggere virus e batteri senza aggredire i tessuti del corpo. Nel 1995 Sakaguchi identificò una classe di cellule fino ad allora sconosciuta, le cellule T regolatorie, che tengono a freno le altre cellule immunitarie.",
+        "Nel 2001 Brunkow e Ramsdell scoprirono che mutazioni in un gene chiamato Foxp3 causano una grave malattia autoimmune nei topi e, nell'uomo, la sindrome IPEX. Nel 2003 Sakaguchi collegò le due scoperte, dimostrando che il gene Foxp3 controlla lo sviluppo delle cellule T regolatorie.",
+        "Questi risultati hanno aperto un campo di ricerca su possibili terapie per malattie autoimmuni e tumori, oggi in fase di sperimentazione clinica."
+      ],
+      "quotes": [
+        {
+          "text": "for their discoveries concerning peripheral immune tolerance",
+          "translation": "per le loro scoperte sulla tolleranza immunitaria periferica",
+          "source": "Motivazione ufficiale del Premio Nobel"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Nobel Prize – Medicina 2025",
+          "url": "https://www.nobelprize.org/prizes/medicine/2025/summary/"
+        },
+        {
+          "name": "Comunicato stampa ufficiale",
+          "url": "https://www.nobelprize.org/prizes/medicine/2025/press-release/"
+        }
+      ],
+      "publisher": "Premio Nobel",
+      "date": "2025-10-06",
+      "addedAt": "2026-10-18T05:58:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Scoperte degli anni '90 e 2000 confermate da molti gruppi; le terapie che ne derivano sono ancora in sperimentazione.",
+      "verified": "redazione"
+    },
+    {
+      "id": "3i-atlas",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "3I/ATLAS, il terzo oggetto interstellare mai osservato",
+      "summary": "Scoperta il 1° luglio 2025, questa cometa arriva da fuori del Sistema solare: è solo il terzo visitatore di questo tipo mai registrato, dopo ʻOumuamua e Borisov.",
+      "body": [
+        "Il 1° luglio 2025 il telescopio cileno della rete di sorveglianza ATLAS, finanziata dalla NASA, ha individuato un oggetto in rapido movimento. Le osservazioni successive hanno mostrato che la sua orbita è iperbolica: non gira intorno al Sole, ma attraversa il Sistema solare una sola volta per poi tornare nello spazio interstellare.",
+        "Per questo ha ricevuto la sigla 3I, dove «I» sta per interstellare: è il terzo oggetto di questo tipo dopo 1I/ʻOumuamua, scoperto nel 2017, e la cometa 2I/Borisov, del 2019. È classificato come cometa perché mostra una chioma di gas e polveri.",
+        "La NASA ha precisato che la cometa non rappresenta un pericolo per la Terra: resta sempre a grande distanza, oltre 1,5 unità astronomiche (più di 220 milioni di chilometri). Il passaggio più vicino al Sole è avvenuto a fine ottobre 2025, poco all'interno dell'orbita di Marte."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA Science – Comet 3I/ATLAS",
+          "url": "https://science.nasa.gov/solar-system/comets/3i-atlas/"
+        },
+        {
+          "name": "Wikipedia – 3I/ATLAS",
+          "url": "https://en.wikipedia.org/wiki/3I/ATLAS"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "2025-07-01",
+      "addedAt": "2026-10-18T05:57:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Osservazione confermata da molti osservatori; dimensioni e composizione esatte sono ancora in studio.",
+      "verified": "redazione"
+    },
+    {
+      "id": "rubin-prime-immagini",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "L'Osservatorio Vera C. Rubin ha mostrato le sue prime immagini",
+      "summary": "Dal Cile, il telescopio con la fotocamera digitale più grande mai costruita per l'astronomia ha iniziato a riprendere il cielo australe, che fotograferà per dieci anni.",
+      "body": [
+        "Il 23 giugno 2025 l'Osservatorio Vera C. Rubin, finanziato dalla National Science Foundation e dal Dipartimento dell'Energia degli Stati Uniti, ha diffuso le sue prime immagini. Il telescopio si trova sul Cerro Pachón, nelle Ande cilene.",
+        "Il cuore dello strumento è la LSST Camera, la più grande fotocamera digitale mai costruita per l'astronomia, con circa 3.200 megapixel. Ogni immagine copre una porzione di cielo pari a circa 45 volte la Luna piena.",
+        "Nelle prime ore di osservazione il telescopio ha individuato oltre 2.000 asteroidi mai visti prima, alcuni dei quali passano vicino all'orbita terrestre senza rappresentare un pericolo.",
+        "Il programma principale, la Legacy Survey of Space and Time (LSST), durerà dieci anni: il telescopio riprenderà l'intero cielo australe ogni poche notti, per studiare materia oscura, energia oscura, la struttura della Via Lattea e i piccoli corpi del Sistema solare."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Vera C. Rubin Observatory",
+          "url": "https://rubinobservatory.org/"
+        },
+        {
+          "name": "Wikipedia – Vera C. Rubin Observatory",
+          "url": "https://en.wikipedia.org/wiki/Vera_C._Rubin_Observatory"
+        }
+      ],
+      "publisher": "Osservatorio Vera C. Rubin",
+      "date": "2025-06-23",
+      "addedAt": "2026-10-18T05:56:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Evento documentato dall'osservatorio e dagli enti che lo finanziano.",
+      "verified": "redazione"
+    },
+    {
+      "id": "parker-perielio",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "La sonda Parker è passata più vicino al Sole di qualsiasi oggetto umano",
+      "summary": "Il 24 dicembre 2024 la Parker Solar Probe della NASA è arrivata a circa 6,1 milioni di chilometri dalla superficie solare, viaggiando a circa 690.000 km/h.",
+      "body": [
+        "La Parker Solar Probe, lanciata dalla NASA nel 2018, studia la corona, lo strato più esterno dell'atmosfera del Sole. Il 24 dicembre 2024 ha raggiunto il punto più vicino della sua orbita: circa 6,1 milioni di chilometri dalla superficie solare.",
+        "In quel momento viaggiava a circa 692.000 chilometri orari, la velocità più alta mai raggiunta da un oggetto costruito dall'uomo. Durante il passaggio era fuori contatto con la Terra; il 26 dicembre ha inviato un segnale per confermare di essere in buone condizioni.",
+        "Uno scudo termico in composito di carbonio protegge gli strumenti dal calore, permettendo di misurare direttamente il vento solare e i campi magnetici là dove nascono. Questi dati servono a capire, tra le altre cose, perché la corona sia molto più calda della superficie del Sole.",
+        "Nel corso del 2025 la sonda ha ripetuto altri passaggi alla stessa distanza."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA – Parker Solar Probe",
+          "url": "https://science.nasa.gov/mission/parker-solar-probe/"
+        },
+        {
+          "name": "Wikipedia – Parker Solar Probe",
+          "url": "https://en.wikipedia.org/wiki/Parker_Solar_Probe"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "2024-12-24",
+      "addedAt": "2026-10-18T05:55:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Dati di missione comunicati dalla NASA.",
+      "verified": "redazione"
+    },
+    {
+      "id": "europa-clipper-lancio",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "Europa Clipper è partita verso la luna ghiacciata di Giove",
+      "summary": "La sonda della NASA, lanciata il 14 ottobre 2024, arriverà nel 2030 per capire se l'oceano nascosto sotto il ghiaccio di Europa abbia condizioni adatte alla vita.",
+      "body": [
+        "Il 14 ottobre 2024 la sonda Europa Clipper è stata lanciata dal Kennedy Space Center, in Florida, con un razzo Falcon Heavy. È la più grande sonda che la NASA abbia mai costruito per una missione planetaria.",
+        "La destinazione è Europa, una delle lune di Giove. Sotto la sua crosta di ghiaccio gli scienziati ritengono che si trovi un oceano di acqua salata, con più acqua di tutti gli oceani terrestri messi insieme.",
+        "La sonda arriverà nel sistema di Giove nell'aprile 2030 ed effettuerà 49 sorvoli ravvicinati di Europa. L'obiettivo non è trovare forme di vita, ma capire se quell'ambiente possieda gli ingredienti necessari: acqua, energia e composti chimici adatti.",
+        "Per guadagnare velocità durante il viaggio la sonda sfrutta la gravità di Marte, sorvolato nel marzo 2025, e quella della Terra, prevista per dicembre 2026."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA – Europa Clipper",
+          "url": "https://science.nasa.gov/mission/europa-clipper/"
+        },
+        {
+          "name": "Wikipedia – Europa Clipper",
+          "url": "https://en.wikipedia.org/wiki/Europa_Clipper"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "2024-10-14",
+      "addedAt": "2026-10-18T05:54:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Evento ufficiale; l'esistenza dell'oceano di Europa è fortemente supportata ma sarà verificata dalla missione stessa.",
+      "verified": "redazione"
+    },
+    {
+      "id": "egitto-malaria",
+      "section": "novita",
+      "topic": "salute",
+      "title": "L'Egitto è stato certificato libero dalla malaria",
+      "summary": "Il 20 ottobre 2024 l'Organizzazione Mondiale della Sanità ha certificato l'Egitto come Paese libero dalla malaria, una malattia presente lungo il Nilo fin dall'antichità.",
+      "body": [
+        "Il 20 ottobre 2024 l'Organizzazione Mondiale della Sanità ha concesso all'Egitto la certificazione di Paese libero dalla malaria. Per ottenerla, un Paese deve dimostrare che la trasmissione locale è interrotta da almeno tre anni consecutivi e di saperne impedire il ritorno.",
+        "La malaria, causata da parassiti trasmessi dalle zanzare, era presente in Egitto da millenni: tracce del parassita sono state trovate anche in mummie dell'antico Egitto.",
+        "L'Egitto è il terzo Paese della regione del Mediterraneo orientale dell'OMS a ricevere la certificazione, dopo gli Emirati Arabi Uniti e il Marocco.",
+        "La certificazione non rende impossibile un ritorno della malattia: i casi importati restano possibili, per questo il Paese deve mantenere una sorveglianza attenta."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "OMS – Paesi certificati liberi dalla malaria",
+          "url": "https://www.who.int/teams/global-malaria-programme/elimination/countries-and-territories-certified-malaria-free-by-who"
+        },
+        {
+          "name": "OMS – Comunicato del 20 ottobre 2024",
+          "url": "https://www.who.int/news/item/20-10-2024-egypt-certified-malaria-free-by-who"
+        }
+      ],
+      "publisher": "OMS",
+      "date": "2024-10-20",
+      "addedAt": "2026-10-18T05:53:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Decisione ufficiale dell'OMS dopo una verifica indipendente.",
+      "verified": "redazione"
+    },
+    {
+      "id": "k2-18b-dms",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "Possibili tracce chimiche su K2-18b: un indizio, non una prova",
+      "summary": "Un gruppo dell'Università di Cambridge ha rilevato con il telescopio Webb segnali compatibili con molecole che sulla Terra sono prodotte da organismi viventi. Gli stessi autori invitano alla cautela.",
+      "body": [
+        "Nell'aprile 2025 un gruppo guidato da Nikku Madhusudhan dell'Università di Cambridge ha pubblicato su The Astrophysical Journal Letters un'analisi dell'atmosfera di K2-18b, un pianeta più grande della Terra che orbita attorno a una stella nana rossa a circa 124 anni luce da noi.",
+        "Con i dati del telescopio spaziale James Webb, i ricercatori hanno riportato segnali compatibili con dimetilsolfuro (DMS) o dimetildisolfuro (DMDS). Sulla Terra queste molecole sono prodotte soprattutto da organismi viventi, come il fitoplancton marino.",
+        "La significatività statistica del segnale è di circa tre sigma: in astronomia è considerata un indizio, non una scoperta, per la quale servono cinque sigma. Gli autori hanno sottolineato che servono altre osservazioni e che potrebbero esistere processi non biologici capaci di produrre queste molecole.",
+        "Analisi indipendenti degli stessi dati, pubblicate nei mesi successivi, hanno messo in dubbio la solidità del segnale. Il caso resta aperto ed è un buon esempio di come funziona la scienza: le affermazioni straordinarie vengono controllate da altri gruppi."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Università di Cambridge – comunicato",
+          "url": "https://www.cam.ac.uk/research/news/strongest-hints-yet-of-biological-activity-outside-the-solar-system"
+        },
+        {
+          "name": "Wikipedia – K2-18b",
+          "url": "https://en.wikipedia.org/wiki/K2-18b"
+        }
+      ],
+      "publisher": "Università di Cambridge",
+      "date": "2025-04-17",
+      "addedAt": "2026-10-18T05:52:00.000Z",
+      "solidity": "preliminare",
+      "solidityNote": "Segnale statisticamente debole (circa 3 sigma) e contestato da analisi indipendenti: servono nuove osservazioni.",
+      "verified": "redazione"
+    },
+    {
+      "id": "perseverance-sapphire-canyon",
+      "section": "novita",
+      "topic": "spazio",
+      "title": "Su Marte una roccia con possibili tracce di vita antica, tutte da verificare",
+      "summary": "Uno studio su Nature descrive un campione raccolto dal rover Perseverance con caratteristiche che potrebbero avere origine biologica. Esistono però anche spiegazioni non biologiche.",
+      "body": [
+        "Il 10 settembre 2025 la NASA ha presentato uno studio pubblicato su Nature dedicato a un campione chiamato «Sapphire Canyon», prelevato nel luglio 2024 dal rover Perseverance da una roccia soprannominata «Cheyava Falls», nel cratere Jezero.",
+        "La roccia, formata da sedimenti depositati da un antico corso d'acqua, contiene minuscole macchie chiamate «semi di papavero» e «macchie di leopardo», ricche di minerali come la vivianite (un fosfato di ferro) e la greigite (un solfuro di ferro). Sulla Terra minerali simili, disposti in questo modo, possono formarsi per l'azione di microrganismi.",
+        "I ricercatori la definiscono una «potenziale biosignatura»: un indizio che potrebbe avere origine biologica ma che richiede altri studi prima di trarre conclusioni, perché gli stessi minerali possono formarsi anche con processi chimici non biologici.",
+        "Per una risposta più netta servirebbe analizzare il campione nei laboratori sulla Terra, ma il programma per riportarlo indietro è ancora incerto."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA – Mars 2020 Perseverance",
+          "url": "https://science.nasa.gov/mission/mars-2020-perseverance/"
+        },
+        {
+          "name": "Wikipedia – Cheyava Falls",
+          "url": "https://en.wikipedia.org/wiki/Cheyava_Falls"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "2025-09-10",
+      "addedAt": "2026-10-18T05:51:00.000Z",
+      "solidity": "preliminare",
+      "solidityNote": "Possibile biosignatura: gli stessi autori indicano spiegazioni alternative non biologiche.",
+      "verified": "redazione"
+    },
+    {
+      "id": "willow-correzione-errori",
+      "section": "novita",
+      "topic": "tecnologia",
+      "title": "Computer quantistici: gli errori calano aggiungendo qubit, per la prima volta",
+      "summary": "Su Nature, Google Quantum AI ha mostrato che raggruppando più qubit per correggere gli errori il tasso di errore diminuisce invece di aumentare.",
+      "body": [
+        "I computer quantistici usano i qubit, unità di informazione molto fragili: basta un minimo disturbo per introdurre errori. Dagli anni Novanta i teorici propongono di combinare molti qubit fisici in un unico «qubit logico» più affidabile, ma lo schema funziona solo se gli errori dei singoli componenti stanno sotto una certa soglia.",
+        "Nel dicembre 2024 il gruppo Google Quantum AI ha pubblicato su Nature i risultati ottenuti con il chip Willow, da 105 qubit. Passando da griglie di qubit di 3×3 a 5×5 e poi a 7×7, il tasso di errore del qubit logico si è circa dimezzato a ogni passaggio.",
+        "È la prima dimostrazione convincente di funzionamento «sotto soglia» con questo schema, chiamato codice di superficie. Per computer quantistici utili su larga scala serviranno però errori ancora molto più bassi e molti più qubit."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Google – Annuncio del chip Willow",
+          "url": "https://blog.google/technology/research/google-willow-quantum-chip/"
+        },
+        {
+          "name": "Wikipedia – Willow (processore)",
+          "url": "https://en.wikipedia.org/wiki/Willow_processor"
+        }
+      ],
+      "publisher": "Google Quantum AI",
+      "date": "2024-12-09",
+      "addedAt": "2026-10-18T05:50:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Risultato pubblicato su Nature dopo revisione tra pari; le applicazioni pratiche sono ancora lontane.",
+      "verified": "redazione"
+    },
+    {
+      "id": "calamaro-colossale-video",
+      "section": "novita",
+      "topic": "natura",
+      "title": "Il calamaro colossale filmato per la prima volta nel suo ambiente",
+      "summary": "Un esemplare giovane, lungo circa 30 centimetri, è stato ripreso vivo a circa 600 metri di profondità vicino alle Isole Sandwich australi, cento anni dopo la descrizione della specie.",
+      "body": [
+        "Il 9 marzo 2025, durante una spedizione dello Schmidt Ocean Institute con il programma Ocean Census, un robot sottomarino ha filmato un giovane calamaro colossale (Mesonychoteuthis hamiltoni) a circa 600 metri di profondità, vicino alle Isole Sandwich australi, nell'Atlantico meridionale. Il video è stato diffuso ad aprile.",
+        "È la prima volta che questa specie viene osservata viva nel suo ambiente naturale. Il calamaro colossale fu descritto nel 1925 a partire da resti trovati nello stomaco di un capodoglio; da allora si conoscevano soprattutto esemplari morti o catturati dai pescherecci.",
+        "L'esemplare ripreso era lungo circa 30 centimetri e quasi trasparente. Secondo le stime, gli adulti possono raggiungere i 7 metri e i 500 chili: è considerato l'invertebrato più pesante conosciuto.",
+        "L'identificazione è stata confermata da esperti indipendenti, tra cui la biologa Kat Bolstad dell'Auckland University of Technology."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Schmidt Ocean Institute",
+          "url": "https://schmidtocean.org/"
+        },
+        {
+          "name": "Wikipedia – Calamaro colossale",
+          "url": "https://en.wikipedia.org/wiki/Colossal_squid"
+        }
+      ],
+      "publisher": "Schmidt Ocean Institute",
+      "date": "2025-04-15",
+      "addedAt": "2026-10-18T05:49:00.000Z",
+      "solidity": "solido",
+      "solidityNote": "Osservazione documentata da video e confermata da esperti indipendenti.",
+      "verified": "redazione"
+    },
+    {
+      "id": "tardigradi-spazio",
+      "section": "losapevi",
+      "topic": "natura",
+      "title": "I tardigradi sono sopravvissuti al vuoto dello spazio",
+      "summary": "Nel 2007 questi animali lunghi meno di un millimetro hanno passato dieci giorni esposti allo spazio aperto, in orbita. Molti sono tornati attivi e si sono riprodotti.",
+      "body": [
+        "I tardigradi, detti anche «orsetti d'acqua», sono minuscoli animali a otto zampe che vivono quasi ovunque: nei muschi, nei licheni, nei sedimenti marini. Quando l'ambiente si secca entrano in uno stato chiamato criptobiosi, in cui perdono quasi tutta l'acqua e il loro metabolismo si arresta quasi completamente.",
+        "Nel settembre 2007 l'esperimento TARDIS, a bordo della capsula FOTON-M3 lanciata con la partecipazione dell'Agenzia Spaziale Europea, ha esposto tardigradi disidratati per dieci giorni al vuoto dello spazio in orbita bassa. Alcuni gruppi sono stati esposti anche alla radiazione ultravioletta del Sole.",
+        "Al rientro, molti esemplari esposti al solo vuoto si sono reidratati, hanno ripreso a muoversi e hanno deposto uova da cui sono nati piccoli sani. La radiazione ultravioletta solare completa si è invece rivelata letale per la maggior parte di loro. I risultati sono stati pubblicati nel 2008 sulla rivista Current Biology."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Current Biology – Jönsson et al., 2008",
+          "url": "https://doi.org/10.1016/j.cub.2008.06.048"
+        },
+        {
+          "name": "Wikipedia – Tardigrada",
+          "url": "https://it.wikipedia.org/wiki/Tardigrada"
+        }
+      ],
+      "publisher": "Current Biology",
+      "date": "2007-09-14",
+      "addedAt": "2026-10-18T05:48:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Esperimento pubblicato su rivista scientifica e confermato da studi successivi sulla resistenza dei tardigradi.",
+      "dateLabel": "2007",
+      "verified": "redazione"
+    },
+    {
+      "id": "luce-sole-8-minuti",
+      "section": "losapevi",
+      "topic": "scienza",
+      "title": "La luce del Sole che vedi è partita circa 8 minuti fa",
+      "summary": "Alla distanza media tra Terra e Sole, circa 150 milioni di chilometri, la luce impiega in media 8 minuti e 19 secondi per arrivare fino a noi.",
+      "body": [
+        "La luce nel vuoto viaggia a 299.792,458 chilometri al secondo. La distanza media tra la Terra e il Sole, chiamata unità astronomica, è fissata dall'Unione Astronomica Internazionale in 149.597.870,7 chilometri.",
+        "Dividendo la distanza per la velocità si ottengono circa 499 secondi, cioè 8 minuti e 19 secondi. Poiché l'orbita terrestre è leggermente ellittica, il tempo cambia nel corso dell'anno: a inizio gennaio, quando la Terra è più vicina al Sole, servono circa 8 minuti e 11 secondi; a inizio luglio circa 8 minuti e 27 secondi.",
+        "Guardare il cielo significa quindi guardare il passato: la Luna appare com'era poco più di un secondo prima, la stella più vicina dopo il Sole come era oltre quattro anni fa.",
+        "La prima stima della velocità della luce risale al 1676, quando l'astronomo danese Ole Rømer notò che le eclissi di Io, una luna di Giove, sembravano anticipare o ritardare a seconda della distanza tra la Terra e Giove."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Unità astronomica",
+          "url": "https://it.wikipedia.org/wiki/Unit%C3%A0_astronomica"
+        },
+        {
+          "name": "Wikipedia – Velocità della luce",
+          "url": "https://it.wikipedia.org/wiki/Velocit%C3%A0_della_luce"
+        }
+      ],
+      "publisher": "Unione Astronomica Internazionale",
+      "date": "1676-01-01",
+      "addedAt": "2026-10-18T05:47:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Valori misurati con grande precisione e fissati per convenzione internazionale.",
+      "dateLabel": "Fatto astronomico",
+      "verified": "redazione"
+    },
+    {
+      "id": "penicillina-fleming",
+      "section": "losapevi",
+      "topic": "salute",
+      "title": "La penicillina nacque da una piastra contaminata",
+      "summary": "Nel 1928 Alexander Fleming notò che una muffa aveva ucciso i batteri di una sua coltura. Da quell'osservazione nacque il primo antibiotico.",
+      "body": [
+        "Nel settembre 1928, al St Mary's Hospital di Londra, il batteriologo Alexander Fleming trovò una piastra di coltura di stafilococchi contaminata da una muffa. Intorno alla muffa i batteri erano scomparsi.",
+        "Fleming identificò la muffa come appartenente al genere Penicillium e chiamò «penicillina» la sostanza antibatterica che produceva. Pubblicò la scoperta nel 1929, ma non riuscì a ottenerla in forma pura e stabile.",
+        "Il passo decisivo arrivò a Oxford tra il 1939 e il 1941, quando Howard Florey ed Ernst Chain, con il loro gruppo, purificarono la penicillina e ne dimostrarono l'efficacia prima sugli animali e poi sui pazienti. Durante la Seconda guerra mondiale la produzione su larga scala salvò moltissimi feriti.",
+        "Nel 1945 Fleming, Florey e Chain ricevettero insieme il Premio Nobel per la Fisiologia o la Medicina."
+      ],
+      "quotes": [
+        {
+          "text": "for the discovery of penicillin and its curative effect in various infectious diseases",
+          "translation": "per la scoperta della penicillina e del suo effetto curativo in varie malattie infettive",
+          "source": "Motivazione ufficiale del Premio Nobel 1945"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Nobel Prize – Medicina 1945",
+          "url": "https://www.nobelprize.org/prizes/medicine/1945/summary/"
+        },
+        {
+          "name": "Wikipedia – Penicillina",
+          "url": "https://it.wikipedia.org/wiki/Penicillina"
+        }
+      ],
+      "publisher": "Premio Nobel",
+      "date": "1928-09-28",
+      "addedAt": "2026-10-18T05:46:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Storia ampiamente documentata da fonti primarie e dalla Fondazione Nobel.",
+      "dateLabel": "1928",
+      "verified": "redazione"
+    },
+    {
+      "id": "eratostene-circonferenza",
+      "section": "losapevi",
+      "topic": "storia",
+      "title": "Eratostene misurò la Terra con un'ombra e un po' di geometria",
+      "summary": "Oltre 2.200 anni fa, confrontando le ombre in due città egiziane, Eratostene stimò la circonferenza terrestre con un metodo del tutto corretto.",
+      "body": [
+        "Eratostene di Cirene, matematico e direttore della Biblioteca di Alessandria nel III secolo a.C., sapeva che a Siene (l'odierna Assuan), a mezzogiorno del solstizio d'estate, il Sole era quasi esattamente allo zenit: i raggi illuminavano il fondo dei pozzi e gli oggetti verticali non facevano ombra.",
+        "Nello stesso momento, ad Alessandria, più a nord, un'asta verticale proiettava un'ombra corrispondente a un angolo di circa 7,2 gradi, cioè un cinquantesimo dell'angolo giro.",
+        "Supponendo che il Sole fosse così lontano da avere raggi praticamente paralleli, Eratostene concluse che la distanza tra le due città era un cinquantesimo della circonferenza terrestre. Stimando quella distanza in 5.000 stadi, ottenne 250.000 stadi, valore poi arrotondato a 252.000.",
+        "Non sappiamo con certezza quale stadio usasse, quindi la precisione del risultato è discussa: a seconda dell'unità scelta, lo scarto rispetto ai circa 40.000 km reali va da meno del 2% a circa il 16%."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Eratostene",
+          "url": "https://it.wikipedia.org/wiki/Eratostene"
+        },
+        {
+          "name": "Wikipedia – Eratosthenes",
+          "url": "https://en.wikipedia.org/wiki/Eratosthenes"
+        }
+      ],
+      "publisher": "Enciclopedia",
+      "date": "-0240-01-01",
+      "addedAt": "2026-10-18T05:45:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Metodo tramandato da autori antichi come Cleomede; il valore esatto dello stadio resta incerto.",
+      "dateLabel": "III secolo a.C.",
+      "verified": "redazione"
+    },
+    {
+      "id": "venere-giorno-anno",
+      "section": "losapevi",
+      "topic": "spazio",
+      "title": "Su Venere un giorno dura più di un anno",
+      "summary": "Venere impiega circa 243 giorni terrestri per ruotare su se stessa, ma solo 225 per girare intorno al Sole. E ruota al contrario rispetto alla Terra.",
+      "body": [
+        "Venere è il pianeta con la rotazione più lenta del Sistema solare: per compiere un giro completo su se stesso impiega circa 243 giorni terrestri. Per completare un'orbita intorno al Sole gliene bastano circa 225.",
+        "Inoltre ruota in senso retrogrado, da est verso ovest, al contrario della Terra e della maggior parte dei pianeti: su Venere il Sole sorge a ovest e tramonta a est.",
+        "Combinando rotazione e rivoluzione, l'intervallo tra due mezzogiorni consecutivi, il cosiddetto giorno solare, dura circa 117 giorni terrestri.",
+        "Il periodo di rotazione è stato misurato con il radar, perché la superficie del pianeta è sempre nascosta da spesse nubi di acido solforico."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA – Venus",
+          "url": "https://science.nasa.gov/venus/"
+        },
+        {
+          "name": "Wikipedia – Venere",
+          "url": "https://it.wikipedia.org/wiki/Venere_(astronomia)"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "1964-01-01",
+      "addedAt": "2026-10-18T05:44:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Misure radar ripetute dagli anni Sessanta e confermate da sonde spaziali.",
+      "dateLabel": "Fatto astronomico",
+      "verified": "redazione"
+    },
+    {
+      "id": "polpo-tre-cuori",
+      "section": "losapevi",
+      "topic": "natura",
+      "title": "Il polpo ha tre cuori e il sangue blu",
+      "summary": "Due cuori spingono il sangue nelle branchie, il terzo nel resto del corpo. Il colore blu dipende da una proteina a base di rame, l'emocianina.",
+      "body": [
+        "I polpi, come gli altri cefalopodi, hanno un sistema circolatorio chiuso con tre cuori. I due cuori branchiali pompano il sangue attraverso le branchie, dove si carica di ossigeno; il cuore sistemico lo spinge poi nel resto del corpo.",
+        "Il sangue trasporta l'ossigeno grazie all'emocianina, una proteina che contiene rame invece del ferro presente nell'emoglobina umana. Quando lega l'ossigeno, l'emocianina assume un colore blu.",
+        "Un dettaglio curioso: quando il polpo nuota, il cuore sistemico rallenta fino quasi a fermarsi. È uno dei motivi per cui questi animali, potendo scegliere, si spostano strisciando sul fondale."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Octopoda",
+          "url": "https://it.wikipedia.org/wiki/Octopoda"
+        },
+        {
+          "name": "Wikipedia – Emocianina",
+          "url": "https://it.wikipedia.org/wiki/Emocianina"
+        }
+      ],
+      "publisher": "Enciclopedia",
+      "date": "1900-01-01",
+      "addedAt": "2026-10-18T05:43:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Anatomia descritta da tempo e confermata dalla zoologia moderna.",
+      "dateLabel": "Zoologia",
+      "verified": "redazione"
+    },
+    {
+      "id": "stele-di-rosetta",
+      "section": "losapevi",
+      "topic": "storia",
+      "title": "La Stele di Rosetta: una lastra, tre scritture, una lingua ritrovata",
+      "summary": "Lo stesso decreto inciso in geroglifico, demotico e greco permise a Jean-François Champollion, nel 1822, di decifrare i geroglifici egizi.",
+      "body": [
+        "La Stele di Rosetta fu trovata nel luglio 1799 da soldati francesi della spedizione di Napoleone in Egitto, vicino alla città di Rashid (Rosetta), nel delta del Nilo. Dal 1802 è conservata al British Museum di Londra.",
+        "Sulla lastra di granodiorite è inciso un decreto emanato a Menfi nel 196 a.C. in onore del re Tolomeo V. Il testo è ripetuto in tre scritture: geroglifico, demotico (la scrittura corsiva egizia di uso quotidiano) e greco antico.",
+        "Poiché il greco era conosciuto, la stele offriva una chiave di confronto. Il britannico Thomas Young fece progressi importanti, ma fu il francese Jean-François Champollion a capire che i geroglifici combinavano segni che rappresentano suoni e segni che rappresentano idee. Annunciò la sua decifrazione nel 1822, nella celebre «Lettre à M. Dacier»."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "British Museum – La Stele di Rosetta",
+          "url": "https://www.britishmuseum.org/collection/object/Y_EA24"
+        },
+        {
+          "name": "Wikipedia – Stele di Rosetta",
+          "url": "https://it.wikipedia.org/wiki/Stele_di_Rosetta"
+        }
+      ],
+      "publisher": "British Museum",
+      "date": "1822-09-27",
+      "addedAt": "2026-10-18T05:42:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Reperto conservato e studiato da oltre due secoli.",
+      "dateLabel": "1799 – 1822",
+      "verified": "redazione"
+    },
+    {
+      "id": "vaiolo-eradicato",
+      "section": "losapevi",
+      "topic": "salute",
+      "title": "Il vaiolo è l'unica malattia umana eradicata dal pianeta",
+      "summary": "Dal primo vaccino di Edward Jenner nel 1796 alla dichiarazione dell'OMS del 1980: è l'unica malattia umana scomparsa grazie alla vaccinazione.",
+      "body": [
+        "Il vaiolo è stato per secoli una delle malattie più letali: secondo l'OMS, nel solo XX secolo ha causato circa 300 milioni di morti.",
+        "Nel 1796 il medico inglese Edward Jenner dimostrò che inoculare materiale preso da lesioni di vaiolo bovino proteggeva dal vaiolo umano. Da qui deriva la parola «vaccino», dal latino vacca.",
+        "Nel 1967 l'OMS avviò un programma intensificato di eradicazione basato su vaccinazione e sorveglianza: i casi venivano individuati e isolati, e i loro contatti vaccinati. L'ultimo caso naturale fu registrato in Somalia nel 1977.",
+        "L'8 maggio 1980 l'Assemblea Mondiale della Sanità dichiarò ufficialmente il mondo libero dal vaiolo. Resta, a oggi, l'unica malattia umana eradicata."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "OMS – Vaiolo",
+          "url": "https://www.who.int/health-topics/smallpox"
+        },
+        {
+          "name": "Wikipedia – Vaiolo",
+          "url": "https://it.wikipedia.org/wiki/Vaiolo"
+        }
+      ],
+      "publisher": "OMS",
+      "date": "1980-05-08",
+      "addedAt": "2026-10-18T05:41:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Eradicazione certificata ufficialmente dall'OMS nel 1980.",
+      "dateLabel": "1796 – 1980",
+      "verified": "redazione"
+    },
+    {
+      "id": "web-cern",
+      "section": "losapevi",
+      "topic": "tecnologia",
+      "title": "Il Web è nato al CERN, che lo ha regalato al mondo",
+      "summary": "Tim Berners-Lee lo propose nel 1989 per aiutare i fisici a condividere informazioni. Il 30 aprile 1993 il CERN ne rese il software di pubblico dominio.",
+      "body": [
+        "Nel marzo 1989 Tim Berners-Lee, informatico britannico al CERN di Ginevra, scrisse una proposta per un sistema di gestione delle informazioni basato sull'ipertesto, pensato per aiutare migliaia di scienziati sparsi nel mondo a condividere documenti.",
+        "Entro la fine del 1990 aveva realizzato gli elementi fondamentali ancora in uso oggi: il linguaggio HTML, il protocollo HTTP, gli indirizzi URL, il primo server e il primo browser. Il primo sito web, info.cern.ch, spiegava che cosa fosse il World Wide Web.",
+        "Il 30 aprile 1993 il CERN rese il software del Web di pubblico dominio, permettendo a chiunque di usarlo e migliorarlo senza pagare. Questa scelta fu decisiva per la sua diffusione.",
+        "Il Web non coincide con Internet: Internet è la rete che collega i computer, il Web è uno dei servizi che funzionano su di essa, come la posta elettronica."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "CERN – La nascita del Web",
+          "url": "https://home.cern/science/computing/birth-web"
+        },
+        {
+          "name": "Il primo sito web della storia",
+          "url": "https://info.cern.ch/"
+        }
+      ],
+      "publisher": "CERN",
+      "date": "1993-04-30",
+      "addedAt": "2026-10-18T05:40:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Storia documentata dal CERN con i documenti originali.",
+      "dateLabel": "1989 – 1993",
+      "verified": "redazione"
+    },
+    {
+      "id": "pando",
+      "section": "losapevi",
+      "topic": "natura",
+      "title": "Pando: un bosco che è un unico essere vivente",
+      "summary": "Nello Utah, decine di migliaia di pioppi tremuli condividono le stesse radici e lo stesso DNA: è uno degli organismi più grandi conosciuti.",
+      "body": [
+        "Nella Fishlake National Forest, nello Utah, cresce una colonia di pioppi tremuli (Populus tremuloides) soprannominata Pando, dal latino «mi estendo». Sembra un bosco, ma è un unico individuo.",
+        "Tutti i tronchi, circa 47.000, sono germogli nati dallo stesso apparato radicale e sono geneticamente identici: un clone. La colonia occupa circa 43 ettari e secondo le stime pesa circa 6.000 tonnellate, il che la rende uno degli organismi più pesanti conosciuti.",
+        "L'età di Pando è difficile da stabilire: le stime vanno da alcune migliaia a decine di migliaia di anni. Oggi il clone è in sofferenza, perché cervi e bestiame mangiano i nuovi germogli e pochi alberi giovani riescono a crescere."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Pando (tree)",
+          "url": "https://en.wikipedia.org/wiki/Pando_(tree)"
+        }
+      ],
+      "publisher": "Enciclopedia",
+      "date": "1976-01-01",
+      "addedAt": "2026-10-18T05:39:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Identità genetica del clone confermata da analisi del DNA; età e massa sono stime.",
+      "dateLabel": "Botanica",
+      "verified": "redazione"
+    },
+    {
+      "id": "acqua-4-gradi",
+      "section": "losapevi",
+      "topic": "scienza",
+      "title": "Perché i laghi gelano dall'alto e i pesci sopravvivono all'inverno",
+      "summary": "L'acqua dolce è più densa a circa 4 °C, non a 0 °C: d'inverno l'acqua più fredda resta in superficie e il ghiaccio fa da coperchio isolante.",
+      "body": [
+        "Quasi tutte le sostanze diventano più dense quando si raffreddano. L'acqua dolce fa eccezione: raggiunge la massima densità a circa 4 °C e sotto questa temperatura torna a espandersi. Quando congela, il ghiaccio è circa il 9% meno denso dell'acqua liquida, e per questo galleggia.",
+        "In un lago, d'inverno, l'acqua di superficie si raffredda e scende verso il fondo, finché tutto il lago arriva a circa 4 °C. Da quel momento l'acqua che si raffredda ulteriormente resta in alto, perché più leggera, e alla fine gela.",
+        "Lo strato di ghiaccio isola l'acqua sottostante dall'aria gelida: sul fondo la temperatura resta intorno ai 4 °C e pesci e altri organismi possono superare l'inverno.",
+        "Questo comportamento dipende dai legami a idrogeno tra le molecole d'acqua, che nel ghiaccio formano una struttura cristallina aperta, con molto spazio vuoto."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Properties of water",
+          "url": "https://en.wikipedia.org/wiki/Properties_of_water"
+        },
+        {
+          "name": "Wikipedia – Acqua",
+          "url": "https://it.wikipedia.org/wiki/Acqua"
+        }
+      ],
+      "publisher": "Enciclopedia",
+      "date": "1900-01-02",
+      "addedAt": "2026-10-18T05:38:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Proprietà fisica misurata con precisione e spiegata dalla chimica moderna.",
+      "dateLabel": "Fisica",
+      "verified": "redazione"
+    },
+    {
+      "id": "voyager-1",
+      "section": "losapevi",
+      "topic": "tecnologia",
+      "title": "Voyager 1 è l'oggetto umano più lontano dalla Terra",
+      "summary": "Partita nel 1977, nel 2012 è diventata la prima sonda a entrare nello spazio interstellare. Comunica ancora con noi, con segnali che impiegano quasi un giorno ad arrivare.",
+      "body": [
+        "Voyager 1 è stata lanciata dalla NASA il 5 settembre 1977. Dopo aver sorvolato Giove nel 1979 e Saturno nel 1980, ha proseguito verso l'esterno del Sistema solare.",
+        "Il 25 agosto 2012 ha attraversato l'eliopausa, il confine oltre il quale il vento di particelle emesso dal Sole lascia il posto al mezzo interstellare. È stata il primo oggetto costruito dall'uomo a farlo; la gemella Voyager 2 l'ha seguita nel 2018.",
+        "Oggi si trova a oltre 24 miliardi di chilometri da noi: i suoi segnali radio, che viaggiano alla velocità della luce, impiegano quasi un giorno per arrivare. Per risparmiare energia, i tecnici hanno spento uno dopo l'altro diversi strumenti.",
+        "A bordo c'è il Disco d'oro, con suoni e immagini della Terra, pensato come messaggio per eventuali civiltà che dovessero trovarlo."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "NASA – Voyager",
+          "url": "https://science.nasa.gov/mission/voyager/"
+        },
+        {
+          "name": "Wikipedia – Voyager 1",
+          "url": "https://it.wikipedia.org/wiki/Voyager_1"
+        }
+      ],
+      "publisher": "NASA",
+      "date": "2012-08-25",
+      "addedAt": "2026-10-18T05:37:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Dati di missione NASA verificati per decenni.",
+      "dateLabel": "1977 – oggi",
+      "verified": "redazione"
+    },
+    {
+      "id": "galileo-lune-giove",
+      "section": "losapevi",
+      "topic": "storia",
+      "title": "Nel 1610 Galileo scoprì che non tutto gira intorno alla Terra",
+      "summary": "Puntando il cannocchiale verso Giove, Galileo Galilei vide quattro piccoli punti luminosi che gli ruotavano attorno: le prime lune scoperte oltre la nostra.",
+      "body": [
+        "Nel gennaio 1610, a Padova, Galileo Galilei osservò Giove con un cannocchiale da lui stesso perfezionato. Notò alcuni piccoli punti luminosi allineati vicino al pianeta, che cambiavano posizione di notte in notte.",
+        "Capì che quei corpi orbitavano intorno a Giove. Pubblicò le osservazioni a Venezia nel marzo 1610 nel Sidereus Nuncius, dedicando i satelliti a Cosimo II de' Medici con il nome di «Pianeti Medicei». Oggi li chiamiamo satelliti galileiani: Io, Europa, Ganimede e Callisto.",
+        "La scoperta metteva in difficoltà il modello geocentrico, secondo cui tutti i corpi celesti ruotavano attorno alla Terra: ecco un sistema in cui alcuni corpi giravano intorno a un altro pianeta. Divenne uno degli argomenti a favore del modello copernicano."
+      ],
+      "quotes": [],
+      "sources": [
+        {
+          "name": "Wikipedia – Satelliti galileiani",
+          "url": "https://it.wikipedia.org/wiki/Satelliti_galileiani"
+        },
+        {
+          "name": "Wikipedia – Sidereus Nuncius",
+          "url": "https://it.wikipedia.org/wiki/Sidereus_Nuncius"
+        },
+        {
+          "name": "Museo Galileo",
+          "url": "https://www.museogalileo.it/"
+        }
+      ],
+      "publisher": "Museo Galileo",
+      "date": "1610-03-13",
+      "addedAt": "2026-10-18T05:36:00.000Z",
+      "solidity": "consolidato",
+      "solidityNote": "Osservazioni pubblicate da Galileo stesso e confermate da allora.",
+      "dateLabel": "1610",
+      "verified": "redazione"
+    }
+  ]
+}

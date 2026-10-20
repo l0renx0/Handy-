@@ -1,0 +1,14 @@
+{
+  "_istruzioni": "Impostazioni della pipeline. modello: il modello Claude usato. maxNuoveSchedePerGiorno: limite di schede nuove per ogni esecuzione (controlla anche il costo). giorniMassimiNovita: ignora notizie più vecchie di così. elementiPerFonte: quanti elementi recenti leggere da ogni feed.",
+  "modello": "claude-opus-5-5",
+  "effort": "medium",
+  "maxNuoveSchedePerGiorno": 10,
+  "giorniMassimiNovita": 10,
+  "elementiPerFonte": 4,
+  "maxSchedeTotali": 600,
+  "file": {
+    "schede": "../lumen/data/cards.json",
+    "meta": "../lumen/data/meta.json",
+    "visti": "state/seen.json"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "lumen-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Legge le fonti della whitelist, riassume con Claude, verifica e salva le schede di Lumen.",
+  "scripts": {
+    "update": "node update.mjs",
+    "prova": "node update.mjs --dry-run",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "fast-xml-parser": "^5.11.2"
+  }
+}

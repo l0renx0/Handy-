@@ -1,0 +1,55 @@
+# Ogni mattina legge le fonti, crea le nuove schede con Claude e le salva nel repository.
+# GitHub Pages poi pubblica automaticamente la versione aggiornata dell'app.
+name: Aggiorna Lumen
+
+on:
+  schedule:
+    - cron: "17 4 * * *" # ogni giorno alle 04:17 UTC (06:17 in Italia d'estate, 05:17 d'inverno)
+  workflow_dispatch: # permette di avviarlo a mano dalla scheda "Actions"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aggiorna-lumen
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pipeline/package-lock.json
+
+      - name: Installa le dipendenze
+        working-directory: pipeline
+        run: npm ci
+
+      - name: Controlla la pipeline
+        working-directory: pipeline
+        run: npm test
+
+      - name: Crea le nuove schede
+        working-directory: pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node update.mjs
+
+      - name: Salva i risultati
+        run: |
+          git config user.name "lumen-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lumen/data pipeline/state
+          if git diff --cached --quiet; then
+            echo "Nessuna novità oggi."
+            exit 0
+          fi
+          git commit -m "Lumen: nuove schede del $(date -u +%Y-%m-%d)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
