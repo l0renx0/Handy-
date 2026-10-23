@@ -95,7 +95,7 @@ const MENU = [
     { name: "Acqua e bibite", items: [
       ["Agua sin gas"], ["Agua con gas"],
       ["Coca-Cola"], ["Coca-Cola Zero"],
-      ["Fanta naranja"], ["Fanta limón"], ["Sprite"],
+      ["Schweppes limón"], ["Schweppes naranja"], ["Sprite"],
       ["Tónica"], ["Ginger ale"], ["Ginger beer"],
       ["Nestea"], ["Aquarius"], ["Red Bull"],
       ["Zumo de naranja"], ["Zumo de piña"], ["Zumo de tomate"],
