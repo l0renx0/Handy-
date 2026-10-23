@@ -100,6 +100,11 @@ const MENU = [
       ["Nestea"], ["Aquarius"], ["Red Bull"],
       ["Zumo de naranja"], ["Zumo de piña"], ["Zumo de tomate"],
     ]},
+    // Birre: non sono nei PDF, prezzi da aggiungere quando li hai.
+    { name: "Birre", items: [
+      ["Caña Estrella Damm pequeña"], ["Caña Estrella Damm grande"],
+      ["Clara"], ["Voll-Damm"], ["Cerveza sin alcohol"],
+    ]},
     { name: "Signature", items: [
       ["Fiero Spritz", 14], ["St. Germain Spritz", 14], ["Martini Bianco Spritz", 14],
       ["Marinelli", 15], ["Amalfi Dream", 15], ["Mitico Nirvana", 15],
