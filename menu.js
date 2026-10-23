@@ -105,7 +105,7 @@ const MENU = [
       ["Caña Estrella"], ["Caña Estrella pequeña"],
       ["Clara"], ["Voll-Damm"], ["Cerveza sin alcohol"],
     ]},
-    { name: "Signature", items: [
+    { name: "Cocktail", items: [
       ["Fiero Spritz", 14], ["St. Germain Spritz", 14], ["Martini Bianco Spritz", 14],
       ["Marinelli", 15], ["Amalfi Dream", 15], ["Mitico Nirvana", 15],
       ["Dolce del Capo", 15], ["Giulio Cesare", 16], ["Portofino", 15], ["Paloma Mule", 15],

@@ -297,7 +297,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=2.9" charset="utf-8"></script>
+<script src="menu.js?v=3.0" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -305,7 +305,7 @@ const CAT_COLORS = {
   "Snacks": "#8a6d2f", "Sapore di mare": "#2e6f8e", "Caviar": "#3c3f58", "Festival di mare": "#23707a",
   "Antipasti": "#9a5b2c", "Pasta": "#b0832a", "Insalate": "#4e8a3c", "Secondi": "#2f5f9a", "Josper": "#a2452c",
   "Pizze": "#b3412f", "Dolci": "#a5527a",
-  "Acqua e bibite": "#3a8fb7", "Signature": "#2f78a8", "Mocktails": "#5f8a3a", "Aperitivos": "#c0602c", "Clásicos": "#7a4fa0", "Sangría": "#a33b55", "Caffè": "#6b4a32", "Tè e infusi": "#5f7a4a",
+  "Acqua e bibite": "#3a8fb7", "Cocktail": "#2f78a8", "Mocktails": "#5f8a3a", "Aperitivos": "#c0602c", "Clásicos": "#7a4fa0", "Sangría": "#a33b55", "Caffè": "#6b4a32", "Tè e infusi": "#5f7a4a",
   "Long drinks": "#456a8c", "Licores": "#8b5a2b", "Whisky": "#9a6a1f", "Cognac / Ron": "#7a3e24", "Gin": "#3f7f78", "Vodka / Tequila": "#5a5f9e",
   "Copa": "#8c3a4f", "Champagne": "#a88a3a", "Bianchi IT": "#9b9548", "Bianchi ES": "#86844a", "Bianchi mondo": "#6f7a45",
   "Rossi IT": "#7d2433", "Rossi ES": "#6a2a3e", "Rossi mondo": "#5c2a4a", "Rosati": "#b05a6e", "Sin alcohol": "#4d7a6a",
@@ -313,7 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "2.9";
+const APP_VERSION = "3.0";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -778,7 +778,7 @@ const QUICKS = {
   },
 };
 const MEAT = ["Filetto alla Rossini", "La tagliata · Entrecot 500g"];
-const COCKTAIL_CATS = ["Signature", "Aperitivos", "Clásicos", "Sangría", "Long drinks"];
+const COCKTAIL_CATS = ["Cocktail", "Aperitivos", "Clásicos", "Sangría", "Long drinks"];
 function catOf(name) {
   for (const g of MENU) for (const c of g.categories) if (c.items.some(it => it[0] === name)) return c.name;
   return "";
