@@ -297,7 +297,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=3.2" charset="utf-8"></script>
+<script src="menu.js?v=3.3" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -313,7 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "3.2";
+const APP_VERSION = "3.3";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -783,6 +783,8 @@ const QUICKS = {
 };
 const MEAT = ["Filetto alla Rossini", "La tagliata · Entrecot 500g"];
 const COCKTAIL_CATS = ["Cocktail", "Aperitivos", "Clásicos", "Sangría", "Long drinks"];
+// Distillati e bottiglie VIP: si servono anche allungati, quindi ghiaccio + bibite.
+const SPIRIT_CATS = ["Whisky", "Cognac / Ron", "Gin", "Vodka / Tequila", "Bottiglie"];
 function catOf(name) {
   for (const g of MENU) for (const c of g.categories) if (c.items.some(it => it[0] === name)) return c.name;
   return "";
@@ -794,6 +796,7 @@ function quickFor(l) {
   if (MEAT.includes(l.name)) return QUICK.carne;
   if (cat === "Pasta") return QUICK.pasta;
   if (COCKTAIL_CATS.includes(cat)) return [...QUICK.cocktail, ...QUICK.mixer];
+  if (SPIRIT_CATS.includes(cat) && l.name !== "Shisha") return [...QUICK.cocktail.slice(1), ...QUICK.mixer];
   return QUICK.base;
 }
 function editLine(id) {
