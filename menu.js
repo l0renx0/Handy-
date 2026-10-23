@@ -102,7 +102,7 @@ const MENU = [
     ]},
     // Birre: non sono nei PDF, prezzi da aggiungere quando li hai.
     { name: "Birre", items: [
-      ["Caña Estrella Damm pequeña"], ["Caña Estrella Damm grande"],
+      ["Caña Estrella"], ["Caña Estrella pequeña"],
       ["Clara"], ["Voll-Damm"], ["Cerveza sin alcohol"],
     ]},
     { name: "Signature", items: [
