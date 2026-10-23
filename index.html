@@ -297,7 +297,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=3.1" charset="utf-8"></script>
+<script src="menu.js?v=3.2" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -313,7 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "3.1";
+const APP_VERSION = "3.2";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -416,7 +416,7 @@ const CAT_NAMES = {
     "Rossi IT": "Tintos IT", "Rossi ES": "Tintos ES", "Rossi mondo": "Tintos mundo", "Rosati": "Rosados", "Bottiglie": "Botellas" },
 };
 const ITEM_NAMES = {
-  it: { "Agua sin gas": "Acqua naturale", "Agua con gas": "Acqua frizzante", "Fanta naranja": "Fanta arancia", "Fanta limón": "Fanta limone",
+  it: { "Agua sin gas": "Acqua naturale", "Agua con gas": "Acqua frizzante", "Schweppes limón": "Schweppes limone", "Schweppes naranja": "Schweppes arancia",
     "Tónica": "Tonica", "Zumo de naranja": "Succo d'arancia", "Zumo de piña": "Succo d'ananas", "Zumo de tomate": "Succo di pomodoro",
     "Gelato 1 bola": "Gelato 1 pallina", "Gelato 2 bolas": "Gelato 2 palline",
     "Té negro": "Tè nero", "Té verde": "Tè verde", "Manzanilla": "Camomilla", "Menta poleo": "Tisana alla menta", "Descafeinado": "Decaffeinato" },
@@ -764,7 +764,7 @@ const QUICKS = {
     gelato: ["Cioccolato", "Cocco", "Pistacchio", "Fragola", "Limone", "Vaniglia"],
     carne: ["Blu", "Al sangue", "Media cottura", "Cotta", "Ben cotta"],
     cocktail: ["Senza alcool", "Con ghiaccio", "Senza ghiaccio"],
-    mixer: ["Con tonica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Fanta arancia", "Con soda",
+    mixer: ["Con tonica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Schweppes limone", "Con Schweppes arancia", "Con soda",
       "Con ginger ale", "Con ginger beer", "Con Red Bull", "Con succo d'arancia", "Con succo d'ananas", "Con succo di mirtillo"],
     pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
     base: ["Senza glutine", "Senza lattosio", "Allergia frutta secca", "Senza cipolla", "Da dividere"],
@@ -774,7 +774,7 @@ const QUICKS = {
     gelato: ["Chocolate", "Coco", "Pistacho", "Fresa", "Limón", "Vainilla"],
     carne: ["Azul", "Poco hecho", "Al punto", "Hecho", "Muy hecho"],
     cocktail: ["Sin alcohol", "Con hielo", "Sin hielo"],
-    mixer: ["Con tónica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Fanta naranja", "Con soda",
+    mixer: ["Con tónica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Schweppes limón", "Con Schweppes naranja", "Con soda",
       "Con ginger ale", "Con ginger beer", "Con Red Bull", "Con zumo de naranja", "Con zumo de piña", "Con zumo de arándanos"],
     pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
     base: ["Sin gluten", "Sin lactosa", "Alergia frutos secos", "Sin cebolla", "Para compartir"],
