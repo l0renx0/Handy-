@@ -297,7 +297,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=3.3" charset="utf-8"></script>
+<script src="menu.js?v=3.4" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -313,7 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "3.3";
+const APP_VERSION = "3.4";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -758,12 +758,14 @@ const cancelLp = e => { if (!lp) return; if (e.type === "pointermove" && Math.hy
 ["pointerup", "pointercancel", "pointermove", "pointerleave"].forEach(ev => $("#l-body").addEventListener(ev, cancelLp));
 $("#l-body").addEventListener("contextmenu", e => e.preventDefault());
 
-// Varianti rapide in base al piatto: gusti per il gelato, cotture per la carne, bibite per i cocktail, ecc.
+// Varianti rapide in base al piatto: gusti per il gelato, cotture per la carne, bibite per i cocktail, corto/lungo per il caffè, ecc.
 const QUICKS = {
   it: {
     gelato: ["Cioccolato", "Cocco", "Pistacchio", "Fragola", "Limone", "Vaniglia"],
     carne: ["Blu", "Al sangue", "Media cottura", "Cotta", "Ben cotta"],
     cocktail: ["Senza alcool", "Con ghiaccio", "Senza ghiaccio"],
+    caffe: ["Corto", "Lungo", "Con ghiaccio", "Decaffeinato", "In vetro", "Tazza grande", "Latte freddo a parte",
+      "Latte di soia", "Latte di avena", "Senza lattosio", "Senza zucchero", "Con dolcificante"],
     mixer: ["Con tonica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Schweppes limone", "Con Schweppes arancia", "Con soda",
       "Con ginger ale", "Con ginger beer", "Con Red Bull", "Con succo d'arancia", "Con succo d'ananas", "Con succo di mirtillo"],
     pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
@@ -774,6 +776,8 @@ const QUICKS = {
     gelato: ["Chocolate", "Coco", "Pistacho", "Fresa", "Limón", "Vainilla"],
     carne: ["Azul", "Poco hecho", "Al punto", "Hecho", "Muy hecho"],
     cocktail: ["Sin alcohol", "Con hielo", "Sin hielo"],
+    caffe: ["Corto", "Largo", "Con hielo", "Descafeinado", "En vaso", "Taza grande", "Leche fría aparte",
+      "Leche de soja", "Leche de avena", "Sin lactosa", "Sin azúcar", "Con sacarina"],
     mixer: ["Con tónica", "Con Coca-Cola", "Con Coca-Cola Zero", "Con lemon", "Con Sprite", "Con Schweppes limón", "Con Schweppes naranja", "Con soda",
       "Con ginger ale", "Con ginger beer", "Con Red Bull", "Con zumo de naranja", "Con zumo de piña", "Con zumo de arándanos"],
     pasta: ["Con spaghetti", "Con linguine", "Con tagliatelle", "Con tonnarelli", "Con rigatoni", "Con paccheri", "Con strozzapreti", "Sin gluten"],
@@ -796,6 +800,7 @@ function quickFor(l) {
   if (MEAT.includes(l.name)) return QUICK.carne;
   if (cat === "Pasta") return QUICK.pasta;
   if (COCKTAIL_CATS.includes(cat)) return [...QUICK.cocktail, ...QUICK.mixer];
+  if (cat === "Caffè") return QUICK.caffe;
   if (SPIRIT_CATS.includes(cat) && l.name !== "Shisha") return [...QUICK.cocktail.slice(1), ...QUICK.mixer];
   return QUICK.base;
 }
