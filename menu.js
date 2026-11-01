@@ -83,6 +83,7 @@ const MENU = [
       ["Pannacotta", 9.5],
       ["Peccato di cioccolato", 11],
       ["Babà", 11],
+      ["Cannolo"], // non era nei PDF: prezzo da aggiungere
       ["Gelato 1 bola"],
       ["Gelato 2 bolas", 9],
       ["Selezione di frutta", 32, "x2 pers."],
