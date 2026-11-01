@@ -297,7 +297,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=3.4" charset="utf-8"></script>
+<script src="menu.js?v=3.5" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -313,7 +313,7 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "3.4";
+const APP_VERSION = "3.5";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
@@ -652,11 +652,14 @@ function openOrder(n) {
   setTitles();
   renderOrder(); show("v-order");
 }
+// Alcuni nomi esistono in due categorie (es. Grey Goose al bicchiere e in bottiglia VIP):
+// un prodotto è lo stesso solo se coincidono nome e categoria.
+const sameItem = (a, b) => a.name === b.name && (a.cat || "") === (b.cat || "");
+const qtyOf = (ls, name, cat) => ls.filter(l => sameItem(l, { name, cat })).reduce((s, l) => s + l.qty, 0);
 function catsHtml() {
   const ls = lines(ui.table), g = MENU.find(x => x.group === ui.group);
-  const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   return `<div class="cats">${g.categories.map((c, i) => {
-    const n = c.items.reduce((s, it) => s + qtyOf(it[0]), 0);
+    const n = c.items.reduce((s, it) => s + qtyOf(ls, it[0], c.name), 0);
     return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(catName(c.name))}${n ? `<span class="n">${n}</span>` : ""}</button>`;
   }).join("")}</div>`;
 }
@@ -669,14 +672,13 @@ function renderOrder() {
     : COURSES.map(k => { const c = inCourse(k); return `<button aria-pressed="${ui.course === k}" data-c="${k}">${courseName(k)}${c ? `<em>${c}</em>` : ""}</button>`; }).join("");
   $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${groupName(g.group)}</button>`).join("");
   const g = MENU.find(x => x.group === ui.group);
-  const qtyOf = name => ls.filter(l => l.name === name).reduce((s, l) => s + l.qty, 0);
   if (ui.cat === null) {
     $("#o-body").innerHTML = catsHtml();
   } else {
     const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
     $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}${t("categories")}</button><strong><i></i>${esc(catName(c.name))}</strong></div>
       <div class="items">${c.items.map((it, i) => {
-        const q = qtyOf(it[0]);
+        const q = qtyOf(ls, it[0], c.name);
         return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-i="${i}"><span class="nm">${esc(itemName(it[0]))}</span>
           <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
       }).join("")}</div>`;
@@ -693,7 +695,7 @@ $("#o-body").onclick = e => {
   const [name, price, info] = cat.items[+it.dataset.i];
   const course = DRINK_GROUPS.includes(ui.group) ? "bev" : ui.course;
   const ls = order(ui.table).lines;
-  const same = ls.find(l => !l.saved && !l.note && l.name === name && l.course === course);
+  const same = ls.find(l => !l.saved && !l.note && sameItem(l, { name, cat: cat.name }) && l.course === course);
   if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", cat: cat.name, course, qty: 1, note: "", saved: false });
   persist(); renderOrder();
   $(`#o-body [data-i="${it.dataset.i}"]`).classList.add("flash");
@@ -704,11 +706,11 @@ $("#o-back").onclick = $("#l-back").onclick = $("#c-back").onclick = goBack;
 $("#o-list").onclick = () => { renderList(); show("v-list"); };
 $("#o-save").onclick = $("#l-save").onclick = saveOrder;
 function leaveTable() { const o = order(ui.table); if (o && !o.lines.length) delete state.orders[ui.table]; persist(); renderSala(); }
-// Al salvataggio le righe uguali (stesso piatto, portata e variante) diventano una sola: 1 acqua + 1 acqua = 2 acque.
+// Al salvataggio le righe uguali (stesso piatto e categoria, portata e variante) diventano una sola: 1 acqua + 1 acqua = 2 acque.
 function mergeLines(o) {
   const out = [];
   for (const l of o.lines) {
-    const m = out.find(x => x.name === l.name && x.course === l.course && (x.note || "") === (l.note || ""));
+    const m = out.find(x => sameItem(x, l) && x.course === l.course && (x.note || "") === (l.note || ""));
     if (m) m.qty += l.qty; else out.push(l);
   }
   o.lines = out;
