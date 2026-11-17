@@ -62,8 +62,7 @@ const MENU = [
       ["Tonno rosso · Atún rojo", 29.5],
       ["Il polpo · Pulpo", 28],
       ["Cotoletta alla milanese", 59.5, "x2-4 pers."],
-    ]},
-    { name: "Josper", items: [
+      // ex categoria Josper (alla brace): ora tutto in Secondi
       ["Filetto alla Rossini", 36],
       ["La tagliata · Entrecot 500g", 58],
       ["Pollo alla diavola", 28.5],

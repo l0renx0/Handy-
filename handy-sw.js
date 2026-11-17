@@ -1,7 +1,7 @@
 // Service worker di Handy+: l'app si apre anche senza internet.
 // Con la rete prende sempre i file nuovi (e ne salva una copia); senza rete usa l'ultima copia salvata.
 // Non tocca Lumen (cartella lumen/), che ha il suo service worker.
-const CACHE = "handy-v4.0";
+const CACHE = "handy-v4.1";
 const CORE = ["./", "index.html", "menu.js", "manifest.webmanifest", "icon-v2-180.png", "icon-v2-192.png", "icon-v2-512.png", "logo.svg"];
 
 self.addEventListener("install", (e) => {
