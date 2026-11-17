@@ -10,15 +10,13 @@
 <meta name="theme-color" content="#26282c">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-v2-180.png">
+<title>Handy+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 </head>
 <body>
-<title>Handy+</title>
-<meta name="apple-mobile-web-app-title" content="Handy+">
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: one-screen POS app. Views slide like iOS navigation (swipe from left edge = back). Dark matte, like the restaurant handheld. */
 :root {
@@ -238,6 +236,22 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 .pane .dragging { box-shadow: -10px 0 30px var(--shadow); }
 .pane .enter { animation: enter .3s var(--ease); box-shadow: -10px 0 30px var(--shadow); }
 .pane .under { animation: under .26s var(--ease); }
+/* titolo tavolo toccabile (coperti, sposta, libera) */
+#o-title { cursor: pointer; }
+#o-title svg { width: 16px; height: 16px; vertical-align: -2px; margin-left: 2px; color: var(--muted); }
+.sheet .menu { display: flex; flex-direction: column; gap: 8px; }
+.sheet .menu .btn { height: 52px; justify-content: center; width: 100%; }
+/* ricerca */
+.groups .gsearch { padding: 0 12px; display: flex; align-items: center; }
+.groups .gsearch svg { width: 17px; height: 17px; }
+.search { display: flex; flex-direction: column; gap: 12px; }
+.search input { width: 100%; box-sizing: border-box; height: 48px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--fg); font: 17px var(--body); padding: 0 14px; -webkit-user-select: text; user-select: text; }
+.search input:focus { outline: 2px solid var(--fg); outline-offset: 1px; }
+.item .ct { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+/* toast con "Annulla" */
+.toast button { margin-left: 6px; background: var(--bg); color: var(--fg); border-radius: 14px; padding: 4px 11px; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.chip.mod { background: #6aa8e0; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 
@@ -265,7 +279,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <section class="view" id="v-order" hidden>
   <div class="bar">
     <button class="btn icon" id="o-back" data-i18n-aria="backSala" aria-label="Torna alla sala"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <h1 id="o-title">T</h1>
+    <h1 id="o-title" role="button" tabindex="0">T</h1>
     <button class="btn" id="o-list"><span data-i18n="list">Lista</span> <span class="count" id="o-n">0</span></button>
     <button class="btn save" id="o-save" data-i18n="save">Salva</button>
   </div>
@@ -297,7 +311,7 @@ textarea { width: 100%; box-sizing: border-box; min-height: 84px; resize: vertic
 <div id="layer"></div>
 <button class="update" id="update" hidden><span data-i18n="updateAvail">Nuova versione disponibile</span><b data-i18n="updateNow">Aggiorna</b></button>
 
-<script src="menu.js?v=3.5" charset="utf-8"></script>
+<script src="menu.js?v=4.0" charset="utf-8"></script>
 <script>
 const COURSES = ["ant", "p1", "p2"];
 const DRINK_GROUPS = ["BAR", "VINI", "CAFFÈ", "VIP"];
@@ -313,18 +327,20 @@ const CAT_COLORS = {
 };
 const EXTRA_CANDIDATES = [[51, 59, "dentro"], [60, 64, "dentro"], [65, 99, "dentro"], [100, 164, "fuori"], [165, 199, "fuori"], [200, 215, "fuori"]];
 const KEY = "taccuino-comande-v1";
-const APP_VERSION = "3.5";
+const APP_VERSION = "4.0";
 const ICON = {
   check: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   back: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
   hold: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg>',
   plate: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>',
+  down: '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+  search: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
 };
 
 // ---------- stato ----------
 let state = { extraTables: [], orders: {}, updatedAt: 0 };
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.orders) state = s; } catch (e) {}
-let ui = { table: null, course: "ant", group: "CUCINA", cat: null };
+let ui = { table: null, course: "ant", group: "CUCINA", cat: null, from: "v-sala", q: "" };
 let remote = null, saveTimer = null;
 
 function persist() {
@@ -378,6 +394,9 @@ const I18N = {
     all: "Tutte", coversInSala: "Coperti in sala", noPending: "Niente da salvare.<br>Tutte le comande sono già salvate.",
     pendingHint: "Mostra queste righe al cameriere, poi tocca Salvata.", markSaved: "Salvata",
     updateAvail: "Nuova versione disponibile", updateNow: "Aggiorna",
+    undo: "Annulla", MOD: "MODIFICATO", searchPh: "Cerca un piatto o una bevanda…", noResults: "Nessun risultato", searchAria: "Cerca",
+    changeCovers: "Cambia coperti", moveTable: "Sposta su un altro tavolo", moveTo: "Sposta su quale tavolo?", move: "Sposta",
+    moved: (a, b) => `Tavolo ${a} spostato al ${b}`, coversSet: n => `Coperti: ${n}`, noFree: "Nessun tavolo libero", tableMenu: "Opzioni del tavolo",
     open: "Apri", freeTable: "Libera tavolo", confirmFree: "Conferma: libera", freed: n => `Tavolo ${n} liberato`,
     langAria: "Lingua: italiano. Tocca per lo spagnolo",
     ant: "Antipasti", p1: "1ª portata", p2: "2ª portata", bev: "Bevande",
@@ -401,6 +420,9 @@ const I18N = {
     all: "Todas", coversInSala: "Comensales en sala", noPending: "Nada por guardar.<br>Todas las comandas ya están guardadas.",
     pendingHint: "Enseña estas líneas al camarero y luego toca Guardada.", markSaved: "Guardada",
     updateAvail: "Nueva versión disponible", updateNow: "Actualizar",
+    undo: "Deshacer", MOD: "CAMBIADO", searchPh: "Busca un plato o una bebida…", noResults: "Sin resultados", searchAria: "Buscar",
+    changeCovers: "Cambiar comensales", moveTable: "Mover a otra mesa", moveTo: "¿A qué mesa?", move: "Mover",
+    moved: (a, b) => `Mesa ${a} movida a la ${b}`, coversSet: n => `Comensales: ${n}`, noFree: "No hay mesas libres", tableMenu: "Opciones de la mesa",
     open: "Abrir", freeTable: "Liberar mesa", confirmFree: "Confirmar: liberar", freed: n => `Mesa ${n} liberada`,
     langAria: "Idioma: español. Toca para el italiano",
     ant: "Entrantes", p1: "1° plato", p2: "2° plato", bev: "Bebidas",
@@ -445,11 +467,12 @@ function setLang(l) { lang = l; try { localStorage.setItem("handy-lang", l); } c
 
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let toastT;
-function toast(msg, ok) {
+function toast(msg, ok, action) {
   $(".toast")?.remove();
-  const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status");
-  t.innerHTML = (ok ? `<i>${ICON.check}</i>` : "") + `<span>${esc(msg)}</span>`;
-  document.body.append(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 1700);
+  const el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status");
+  el.innerHTML = (ok ? `<i>${ICON.check}</i>` : "") + `<span>${esc(msg)}</span>` + (action ? `<button>${esc(action.label)}</button>` : "");
+  if (action) el.querySelector("button").onclick = () => { el.remove(); action.fn(); };
+  document.body.append(el); clearTimeout(toastT); toastT = setTimeout(() => el.remove(), action ? 3500 : 1700);
 }
 function bump(el) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
 
@@ -468,7 +491,7 @@ document.addEventListener("click", e => { if (e.target.closest("button")) haptic
 // ---------- navigazione (con swipe da sinistra) ----------
 let current = "v-sala";
 const VIEW_BACK = {
-  "v-order": { to: "v-sala", prep: () => renderSala(), done: () => leaveTable() },
+  "v-order": { to: () => ui.from, prep: () => { renderSala(); if (ui.from === "v-comande") renderComande(); }, done: () => leaveTable() },
   "v-list": { to: "v-order", prep: () => renderOrder() },
   "v-comande": { to: "v-sala", prep: () => renderSala() },
 };
@@ -499,12 +522,14 @@ function backStep() {
     done: () => { ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; },
   };
   const b = VIEW_BACK[current]; if (!b) return null;
-  return { from: $("#" + current), to: $("#" + b.to), prep: b.prep, done: () => { b.done?.(); current = b.to; } };
+  const to = backTo(b);
+  return { from: $("#" + current), to: $("#" + to), prep: b.prep, done: () => { b.done?.(); current = to; } };
 }
+const backTo = b => (typeof b.to === "function" ? b.to() : b.to) || "v-sala";
 function goBack() {
   if (current === "v-order" && ui.cat !== null) { ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; slideIn($("#o-body"), "under"); return; }
   const b = VIEW_BACK[current]; if (!b) return;
-  b.prep?.(); b.done?.(); show(b.to, true);
+  b.prep?.(); b.done?.(); show(backTo(b), true);
 }
 
 let sw = null;
@@ -611,8 +636,15 @@ function wheel(el, values, initial) {
   const mark = () => { const i = idx(); if (i === last) return; if (last !== -1) haptic(); last = i; items.forEach((it, j) => it.classList.toggle("sel", i === j)); };
   el.addEventListener("scroll", mark, { passive: true });
   items.forEach((it, j) => it.onclick = () => el.scrollTo({ top: j * H, behavior: "smooth" }));
-  requestAnimationFrame(() => { el.scrollTop = Math.max(0, values.indexOf(initial)) * H; mark(); });
-  return () => values[idx()];
+  // il valore iniziale si imposta subito (e di nuovo al frame dopo, quando il foglio è disegnato);
+  // finché l'utente non tocca la ruota vale comunque quello iniziale.
+  const start = Math.max(0, values.indexOf(initial));
+  let touched = false;
+  const place = () => { if (!touched) { el.scrollTop = start * H; last = -1; mark(); last = start; } };
+  place(); requestAnimationFrame(place);
+  ["touchstart", "pointerdown", "wheel"].forEach(ev => el.addEventListener(ev, () => touched = true, { passive: true }));
+  items.forEach(it => it.addEventListener("click", () => touched = true));
+  return () => touched ? values[idx()] : values[start];
 }
 
 function askCovers(n) {
@@ -645,10 +677,11 @@ function askNewTable() {
 // ---------- ORDINE ----------
 function setTitles() {
   const n = ui.table, h = `${t("T")} ${n}<small>${order(n).covers} ${t("cov")}</small>`;
-  $("#o-title").innerHTML = h; $("#l-title").innerHTML = h;
+  $("#o-title").innerHTML = h + ICON.down; $("#o-title").setAttribute("aria-label", t("tableMenu")); $("#l-title").innerHTML = h;
 }
 function openOrder(n) {
-  ui.table = n; ui.cat = null;
+  ui.from = current === "v-comande" ? "v-comande" : "v-sala";
+  ui.table = n; ui.cat = null; if (ui.group === SEARCH) ui.group = "CUCINA";
   setTitles();
   renderOrder(); show("v-order");
 }
@@ -663,45 +696,131 @@ function catsHtml() {
     return `<button class="cat" style="--c:${CAT_COLORS[c.name] || "#555"}" data-cat="${i}">${esc(catName(c.name))}${n ? `<span class="n">${n}</span>` : ""}</button>`;
   }).join("")}</div>`;
 }
+// Ricerca: una lente prima dei gruppi; si cerca per nome (anche tradotto) e per categoria, senza accenti.
+const SEARCH = "__search";
+const norm = x => String(x).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const INDEX = MENU.flatMap((g, gi) => g.categories.flatMap((c, ci) => c.items.map((it, ii) => ({
+  gi, ci, ii,
+  name: norm([it[0], ITEM_NAMES.it[it[0]], ITEM_NAMES.es[it[0]]].filter(Boolean).join(" ")),
+  cat: norm([c.name, CAT_NAMES.it[c.name], CAT_NAMES.es[c.name]].filter(Boolean).join(" ")),
+  key: norm([it[0], ITEM_NAMES.it[it[0]], ITEM_NAMES.es[it[0]], c.name, CAT_NAMES.it[c.name], CAT_NAMES.es[c.name]].filter(Boolean).join(" ")),
+}))));
+function searchResults(q) {
+  const words = norm(q).split(/[^a-z0-9]+/).filter(Boolean);
+  if (!words.length) return [];
+  // prima i nomi che iniziano con la parola cercata, poi quelli che la contengono, poi le categorie (es. "gin": prima i gin, poi la Ginger ale)
+  const w = words[0];
+  const word = txt => txt.split(/[^a-z0-9]+/).includes(w);           // parola intera: "gin" sì, "ginger" no
+  const score = r => word(r.name) ? 0 : word(r.cat) ? 1 : r.name.split(/[^a-z0-9]+/).some(x => x.startsWith(w)) ? 2 : r.name.includes(w) ? 3 : 4;
+  return INDEX.filter(r => words.every(w => r.key.includes(w))).map(r => [score(r), r]).sort((a, b) => a[0] - b[0]).slice(0, 40).map(x => x[1]);
+}
+function itemBtn(gi, ci, ii, ls, showCat) {
+  const c = MENU[gi].categories[ci], it = c.items[ii], col = CAT_COLORS[c.name] || "#555", q = qtyOf(ls, it[0], c.name);
+  return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-s="${gi}:${ci}:${ii}">${showCat ? `<span class="ct">${esc(catName(c.name))}</span>` : ""}<span class="nm">${esc(itemName(it[0]))}</span>
+    <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
+}
+function renderSearchResults() {
+  const box = $("#q-res"); if (!box) return;
+  const res = searchResults(ui.q), ls = lines(ui.table);
+  box.innerHTML = ui.q.trim() && !res.length ? `<p class="empty">${t("noResults")}</p>` : res.map(r => itemBtn(r.gi, r.ci, r.ii, ls, true)).join("");
+}
 function renderOrder() {
+  const search = ui.group === SEARCH;
   const drinks = DRINK_GROUPS.includes(ui.group);
   const ls = lines(ui.table);
   const inCourse = k => ls.filter(l => l.course === k).reduce((s, l) => s + l.qty, 0);
   $("#courses").innerHTML = drinks
     ? `<div class="drinkinfo"><b>${t("bev")}</b>${t("drinksInfo")}</div>`
     : COURSES.map(k => { const c = inCourse(k); return `<button aria-pressed="${ui.course === k}" data-c="${k}">${courseName(k)}${c ? `<em>${c}</em>` : ""}</button>`; }).join("");
-  $("#groups").innerHTML = MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${groupName(g.group)}</button>`).join("");
-  const g = MENU.find(x => x.group === ui.group);
+  $("#groups").innerHTML = `<button class="gsearch" aria-pressed="${search}" data-g="${SEARCH}" aria-label="${t("searchAria")}">${ICON.search}</button>` +
+    MENU.map(g => `<button aria-pressed="${ui.group === g.group}" data-g="${g.group}">${groupName(g.group)}</button>`).join("");
+  $("#o-n").textContent = ls.reduce((s, l) => s + l.qty, 0);
+  if (search) {
+    // il campo di ricerca non viene ricreato, così la tastiera resta aperta mentre aggiungi
+    if (!$("#q")) {
+      $("#o-body").innerHTML = `<div class="search"><input id="q" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" spellcheck="false"><div class="items" id="q-res"></div></div>`;
+      $("#q").value = ui.q;
+      $("#q").oninput = e => { ui.q = e.target.value; renderSearchResults(); };
+    }
+    $("#q").placeholder = t("searchPh");
+    renderSearchResults();
+    return;
+  }
+  const gi = MENU.findIndex(x => x.group === ui.group), g = MENU[gi];
   if (ui.cat === null) {
     $("#o-body").innerHTML = catsHtml();
   } else {
     const c = g.categories[ui.cat], col = CAT_COLORS[c.name] || "#555";
     $("#o-body").innerHTML = `<div class="crumb" style="--c:${col}"><button class="btn" id="b-cats">${ICON.back}${t("categories")}</button><strong><i></i>${esc(catName(c.name))}</strong></div>
-      <div class="items">${c.items.map((it, i) => {
-        const q = qtyOf(ls, it[0], c.name);
-        return `<button class="item ${q ? "has" : ""}" style="--c:${col}" data-i="${i}"><span class="nm">${esc(itemName(it[0]))}</span>
-          <span class="pr">${[eur(it[1]), it[2] && esc(it[2])].filter(Boolean).join(" · ") || "&nbsp;"}</span>${q ? `<span class="q">${q}</span>` : ""}</button>`;
-      }).join("")}</div>`;
+      <div class="items">${c.items.map((it, ii) => itemBtn(gi, ui.cat, ii, ls, false)).join("")}</div>`;
   }
-  $("#o-n").textContent = ls.reduce((s, l) => s + l.qty, 0);
 }
 $("#courses").onclick = e => { const b = e.target.closest("[data-c]"); if (b) { ui.course = b.dataset.c; renderOrder(); } };
-$("#groups").onclick = e => { const b = e.target.closest("[data-g]"); if (b) { ui.group = b.dataset.g; ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0; } };
+$("#groups").onclick = e => {
+  const b = e.target.closest("[data-g]"); if (!b) return;
+  ui.group = b.dataset.g; ui.cat = null; renderOrder(); $("#o-body").scrollTop = 0;
+  if (ui.group === SEARCH) $("#q")?.focus();
+};
+// Aggiunge un pezzo; il toast permette di annullare un tocco sbagliato.
+function addItem(gi, ci, ii) {
+  const g = MENU[gi], cat = g.categories[ci], [name, price, info] = cat.items[ii];
+  const course = DRINK_GROUPS.includes(g.group) ? "bev" : ui.course;
+  const ls = order(ui.table).lines;
+  let line = ls.find(l => !l.saved && !l.note && sameItem(l, { name, cat: cat.name }) && l.course === course);
+  if (line) line.qty++; else ls.push(line = { id: uid(), name, price, info: info || "", cat: cat.name, course, qty: 1, note: "", saved: false });
+  persist(); renderOrder();
+  $(`#o-body [data-s="${gi}:${ci}:${ii}"]`)?.classList.add("flash");
+  bump($("#o-n"));
+  const table = ui.table;
+  toast(`+1 ${itemName(name)}${course === "bev" ? "" : " · " + courseName(course)}`, false, { label: t("undo"), fn: () => {
+    const o = order(table); if (!o) return;
+    if (--line.qty <= 0) o.lines = o.lines.filter(x => x !== line);
+    persist(); if (current === "v-order" && ui.table === table) renderOrder(); renderSala();
+  } });
+}
 $("#o-body").onclick = e => {
   if (e.target.closest("#b-cats")) return goBack();
   const c = e.target.closest("[data-cat]"); if (c) { ui.cat = +c.dataset.cat; renderOrder(); $("#o-body").scrollTop = 0; slideIn($("#o-body"), "enter"); return; }
-  const it = e.target.closest("[data-i]"); if (!it) return;
-  const cat = MENU.find(x => x.group === ui.group).categories[ui.cat];
-  const [name, price, info] = cat.items[+it.dataset.i];
-  const course = DRINK_GROUPS.includes(ui.group) ? "bev" : ui.course;
-  const ls = order(ui.table).lines;
-  const same = ls.find(l => !l.saved && !l.note && sameItem(l, { name, cat: cat.name }) && l.course === course);
-  if (same) same.qty++; else ls.push({ id: uid(), name, price, info: info || "", cat: cat.name, course, qty: 1, note: "", saved: false });
-  persist(); renderOrder();
-  $(`#o-body [data-i="${it.dataset.i}"]`).classList.add("flash");
-  bump($("#o-n"));
-  toast(`+1 ${itemName(name)}${course === "bev" ? "" : " · " + courseName(course)}`);
+  const it = e.target.closest("[data-s]"); if (!it) return;
+  const [gi, ci, ii] = it.dataset.s.split(":").map(Number);
+  addItem(gi, ci, ii);
 };
+
+// Menu del tavolo (tocca il titolo): cambia coperti, sposta su un altro tavolo, libera.
+function tableMenu() {
+  const n = ui.table;
+  sheet(`<h2>${t("table", n)}</h2><p class="sub">${t("coversN", order(n).covers)}</p>
+    <div class="menu"><button class="btn" id="m-cov">${t("changeCovers")}</button><button class="btn" id="m-move">${t("moveTable")}</button>
+    <button class="btn danger" id="m-free">${t("freeTable")}</button><button class="btn" id="m-no">${t("cancel")}</button></div>`);
+  $("#m-no").onclick = closeSheet;
+  $("#m-cov").onclick = () => {
+    sheet(`<h2>${t("table", n)}</h2><p class="sub">${t("howMany")}</p><div class="wheel-wrap"><div class="wheel" id="w-cov"></div></div>
+      <div class="actions"><button class="btn" id="s-no">${t("cancel")}</button><button class="btn save" id="s-ok">${t("save")}</button></div>`);
+    const get = wheel($("#w-cov"), range(1, 30), order(n).covers);
+    $("#s-no").onclick = closeSheet;
+    $("#s-ok").onclick = () => { order(n).covers = get(); persist(); closeSheet(); setTitles(); renderSala(); toast(t("coversSet", order(n).covers), true); };
+  };
+  $("#m-move").onclick = () => {
+    const free = allTables().filter(x => x.n !== n && !isBusy(x.n)).map(x => x.n);
+    if (!free.length) { closeSheet(); return toast(t("noFree")); }
+    sheet(`<h2>${t("moveTo")}</h2><p class="sub">${t("table", n)} →</p><div class="wheel-wrap"><div class="wheel" id="w-move"></div></div>
+      <div class="actions"><button class="btn" id="s-no">${t("cancel")}</button><button class="btn save" id="s-ok">${t("move")}</button></div>`);
+    const get = wheel($("#w-move"), free, free.find(x => x > n) ?? free[0]);
+    $("#s-no").onclick = closeSheet;
+    $("#s-ok").onclick = () => {
+      const m = get(); state.orders[m] = state.orders[n]; delete state.orders[n];
+      ui.table = m; persist(); closeSheet(); setTitles(); renderOrder(); renderSala(); toast(t("moved", n, m), true);
+    };
+  };
+  $("#m-free").onclick = e => {
+    const b = e.currentTarget;
+    if (!b.classList.contains("armed")) { b.classList.add("armed"); b.textContent = t("confirmFree"); return; }
+    delete state.orders[n]; persist(); closeSheet(); renderSala(); if (ui.from === "v-comande") renderComande();
+    show(ui.from, true); toast(t("freed", n), true);
+  };
+}
+$("#o-title").onclick = tableMenu;
+$("#o-title").onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tableMenu(); } };
 $("#o-back").onclick = $("#l-back").onclick = $("#c-back").onclick = goBack;
 $("#o-list").onclick = () => { renderList(); show("v-list"); };
 $("#o-save").onclick = $("#l-save").onclick = saveOrder;
@@ -717,12 +836,14 @@ function mergeLines(o) {
 }
 function commitSave(n) {
   const o = order(n);
-  o.lines.forEach(l => l.saved = true); mergeLines(o); o.savedAt = Date.now();
+  o.lines.forEach(l => { l.saved = true; delete l.changed; }); mergeLines(o); o.savedAt = Date.now();
   persist(); renderSala();
 }
 function saveOrder() {
   if (!order(ui.table).lines.length) return toast(t("addOne"));
-  commitSave(ui.table); show("v-sala", true); toast(t("saved", ui.table), true);
+  commitSave(ui.table);
+  if (ui.from === "v-comande") renderComande();
+  show(ui.from, true); toast(t("saved", ui.table), true);
 }
 
 // ---------- LISTA ----------
@@ -736,7 +857,7 @@ function linesHtml(n, editable, onlyNew) {
     return `<div class="lgroup"><h3>${courseName(k)}<small>${g.reduce((s, l) => s + l.qty, 0)} ${t("pcs")}</small></h3>${g.map(l => {
       if (l.price) total += l.price * l.qty;
       return `<div class="line" ${editable ? `data-l="${l.id}"` : ""}><span class="qty">${l.qty}</span>
-        <span class="txt"><b>${esc(itemName(l.name))}${!l.saved ? `<span class="chip">${t("NEW")}</span>` : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
+        <span class="txt"><b>${esc(itemName(l.name))}${!l.saved ? (l.changed ? `<span class="chip mod">${t("MOD")}</span>` : `<span class="chip">${t("NEW")}</span>`) : ""}</b>${l.note ? `<span class="note">${esc(l.note)}</span>` : ""}</span>
         <span class="amt">${l.price == null ? eur(l.price) : eur(l.price * l.qty)}</span></div>`;
     }).join("")}</div>`;
   }).join("");
@@ -815,7 +936,7 @@ function editLine(id) {
     ${course !== "bev" ? `<div class="seg" id="e-c">${COURSES.map(k => `<button aria-pressed="${k === course}" data-c="${k}">${courseName(k)}</button>`).join("")}</div>` : ""}
     <label for="e-note" class="hint" style="margin:0">${t("variant")}</label>
     <textarea id="e-note" placeholder="${t("notePh")}">${esc(l.note)}</textarea>
-    <div class="quick">${quick.map(q => `<button data-q="${q}">${q}</button>`).join("")}</div>
+    <div class="quick">${quick.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join("")}</div>
     <div class="actions"><button class="btn danger" id="e-del">${t("del")}</button><button class="btn save" id="e-ok">${t("done")}</button></div>`);
   $("#e-m").onclick = () => { qty = Math.max(1, qty - 1); $("#e-q").textContent = qty; };
   $("#e-p").onclick = () => { qty++; $("#e-q").textContent = qty; };
@@ -828,7 +949,12 @@ function editLine(id) {
     o.lines = o.lines.filter(x => x.id !== id); persist(); closeSheet(); renderList(); toast(t("deleted", itemName(l.name))); };
   $("#e-ok").onclick = () => {
     const note = $("#e-note").value.trim();
-    if (qty !== l.qty || course !== l.course || note !== l.note) { l.qty = qty; l.course = course; l.note = note; l.saved = false; }
+    if (l.saved && qty > l.qty && course === l.course && note === l.note) {
+      o.lines.splice(o.lines.indexOf(l) + 1, 0, { ...l, id: uid(), qty: qty - l.qty, saved: false });
+    } else if (qty !== l.qty || course !== l.course || note !== l.note) {
+      if (l.saved) l.changed = true;
+      l.qty = qty; l.course = course; l.note = note; l.saved = false;
+    }
     persist(); closeSheet(); renderList();
   };
 }
@@ -895,6 +1021,11 @@ async function checkUpdate() {
 }
 $("#update").onclick = () => { location.replace(location.pathname + "?v=" + encodeURIComponent(newVersion || Date.now())); };
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkUpdate(); });
+// Offline: il service worker salva l'app sul telefono (solo sul sito GitHub, non dentro Claude).
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !window.claude)
+  navigator.serviceWorker.register("handy-sw.js", { scope: "./" }).catch(() => {});
+// Chiede al telefono di non cancellare mai le comande salvate per fare spazio.
+navigator.storage?.persist?.().catch(() => {});
 $("#ver").textContent = APP_VERSION;
 applyLang();
 checkUpdate();
